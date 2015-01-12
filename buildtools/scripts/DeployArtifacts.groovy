@@ -61,7 +61,6 @@ def deployJars()
     deployToRemote(ceRepoUrl, ceRepoId, 'org.mule', 'mule', version, 'pom')
     deployToRemote(ceRepoUrl, ceRepoId, 'org.mule', 'mule-core', version, 'jar')
     [
-            'examples',
             'modules',
             'patterns',
             'tests',
@@ -80,7 +79,7 @@ def deployJars()
             else
             {
                 String group = ['tests', 'tools'].contains(it) ? it : it.minus(~/s$/)
-                String packaging = it.equals('examples') ? 'zip' : 'jar'
+                String packaging = 'jar'
                 packaging = packagingExceptions.get(module.text()) ? packagingExceptions.get(module.text()) : packaging
                 String artifact = "mule-${group}-${module.text()}"
                 artifact = artifactIdExceptions.get(module.text()) ? artifactIdExceptions.get(module.text()) : artifact
@@ -124,7 +123,7 @@ protected void deployToRemote(String repoUrl, String repoId, String groupId, Str
         {
             if (deploySignatures && getDependency(signature, "target/${it}-signature"))
             {
-                assert deployFile(optional, 'target/pom', "target/${it}-signature", repoUrl, repoId);
+                assert deployFile(signature, 'target/pom', "target/${it}-signature", repoUrl, repoId);
             }
             assert deployFile(optional, 'target/pom', "target/${it}", repoUrl, repoId);
         }

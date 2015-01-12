@@ -33,6 +33,7 @@ import org.mule.api.util.StreamCloserService;
 import org.mule.config.bootstrap.RegistryBootstrapService;
 import org.mule.context.notification.NotificationException;
 import org.mule.context.notification.ServerNotificationManager;
+import org.mule.extensions.ExtensionsManager;
 import org.mule.management.stats.AllStatistics;
 import org.mule.management.stats.ProcessingTimeWatcher;
 import org.mule.util.lock.LockFactory;
@@ -189,6 +190,8 @@ public interface MuleContext extends Lifecycle
     QueueManager getQueueManager();
     
     ObjectStoreManager getObjectStoreManager();
+
+    ExtensionsManager getExtensionsManager();
 
     AllStatistics getStatistics();
 

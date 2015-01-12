@@ -215,6 +215,16 @@ public abstract class AbstractMuleContextTestCase extends AbstractMuleTestCase
         // template method
     }
 
+    private void addIfPresent(List<ConfigurationBuilder> builders, String builderClassName) throws Exception
+    {
+        if (ClassUtils.isClassOnPath(builderClassName, getClass()))
+        {
+            builders.add((ConfigurationBuilder) ClassUtils.instanciateClass(builderClassName,
+                                                                            ClassUtils.NO_ARGS,
+                                                                            getClass()));
+        }
+    }
+
     protected MuleContext createMuleContext() throws Exception
     {
         // Should we set up the manager for every method?
@@ -237,13 +247,11 @@ public abstract class AbstractMuleContextTestCase extends AbstractMuleTestCase
             muleContextFactory.setConfigurationBuilderService(configurationBuilderService);
             List<ConfigurationBuilder> builders = new ArrayList<ConfigurationBuilder>();
             builders.add(new SimpleConfigurationBuilder(getStartUpProperties()));
+
             //If the annotations module is on the classpath, add the annotations config builder to the list
             //This will enable annotations config for this instance
-            if (ClassUtils.isClassOnPath(CLASSNAME_ANNOTATIONS_CONFIG_BUILDER, getClass()))
-            {
-                builders.add((ConfigurationBuilder) ClassUtils.instanciateClass(CLASSNAME_ANNOTATIONS_CONFIG_BUILDER,
-                                                                                ClassUtils.NO_ARGS, getClass()));
-            }
+            addIfPresent(builders, CLASSNAME_ANNOTATIONS_CONFIG_BUILDER);
+
             builders.add(getBuilder());
             addBuilders(builders);
             DefaultMuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
