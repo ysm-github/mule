@@ -1,3 +1,5 @@
+package org.mule.context.notification;
+
 import org.mule.api.MuleContext;
 import org.mule.api.MuleEvent;
 import org.mule.api.context.MuleContextAware;
@@ -5,16 +7,14 @@ import org.mule.api.lifecycle.Initialisable;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.construct.FlowXmlDescriptor;
 import org.mule.construct.MessageProcessorDescriptor;
-import org.mule.context.notification.MessageProcessStack;
-import org.mule.context.notification.MessageProcessingStackNotification;
-import org.mule.context.notification.MessageProcessorNotification;
-import org.mule.context.notification.PipelineMessageNotification;
-import org.mule.context.notification.ProcessorDebugLine;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationTextDebugger implements MuleContextAware, Initialisable
+/**
+ * Manager for handling message processing stacks.
+ */
+public class MessageProcessingStackManager implements MuleContextAware, Initialisable
 {
 
     private final FlowNotificationTextDebugger pipelineProcessorDebugger;
@@ -24,7 +24,7 @@ public class NotificationTextDebugger implements MuleContextAware, Initialisable
 
     private Map<String, MessageProcessStack> messageProcessStackMap = new HashMap();
 
-    public NotificationTextDebugger()
+    public MessageProcessingStackManager()
     {
         messageProcessorTextDebugger = new MessageProcessorTextDebugger(this);
         pipelineProcessorDebugger = new FlowNotificationTextDebugger(this);

@@ -326,10 +326,9 @@ public class DefaultMuleContextBuilder implements MuleContextBuilder
         manager.addInterfaceToType(PipelineMessageNotificationListener.class,
                                    PipelineMessageNotification.class);
         manager.addInterfaceToType(AsyncMessageNotificationListener.class,
+                                   AsyncMessageNotification.class);
         manager.addInterfaceToType(MessageProcessingStackReadyNotificationListener.class,
                                    MessageProcessingStackNotification.class);
-        manager.addInterfaceToType(AsyncMessageNotificationListener.class, 
-                                   AsyncMessageNotification.class);
         manager.addInterfaceToType(ClusterNodeNotificationListener.class, ClusterNodeNotification.class);
         return manager;
     }

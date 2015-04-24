@@ -13,7 +13,7 @@ import org.mule.api.processor.MessageProcessor;
 /**
  * Replace any exception thrown with a MessagingException
  */
-public class ExceptionToMessagingExceptionExecutionInterceptor implements MessageProcessorExecutionInterceptor
+    public class ExceptionToMessagingExceptionExecutionInterceptor implements MessageProcessorExecutionInterceptor
 {
 
     @Override

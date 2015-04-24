@@ -10,10 +10,6 @@
         http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
         http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
 
-    <spring:beans>
-        <spring:bean id="MessageProcessorTextDebugger" class="NotificationTextDebugger" init-method="initialise"/>
-    </spring:beans>
-
     <!--<tls:context name="tlsContext">-->
         <!--<tls:key-store path="serverKeystore" password="mulepassword" keyPassword="mulepassword"/>-->
     <!--</tls:context>-->
@@ -60,6 +56,6 @@
     <notifications>
         <notification interface="MESSAGE-PROCESSOR"/>
         <!--    		<notification  /> -->
-        <!--<notification-listener ref="MessageProcessorTextDebugger"/>-->
+        <!--<notification-listener ref="org.mule.context.notification.MessageProcessorTextDebugger"/>-->
     </notifications>
 </mule>

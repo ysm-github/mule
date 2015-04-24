@@ -1,14 +1,19 @@
+package org.mule.context.notification;
+
 import org.mule.api.context.notification.PipelineMessageNotificationListener;
 import org.mule.context.notification.PipelineMessageNotification;
 
+/**
+ * Listener for PipelineMessageNotification that delegates notifications to NotificationTextDebugger
+ */
 public class FlowNotificationTextDebugger implements PipelineMessageNotificationListener<PipelineMessageNotification>
 {
 
-    private final NotificationTextDebugger notificationTextDebugger;
+    private final MessageProcessingStackManager messageProcessingStackManager;
 
-    public FlowNotificationTextDebugger(NotificationTextDebugger notificationTextDebugger)
+    public FlowNotificationTextDebugger(MessageProcessingStackManager messageProcessingStackManager)
     {
-        this.notificationTextDebugger  = notificationTextDebugger;
+        this.messageProcessingStackManager = messageProcessingStackManager;
     }
 
 
@@ -17,11 +22,11 @@ public class FlowNotificationTextDebugger implements PipelineMessageNotification
     {
         if (notification.getAction() == PipelineMessageNotification.PROCESS_COMPLETE)
         {
-            notificationTextDebugger.onPipelineNotificationComplete(notification);
+            messageProcessingStackManager.onPipelineNotificationComplete(notification);
         }
         else if (notification.getAction() == PipelineMessageNotification.PROCESS_START)
         {
-            notificationTextDebugger.onPipelineNotificationStart(notification);
+            messageProcessingStackManager.onPipelineNotificationStart(notification);
         }
     }
 
