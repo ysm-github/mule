@@ -69,6 +69,7 @@ public abstract class AbstractPipeline extends AbstractFlowConstruct implements 
 
     protected ProcessingStrategy processingStrategy;
     private boolean canProcessMessage = false;
+    private FlowXmlDescriptor flowXmlDescriptor;
 
     public AbstractPipeline(String name, MuleContext muleContext)
     {

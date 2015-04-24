@@ -13,6 +13,7 @@ import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
 import org.mule.api.processor.MessageProcessor;
 import org.mule.config.i18n.CoreMessages;
+import org.mule.execution.MessageProcessorNotificationExecutionInterceptor;
 import org.mule.routing.filters.ExpressionFilter;
 
 import java.util.List;
@@ -57,12 +58,13 @@ public class FirstSuccessfulRoutingStrategy extends AbstractRoutingStrategy
 
         boolean failed = true;
         Exception failExceptionCause = null;
+        MessageProcessorNotificationExecutionInterceptor mpInterceptor = new MessageProcessorNotificationExecutionInterceptor();
         for (MessageProcessor mp : messageProcessors)
         {
             try
             {
                 MuleEvent toProcess = cloneEventForRoutinng(event, mp);
-                returnEvent = mp.process(toProcess);
+                returnEvent = mpInterceptor.execute(mp, toProcess);
 
                 if (returnEvent == null || VoidMuleEvent.getInstance().equals(returnEvent))
                 {

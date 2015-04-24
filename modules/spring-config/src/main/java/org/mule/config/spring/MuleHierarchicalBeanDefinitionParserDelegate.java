@@ -6,25 +6,41 @@
  */
 package org.mule.config.spring;
 
+import org.mule.api.source.MessageSource;
 import org.mule.config.spring.util.SpringXMLUtils;
+import org.mule.construct.AbstractPipeline;
+import org.mule.construct.FlowXmlDescriptor;
+import org.mule.construct.MessageProcessorDescriptor;
+import org.mule.util.ClassUtils;
 import org.mule.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
 
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader;
 import org.springframework.beans.factory.xml.NamespaceHandler;
@@ -33,6 +49,7 @@ import org.springframework.beans.factory.xml.XmlReaderContext;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
@@ -53,8 +70,11 @@ public class MuleHierarchicalBeanDefinitionParserDelegate extends BeanDefinition
     public static final String MULE_FORCE_RECURSE = "org.mule.config.spring.MuleHierarchicalBeanDefinitionParserDelegate.MULE_FORCE_RECURSE";
     public static final String MULE_NO_REGISTRATION = "org.mule.config.spring.MuleHierarchicalBeanDefinitionParserDelegate.MULE_NO_REGISTRATION";
     public static final String MULE_POST_CHILDREN = "org.mule.config.spring.MuleHierarchicalBeanDefinitionParserDelegate.MULE_POST_CHILDREN";
+    public static final String BEAN_DEFINITION_CHILD_ATTRIBUTES = "XML_STACK_TRACE:childs";
     private DefaultBeanDefinitionDocumentReader spring;
     private final List<ElementValidator> elementValidators;
+    private Map<Element, List<MessageProcessorDescriptor>> messageProcessorsDescriptorsPerFlow = new HashMap<>();
+    private Map<Element, MessageProcessorDescriptor> messageProcessorDescriptorMap = new HashMap<>();
 
     protected static final Log logger = LogFactory.getLog(MuleHierarchicalBeanDefinitionParserDelegate.class);
 
@@ -73,7 +93,13 @@ public class MuleHierarchicalBeanDefinitionParserDelegate extends BeanDefinition
             logger.debug("parsing: " + SpringXMLUtils.elementToString(element));
         }
 
+
         validate(element);
+
+        if (element.getLocalName().equals("flow") || element.getLocalName().equals("sub-flow"))
+        {
+            messageProcessorsDescriptorsPerFlow.put(element, new LinkedList<MessageProcessorDescriptor>());
+        }
 
         if (SpringXMLUtils.isBeansNamespace(element))
         {
@@ -93,13 +119,16 @@ public class MuleHierarchicalBeanDefinitionParserDelegate extends BeanDefinition
             boolean forceRecurse = false;
             BeanDefinition finalChild;
 
-            do {
+            do
+            {
                 ParserContext parserContext = new ParserContext(getReaderContext(), this, parent);
                 finalChild = handler.parse(element, parserContext);
                 registerBean(element, finalChild);
+                nicePrintXmlElement(element, parent, finalChild);
                 noRecurse = noRecurse || testFlag(finalChild, MULE_NO_RECURSE);
                 forceRecurse = forceRecurse || testFlag(finalChild, MULE_FORCE_RECURSE);
-            } while (null != finalChild && testFlag(finalChild, MULE_REPEAT_PARSE));
+            }
+            while (null != finalChild && testFlag(finalChild, MULE_REPEAT_PARSE));
 
             // Only iterate and parse child mule name-spaced elements. Spring does not do
             // hierarchical parsing by default so we need to maintain this behavior
@@ -150,8 +179,126 @@ public class MuleHierarchicalBeanDefinitionParserDelegate extends BeanDefinition
                 finalChild = handler.parse(element, parserContext);
             }
 
+            if (element.getLocalName().equals("flow") || element.getLocalName().equals("sub-flow"))
+            {
+                RootBeanDefinition beanDefinition = new RootBeanDefinition(FlowXmlDescriptor.class);
+                registerBeanDefinitionHolder(new BeanDefinitionHolder(beanDefinition, element.getAttribute("name").toString() + "Descriptor"));
+                ConstructorArgumentValues constructorArgumentValues = new ConstructorArgumentValues();
+                constructorArgumentValues.addGenericArgumentValue(messageProcessorsDescriptorsPerFlow.get(element));
+                beanDefinition.setConstructorArgumentValues(constructorArgumentValues);
+                if (element.getLocalName().equals("sub-flow"))
+                {
+                    MutablePropertyValues propertyValues = new MutablePropertyValues();
+                    propertyValues.add("isSubflow", true);
+                    beanDefinition.setPropertyValues(propertyValues);
+                }
+            }
+
             return finalChild;
         }
+    }
+
+    private void nicePrintXmlElement(Element element, BeanDefinition parent, BeanDefinition elementBeanDefinition)
+    {
+        try
+        {
+            if (parent == null || parent.getBeanClassName() == null)
+            {
+                return;
+            }
+            if (MessageSource.class.isAssignableFrom(ClassUtils.getClass(elementBeanDefinition.getBeanClassName())))
+            {
+                //messageSourceAsXml = extractXmlContent(element);
+            }
+            else if (AbstractPipeline.class.isAssignableFrom(ClassUtils.getClass(parent.getBeanClassName())) || findFlowParentNode(element) != null)
+            {
+                //List<MessageProcessorDescriptor> childs = (List<MessageProcessorDescriptor>) elementBeanDefinition.getAttribute(BEAN_DEFINITION_CHILD_ATTRIBUTES);
+                MessageProcessorDescriptor messageProcessorDescriptor = new MessageProcessorDescriptor(extractXmlContent(element));
+                MessageProcessorDescriptor parentMessageProcessorDescriptor = messageProcessorDescriptorMap.get(element.getParentNode());
+                if (parentMessageProcessorDescriptor == null)
+                {
+                    messageProcessorsDescriptorsPerFlow.get(findFlowParentNode(element)).add(messageProcessorDescriptor);
+                }
+                else
+                {
+                    parentMessageProcessorDescriptor.addChild(messageProcessorDescriptor);
+                }
+                messageProcessorDescriptorMap.put(element, messageProcessorDescriptor);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Node findFlowParentNode(Node node)
+    {
+        while (node.getParentNode() != null)
+        {
+            if (node.getLocalName().equals("flow") || node.getLocalName().equals("sub-flow"))
+            {
+                return node;
+            }
+            node = node.getParentNode();
+        }
+        return null;
+    }
+
+    public static String extractXmlContent(Element element)
+    {
+        try
+        {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document newDocument = builder.newDocument();
+            Node importedNode = newDocument.importNode(element, true);
+            newDocument.appendChild(importedNode);
+
+            Node messageProcessorNode = newDocument.getFirstChild();
+            removeAllChildNodes(messageProcessorNode);
+
+            //NodeList childNodes = newDocument.getFirstChild().getChildNodes();
+            //for (int i = 0; i < childNodes.getLength(); i++)
+            //{
+            //    child.removeChild(childNodes.item(i));
+            //}
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            StreamResult result = new StreamResult(new StringWriter());
+            DOMSource source = new DOMSource(messageProcessorNode);
+            transformer.transform(source, result);
+            return removeXmlStringNamespaceAndPreamble(result.getWriter().toString());
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void removeAllChildNodes(Node node)
+    {
+        while (node.hasChildNodes())
+            node.removeChild(node.getFirstChild());
+    }
+
+    public static String removeXmlStringNamespaceAndPreamble(String xmlString) {
+        String value = xmlString.replaceAll("(<\\?[^<]*\\?>)?", "") /* remove preamble */
+                .replaceAll("xmlns.*?(\"|\').*?(\"|\')", "") /* remove xmlns declaration */
+                .replaceAll("(<)(\\w+:)(.*?>)", "$1$3") /* remove opening tag prefix */
+                .replaceAll("  ", " ")
+                .replaceAll("/>", ">")
+                .replaceAll("  >", ">")
+                .replaceAll(" >", ">")
+                .replaceAll("(</)(\\w+:)(.*?>)", "$1$3");
+        if (!value.contains("flow-ref"))
+        {
+            value = value.replaceAll("name.*?(\"|\').*?(\"|\')", ""); /* remove name attribute */
+        }
+        return value; /* remove closing tags prefix */
+
     }
 
     private void validate(Element element)

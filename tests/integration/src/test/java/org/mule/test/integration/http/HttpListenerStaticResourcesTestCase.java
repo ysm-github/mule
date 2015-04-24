@@ -199,4 +199,9 @@ public class HttpListenerStaticResourcesTestCase extends FunctionalTestCase
         payload = response.getPayloadAsString();
     }
 
+    @Override
+    public int getTestTimeoutSecs()
+    {
+        return 900000;
+    }
 }
