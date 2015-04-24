@@ -1,11 +1,11 @@
-package org.mule.config.spring;
+package org.mule.context.notification;
 
 import org.mule.api.MuleEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventDebugLine
+public class ProcessorDebugLine
 {
 
     private Map<Object,Object> flowVariables = new HashMap<>();
@@ -17,9 +17,8 @@ public class EventDebugLine
 
     private String xml;
 
-    private EventDebugLine previousEventDebugLine;
+    private ProcessorDebugLine previousProcessorDebugLine;
     private Object payload;
-    private int identationSpces;
     private boolean xmlContentIsMessageProcessor;
 
     public String getMessageId()
@@ -47,16 +46,16 @@ public class EventDebugLine
         this.payload = muleEvent.getMessage().getPayload();
     }
 
-    public void setPreviousEventDebugLine(EventDebugLine previousEventDebugLine)
+    public void setPreviousProcessorDebugLine(ProcessorDebugLine previousProcessorDebugLine)
     {
-        this.previousEventDebugLine = previousEventDebugLine;
+        this.previousProcessorDebugLine = previousProcessorDebugLine;
     }
 
     public String getDifferences()
     {
-        if (previousEventDebugLine != null)
+        if (previousProcessorDebugLine != null)
         {
-            return MuleEventDifferencesHelper.getDifferences(previousEventDebugLine, this);
+            return MuleEventDifferencesHelper.getDifferences(previousProcessorDebugLine, this);
         }
         return null;
     }
@@ -81,9 +80,9 @@ public class EventDebugLine
         return outboundProperties;
     }
 
-    public EventDebugLine getPreviousEventDebugLine()
+    public ProcessorDebugLine getPreviousProcessorDebugLine()
     {
-        return previousEventDebugLine;
+        return previousProcessorDebugLine;
     }
 
     public Object getPayload()
@@ -91,19 +90,10 @@ public class EventDebugLine
         return payload;
     }
 
-    public void setIdentationSpces(int identationSpces)
-    {
-        this.identationSpces = identationSpces;
-    }
-
     @Override
     public String toString()
     {
         StringBuilder debugLine = new StringBuilder();
-        for (int i = 0; i < identationSpces; i++)
-        {
-            debugLine.append(" ");
-        }
         debugLine.append(xml);
         String differences = getDifferences();
         if (differences != null)

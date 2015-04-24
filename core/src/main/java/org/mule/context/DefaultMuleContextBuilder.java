@@ -21,6 +21,7 @@ import org.mule.api.context.notification.CustomNotificationListener;
 import org.mule.api.context.notification.ExceptionNotificationListener;
 import org.mule.api.context.notification.ExceptionStrategyNotificationListener;
 import org.mule.api.context.notification.ManagementNotificationListener;
+import org.mule.api.context.notification.MessageProcessingStackReadyNotificationListener;
 import org.mule.api.context.notification.ModelNotificationListener;
 import org.mule.api.context.notification.MuleContextNotificationListener;
 import org.mule.api.context.notification.PipelineMessageNotificationListener;
@@ -42,6 +43,7 @@ import org.mule.context.notification.CustomNotification;
 import org.mule.context.notification.ExceptionNotification;
 import org.mule.context.notification.ExceptionStrategyNotification;
 import org.mule.context.notification.ManagementNotification;
+import org.mule.context.notification.MessageProcessingStackNotification;
 import org.mule.context.notification.ModelNotification;
 import org.mule.context.notification.MuleContextNotification;
 import org.mule.context.notification.PipelineMessageNotification;
@@ -324,6 +326,9 @@ public class DefaultMuleContextBuilder implements MuleContextBuilder
         manager.addInterfaceToType(PipelineMessageNotificationListener.class,
                                    PipelineMessageNotification.class);
         manager.addInterfaceToType(AsyncMessageNotificationListener.class,
+        manager.addInterfaceToType(MessageProcessingStackReadyNotificationListener.class,
+                                   MessageProcessingStackNotification.class);
+        manager.addInterfaceToType(AsyncMessageNotificationListener.class, 
                                    AsyncMessageNotification.class);
         manager.addInterfaceToType(ClusterNodeNotificationListener.class, ClusterNodeNotification.class);
         return manager;

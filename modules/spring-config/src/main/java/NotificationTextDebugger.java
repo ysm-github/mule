@@ -3,40 +3,32 @@ import org.mule.api.MuleEvent;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.lifecycle.Initialisable;
 import org.mule.api.lifecycle.InitialisationException;
-import org.mule.config.spring.EventDebugLine;
-import org.mule.config.spring.MuleEventDifferencesHelper;
 import org.mule.construct.FlowXmlDescriptor;
 import org.mule.construct.MessageProcessorDescriptor;
+import org.mule.context.notification.MessageProcessStack;
+import org.mule.context.notification.MessageProcessingStackNotification;
 import org.mule.context.notification.MessageProcessorNotification;
 import org.mule.context.notification.PipelineMessageNotification;
+import org.mule.context.notification.ProcessorDebugLine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Stack;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NotificationTextDebugger implements MuleContextAware, Initialisable
 {
 
-
     private final FlowNotificationTextDebugger pipelineProcessorDebugger;
-    private Logger log = LoggerFactory.getLogger(NotificationTextDebugger.class);
     public MessageProcessorTextDebugger messageProcessorTextDebugger;
     private MuleContext muleContext;
-    private Map<String, LinkedList<EventDebugLine>> stacks = new HashMap<String, LinkedList<EventDebugLine>>();
     private Map<Integer, Integer> maxDepthSeen = new HashMap<>();
-    private String previousElement;
-    private int previousDeepth;
-    private Stack scopes = new Stack();
+
+    private Map<String, MessageProcessStack> messageProcessStackMap = new HashMap();
 
     public NotificationTextDebugger()
     {
         messageProcessorTextDebugger = new MessageProcessorTextDebugger(this);
         pipelineProcessorDebugger = new FlowNotificationTextDebugger(this);
+
     }
 
     public void onMessageProcessorNotification(MessageProcessorNotification notification)
@@ -53,6 +45,9 @@ public class NotificationTextDebugger implements MuleContextAware, Initialisable
         FlowXmlDescriptor flowXmlDescriptor = muleContext.getRegistry().get(parts[1] + "Descriptor");
         MessageProcessorDescriptor messageProcessorDescriptor = flowXmlDescriptor.getMessageProcessorDescriptor();
 
+        MessageProcessStack messageProcessStack = messageProcessStackMap.get(uniqueId);
+        ProcessorDebugLine lastProcessorDebugLine = messageProcessStack.getLastEventDebugLine();
+
         for (int i = 3; i < parts.length; i++)
         {
             String indexPart = parts[i];
@@ -61,55 +56,40 @@ public class NotificationTextDebugger implements MuleContextAware, Initialisable
                 Integer childIndex = Integer.valueOf(indexPart);
                 int maxDepthSeenIndex = i - 3;
                 Integer value = maxDepthSeen.get(maxDepthSeenIndex);
+                MessageProcessStack newMessageProcessorStack = null;
                 if (value != null)
                 {
                     if (value >= childIndex)
                     {
                         messageProcessorDescriptor = messageProcessorDescriptor.getChild(childIndex);
+                        messageProcessStack = messageProcessStack.getChildMessageProcessorStack(childIndex);
                         continue;
                     }
                     else
                     {
+                        newMessageProcessorStack = new MessageProcessStack();
+                        messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
                         maxDepthSeen.put(maxDepthSeenIndex, childIndex);
                     }
                 }
                 else
                 {
+                    newMessageProcessorStack = new MessageProcessStack();
+                    messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
                     maxDepthSeen.put(maxDepthSeenIndex, childIndex);
                 }
-                int identationSpaces = 0;
-                for (int j = 0; j < i; j++)
-                {
-                    identationSpaces++;
-                }
-                final EventDebugLine eventDebugLine = new EventDebugLine();
-                eventDebugLine.setEvent(muleEvent);
 
-                LinkedList<EventDebugLine> eventDebugLinesForMessageId = stacks.get(uniqueId);
-                if (eventDebugLinesForMessageId == null)
-                {
-                    eventDebugLinesForMessageId = new LinkedList<>();
-                    stacks.put(uniqueId, new LinkedList<EventDebugLine>());
-                }
-
-                final EventDebugLine previousEventDebugLine;
-                if (!eventDebugLinesForMessageId.isEmpty())
-                {
-                    previousEventDebugLine = eventDebugLinesForMessageId.getLast();
-                    eventDebugLine.setPreviousEventDebugLine(previousEventDebugLine);
-                }
-
-                stacks.get(uniqueId).add(eventDebugLine);
-                eventDebugLine.setIdentationSpces(identationSpaces);
-                //TODO review why for sub-flow, or perhaps any flow-ref, the first index is 1
-                //messageProcessorDescriptor = messageProcessorDescriptor.getChild(flowXmlDescriptor.isSubflow() ? childIndex - 1 : childIndex);
-                //messageProcessorDescriptor = messageProcessorDescriptor.getChild(flowXmlDescriptor.isSubflow() && innerElement ? childIndex - 1 : childIndex);
+                final ProcessorDebugLine processorDebugLine = new ProcessorDebugLine();
+                processorDebugLine.setEvent(muleEvent);
+                newMessageProcessorStack.setProcessorDebugLine(processorDebugLine);
+                processorDebugLine.setPreviousProcessorDebugLine(lastProcessorDebugLine);
                 messageProcessorDescriptor = messageProcessorDescriptor.getChild(childIndex);
-                eventDebugLine.setXml(messageProcessorDescriptor.getRepresentation());
+                processorDebugLine.setXml(messageProcessorDescriptor.getRepresentation());
                 if (i == parts.length - 1)
                 {
-                    eventDebugLine.xmlContentIsMessageProcessor();
+                    processorDebugLine.xmlContentIsMessageProcessor();
                 }
+                messageProcessStack = newMessageProcessorStack;
             }
             catch (NumberFormatException e)
             {
@@ -139,21 +119,23 @@ public class NotificationTextDebugger implements MuleContextAware, Initialisable
     public void onPipelineNotificationComplete(PipelineMessageNotification notification)
     {
         MuleEvent muleEvent = (MuleEvent) notification.getSource();
-        LinkedList<EventDebugLine> eventDebugLines = stacks.get(muleEvent.getMessage().getUniqueId());
-        for (EventDebugLine eventDebugLine : eventDebugLines)
-        {
-            System.out.println(eventDebugLine);
-        }
+        MessageProcessStack messageProcessStack = messageProcessStackMap.get(muleEvent.getMessage().getUniqueId());
+        messageProcessStack.print(0);
+        messageProcessStack.finishProcessing();
+        messageProcessStackMap.remove(muleEvent.getMessage().getUniqueId());
+        muleContext.fireNotification(new MessageProcessingStackNotification(messageProcessStack));
     }
 
     public void onPipelineNotificationStart(PipelineMessageNotification notification)
     {
         String flowName = notification.getResourceIdentifier();
         MuleEvent muleEvent = (MuleEvent) notification.getSource();
-        stacks.put(muleEvent.getMessage().getUniqueId(), new LinkedList<EventDebugLine>());
-        EventDebugLine eventDebugLine = new EventDebugLine();
-        eventDebugLine.setEvent(muleEvent);
-        eventDebugLine.setXml("\n<flow name=\"" + flowName + "\" />");
-        stacks.get(muleEvent.getMessage().getUniqueId()).add(eventDebugLine);
+        ProcessorDebugLine processorDebugLine = new ProcessorDebugLine();
+        processorDebugLine.setEvent(muleEvent);
+        processorDebugLine.setXml("\n<flow name=\"" + flowName + "\" />");
+
+        MessageProcessStack messageProcessStack = new MessageProcessStack();
+        messageProcessStack.setProcessorDebugLine(processorDebugLine);
+        messageProcessStackMap.put(muleEvent.getMessage().getUniqueId(), messageProcessStack);
     }
 }

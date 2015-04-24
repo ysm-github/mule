@@ -1,4 +1,4 @@
-package org.mule.config.spring;
+package org.mule.context.notification;
 
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
@@ -146,15 +146,15 @@ public class MuleEventDifferencesHelper
         return null;
     }
 
-    public static String getDifferences(EventDebugLine previousEventDebugLine, EventDebugLine eventDebugLine)
+    public static String getDifferences(ProcessorDebugLine previousProcessorDebugLine, ProcessorDebugLine processorDebugLine)
     {
         StringBuilder stringBuilder = new StringBuilder();
         ArrayList<String> differences = new ArrayList<>();
-        differences.add(logMapDifferences("inbound properties", previousEventDebugLine.getInboundProperties(), eventDebugLine.getInboundProperties()));
-        differences.add(logMapDifferences("outbound properties", previousEventDebugLine.getOutboundProperties(), eventDebugLine.getOutboundProperties()));
-        differences.add(logMapDifferences("flow variables", previousEventDebugLine.getFlowVariables(), eventDebugLine.getFlowVariables()));
-        differences.add(logMapDifferences("session variables", previousEventDebugLine.getSessionVariables(), eventDebugLine.getSessionVariables()));
-        differences.add(logPayloadDifferences(previousEventDebugLine.getPayload(), eventDebugLine.getPayload()));
+        differences.add(logMapDifferences("inbound properties", previousProcessorDebugLine.getInboundProperties(), processorDebugLine.getInboundProperties()));
+        differences.add(logMapDifferences("outbound properties", previousProcessorDebugLine.getOutboundProperties(), processorDebugLine.getOutboundProperties()));
+        differences.add(logMapDifferences("flow variables", previousProcessorDebugLine.getFlowVariables(), processorDebugLine.getFlowVariables()));
+        differences.add(logMapDifferences("session variables", previousProcessorDebugLine.getSessionVariables(), processorDebugLine.getSessionVariables()));
+        differences.add(logPayloadDifferences(previousProcessorDebugLine.getPayload(), processorDebugLine.getPayload()));
         for (String difference : differences)
         {
             if (difference != null)
