@@ -76,6 +76,15 @@ public class HttpListenerStaticResourcesTestCase extends FunctionalTestCase
         assertThat(OK.getStatusCode(), is(responseCode));
         assertResponseContentType("text/html");
     }
+
+    @Test
+    public void waitsome() throws InterruptedException
+    {
+        while (true)
+        {
+            Thread.sleep(10000);
+        }
+    }
     //
     //@Test
     //public void contentTypeShouldBeDetermintedFromResource() throws Exception

@@ -206,12 +206,16 @@ public class MuleHierarchicalBeanDefinitionParserDelegate extends BeanDefinition
             {
                 return;
             }
-            if (MessageSource.class.isAssignableFrom(ClassUtils.getClass(elementBeanDefinition.getBeanClassName())))
+            if (MessageSource.class.isAssignableFrom(ClassUtils.getClass(elementBeanDefinition.getBeanClassName())) || element.getLocalName().contains("poll"))
             {
                 //messageSourceAsXml = extractXmlContent(element);
             }
             else if (AbstractPipeline.class.isAssignableFrom(ClassUtils.getClass(parent.getBeanClassName())) || findFlowParentNode(element) != null)
             {
+                if (element.getParentNode().getLocalName().equals("poll"))
+                {
+                    return;
+                }
                 //List<MessageProcessorDescriptor> childs = (List<MessageProcessorDescriptor>) elementBeanDefinition.getAttribute(BEAN_DEFINITION_CHILD_ATTRIBUTES);
                 MessageProcessorDescriptor messageProcessorDescriptor = new MessageProcessorDescriptor(extractXmlContent(element));
                 MessageProcessorDescriptor parentMessageProcessorDescriptor = messageProcessorDescriptorMap.get(element.getParentNode());

@@ -26,7 +26,7 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
     private final FlowNotificationTextDebugger pipelineProcessorDebugger;
     public MessageProcessorTextDebugger messageProcessorTextDebugger;
     private MuleContext muleContext;
-    private Map<Integer, Integer> maxDepthSeen = new HashMap<>();
+    private Map<String, Map<Integer, Integer>> maxDepthSeenMap = new HashMap<>();
 
     private Map<String, MessageProcessStack> messageProcessStackMap = new HashMap();
 
@@ -53,6 +53,13 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
         MuleEvent muleEvent = notification.getSource();
         String uniqueId = muleEvent.getMessage().getUniqueId();
 
+        if (!maxDepthSeenMap.containsKey(uniqueId))
+        {
+            maxDepthSeenMap.put(uniqueId, new HashMap<Integer, Integer>());
+        }
+
+        Map<Integer,Integer> maxDepthSeenPerMessage = maxDepthSeenMap.get(uniqueId);
+
         String processorPath = notification.getProcessorPath();
         System.out.println("MessageProcessingStackManager -- processor path: " + processorPath);
         String[] parts = processorPath.split("/");
@@ -75,11 +82,11 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
                 {
                     Integer partIndex = Integer.valueOf(indexPart);
                     int maxDepthSeenIndex = i - 3;
-                    Integer value = maxDepthSeen.get(maxDepthSeenIndex);
+                    Integer maxDepthSeen = maxDepthSeenPerMessage.get(maxDepthSeenIndex);
                     MessageProcessStack newMessageProcessorStack = null;
-                    if (value != null)
+                    if (maxDepthSeen != null)
                     {
-                        if (value >= partIndex)
+                        if (maxDepthSeen >= partIndex)
                         {
                             messageProcessorDescriptor = messageProcessorDescriptor.getChild(partIndex);
                             messageProcessStack = messageProcessStack.getChildMessageProcessorStack(partIndex);
@@ -88,15 +95,17 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
                         else
                         {
                             newMessageProcessorStack = new MessageProcessStack();
+                            newMessageProcessorStack.setProcessingPath(buildProcessingPath(processorPath, i));
                             messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
-                            maxDepthSeen.put(maxDepthSeenIndex, partIndex);
+                            maxDepthSeenPerMessage.put(maxDepthSeenIndex, partIndex);
                         }
                     }
                     else
                     {
                         newMessageProcessorStack = new MessageProcessStack();
+                        newMessageProcessorStack.setProcessingPath(buildProcessingPath(processorPath, i));
                         messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
-                        maxDepthSeen.put(maxDepthSeenIndex, partIndex);
+                        maxDepthSeenPerMessage.put(maxDepthSeenIndex, partIndex);
                     }
 
                     final ProcessorDebugLine processorDebugLine = new ProcessorDebugLine();
@@ -128,6 +137,17 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
         }
 
         System.out.println("MessageProcessingStackManager -- successfully process processorPath");
+    }
+
+    private String buildProcessingPath(String processorPath, int currentEndIndex)
+    {
+        String[] parts = processorPath.split("/");
+        StringBuilder processingPath = new StringBuilder();
+        for (int i = 1; i < currentEndIndex + 1; i++)
+        {
+            processingPath.append("/" + parts[i]);
+        }
+        return processingPath.toString();
     }
 
 

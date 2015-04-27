@@ -23,6 +23,7 @@ public class MessageProcessStack implements Serializable
     private List<MessageProcessStack> childrenMessageProcessorStack = new ArrayList<>();
     private Calendar finishProcessingTime;
     private String flow;
+    private String processingPath;
 
     public void print(int ident)
     {
@@ -104,5 +105,15 @@ public class MessageProcessStack implements Serializable
     public void setFlow(String flow)
     {
         this.flow = flow;
+    }
+
+    public String getProcessingPath()
+    {
+        return processingPath;
+    }
+
+    public void setProcessingPath(String processingPath)
+    {
+        this.processingPath = processingPath;
     }
 }

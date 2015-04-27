@@ -18,8 +18,11 @@
     <!--<http:listener-config name="listenerConfigPort2" host="localhost" port="${port2}" protocol="HTTPS" tlsContext-ref="tlsContext"/>-->
     <!--<http:listener-config name="listenerConfigPort3" host="localhost" port="${port3}"/>-->
 
-    <flow name="main-http">
-        <http:listener config-ref="listenerConfigPort1" path="static/*"/>
+    <flow name="main-http" processingStrategy="synchronous">
+        <poll frequency="10000000">
+            <set-payload value="e"/>
+        </poll>
+        <!--<http:listener config-ref="listenerConfigPort1" path="static/*"/>-->
         <!--<http:static-resource-handler resourceBase="${test.root}/dummy-docroot" defaultFile="index.html"/>-->
         <set-payload value="#[new Integer(10)]"/>
         <set-payload value="b"/>
@@ -49,9 +52,9 @@
             <set-payload value="#['works']"/>
         </first-successful>
         <append-string-transformer message="aaaa"/>
-        <expression-component>
-            thrw new asdf;
-        </expression-component>
+        <!--<expression-component>-->
+            <!--thrw new asdf;-->
+        <!--</expression-component>-->
         <transactional>
             <logger message="within transacton"/>
         </transactional>
