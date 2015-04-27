@@ -25,6 +25,7 @@ import org.mule.api.transaction.Transaction;
 import org.mule.api.transaction.TransactionException;
 import org.mule.config.ExceptionHelper;
 import org.mule.context.notification.ExceptionNotification;
+import org.mule.context.notification.MessageProcessingStackManager;
 import org.mule.context.notification.SecurityNotification;
 import org.mule.management.stats.FlowConstructStatistics;
 import org.mule.management.stats.ServiceStatistics;

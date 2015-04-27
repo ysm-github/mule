@@ -42,4 +42,10 @@ public class FlowXmlDescriptor
     {
         return isSubflow;
     }
+
+    @Override
+    public String toString()
+    {
+
+    }
 }

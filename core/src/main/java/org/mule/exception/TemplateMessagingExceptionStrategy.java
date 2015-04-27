@@ -18,6 +18,8 @@ import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.processor.MessageProcessor;
 import org.mule.api.processor.MessageProcessorChain;
 import org.mule.context.notification.ExceptionStrategyNotification;
+import org.mule.context.notification.MessageProcessStack;
+import org.mule.context.notification.MessageProcessingStackManager;
 import org.mule.management.stats.FlowConstructStatistics;
 import org.mule.message.DefaultExceptionPayload;
 import org.mule.processor.chain.DefaultMessageProcessorChainBuilder;
@@ -40,6 +42,7 @@ public abstract class TemplateMessagingExceptionStrategy extends AbstractExcepti
             FlowConstruct flowConstruct = event.getFlowConstruct();
             fireNotification(exception);
             logException(exception);
+            logXmlStackTrace(event);
             processStatistics(event);
             event.getMessage().setExceptionPayload(new DefaultExceptionPayload(exception));
             event = beforeRouting(exception, event);
@@ -82,6 +85,15 @@ public abstract class TemplateMessagingExceptionStrategy extends AbstractExcepti
         finally
         {
             muleContext.getNotificationManager().fireNotification(new ExceptionStrategyNotification(event, ExceptionStrategyNotification.PROCESS_END));
+        }
+    }
+
+    private void logXmlStackTrace(MuleEvent event)
+    {
+        MessageProcessStack messageProcessStack = ((MessageProcessingStackManager) muleContext.getRegistry().get("_muleMessageProcessingStackManager")).getMessageProcessStack(event);
+        if (messageProcessStack != null)
+        {
+            messageProcessStack.print(0);
         }
     }
 

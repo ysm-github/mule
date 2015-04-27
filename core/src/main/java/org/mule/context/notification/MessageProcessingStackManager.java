@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.mule.context.notification;
 
 import org.mule.api.MuleContext;
@@ -26,9 +32,15 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
 
     public MessageProcessingStackManager()
     {
+        System.out.println("Creating MessageProcessingStackManager");
         messageProcessorTextDebugger = new MessageProcessorTextDebugger(this);
         pipelineProcessorDebugger = new FlowNotificationTextDebugger(this);
 
+    }
+
+    public MessageProcessStack getMessageProcessStack(MuleEvent muleEvent)
+    {
+        return messageProcessStackMap.get(muleEvent.getMessage().getUniqueId());
     }
 
     public void onMessageProcessorNotification(MessageProcessorNotification notification)
@@ -37,68 +49,85 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
         {
             return;
         }
+        System.out.println("MessageProcessingStackManager -- Notification post invoke");
         MuleEvent muleEvent = notification.getSource();
         String uniqueId = muleEvent.getMessage().getUniqueId();
 
         String processorPath = notification.getProcessorPath();
+        System.out.println("MessageProcessingStackManager -- processor path: " + processorPath);
         String[] parts = processorPath.split("/");
         FlowXmlDescriptor flowXmlDescriptor = muleContext.getRegistry().get(parts[1] + "Descriptor");
         MessageProcessorDescriptor messageProcessorDescriptor = flowXmlDescriptor.getMessageProcessorDescriptor();
 
         MessageProcessStack messageProcessStack = messageProcessStackMap.get(uniqueId);
-        ProcessorDebugLine lastProcessorDebugLine = messageProcessStack.getLastEventDebugLine();
 
-        for (int i = 3; i < parts.length; i++)
+        System.out.println("MessageProcessingStackManager -- found previous processor path: " + messageProcessStack);
+
+
+        try
         {
-            String indexPart = parts[i];
-            try
+            ProcessorDebugLine lastProcessorDebugLine = messageProcessStack.getLastEventDebugLine();
+
+            for (int i = 3; i < parts.length; i++)
             {
-                Integer childIndex = Integer.valueOf(indexPart);
-                int maxDepthSeenIndex = i - 3;
-                Integer value = maxDepthSeen.get(maxDepthSeenIndex);
-                MessageProcessStack newMessageProcessorStack = null;
-                if (value != null)
+                String indexPart = parts[i];
+                try
                 {
-                    if (value >= childIndex)
+                    Integer partIndex = Integer.valueOf(indexPart);
+                    int maxDepthSeenIndex = i - 3;
+                    Integer value = maxDepthSeen.get(maxDepthSeenIndex);
+                    MessageProcessStack newMessageProcessorStack = null;
+                    if (value != null)
                     {
-                        messageProcessorDescriptor = messageProcessorDescriptor.getChild(childIndex);
-                        messageProcessStack = messageProcessStack.getChildMessageProcessorStack(childIndex);
-                        continue;
+                        if (value >= partIndex)
+                        {
+                            messageProcessorDescriptor = messageProcessorDescriptor.getChild(partIndex);
+                            messageProcessStack = messageProcessStack.getChildMessageProcessorStack(partIndex);
+                            continue;
+                        }
+                        else
+                        {
+                            newMessageProcessorStack = new MessageProcessStack();
+                            messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
+                            maxDepthSeen.put(maxDepthSeenIndex, partIndex);
+                        }
                     }
                     else
                     {
                         newMessageProcessorStack = new MessageProcessStack();
                         messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
-                        maxDepthSeen.put(maxDepthSeenIndex, childIndex);
+                        maxDepthSeen.put(maxDepthSeenIndex, partIndex);
                     }
-                }
-                else
-                {
-                    newMessageProcessorStack = new MessageProcessStack();
-                    messageProcessStack.addChildMessageProcessorStack(newMessageProcessorStack);
-                    maxDepthSeen.put(maxDepthSeenIndex, childIndex);
-                }
 
-                final ProcessorDebugLine processorDebugLine = new ProcessorDebugLine();
-                processorDebugLine.setEvent(muleEvent);
-                newMessageProcessorStack.setProcessorDebugLine(processorDebugLine);
-                processorDebugLine.setPreviousProcessorDebugLine(lastProcessorDebugLine);
-                messageProcessorDescriptor = messageProcessorDescriptor.getChild(childIndex);
-                processorDebugLine.setXml(messageProcessorDescriptor.getRepresentation());
-                if (i == parts.length - 1)
-                {
-                    processorDebugLine.xmlContentIsMessageProcessor();
+                    final ProcessorDebugLine processorDebugLine = new ProcessorDebugLine();
+                    processorDebugLine.setEvent(muleEvent);
+                    newMessageProcessorStack.setProcessorDebugLine(processorDebugLine);
+                    processorDebugLine.setPreviousProcessorDebugLine(lastProcessorDebugLine);
+                    messageProcessorDescriptor = messageProcessorDescriptor.getChild(partIndex);
+                    processorDebugLine.setXml(messageProcessorDescriptor.getRepresentation());
+                    if (i == parts.length - 1)
+                    {
+                        processorDebugLine.xmlContentIsMessageProcessor();
+                    }
+                    messageProcessStack = newMessageProcessorStack;
                 }
-                messageProcessStack = newMessageProcessorStack;
-            }
-            catch (NumberFormatException e)
-            {
-                String anotherFlowName = indexPart;
-                flowXmlDescriptor = muleContext.getRegistry().get(anotherFlowName + "Descriptor");
-                i++; //skip 'processors' entry
-                messageProcessorDescriptor = flowXmlDescriptor.getMessageProcessorDescriptor();
+                catch (NumberFormatException e)
+                {
+                    String anotherFlowName = indexPart;
+                    flowXmlDescriptor = muleContext.getRegistry().get(anotherFlowName + "Descriptor");
+                    i++; //skip 'processors' entry
+                    messageProcessorDescriptor = flowXmlDescriptor.getMessageProcessorDescriptor();
+                }
             }
         }
+        catch (Exception e)
+        {
+            System.out.println("MessageProcessingStackManager -- excepiton process processorPath - " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("MessageProcessingStackManager -- successfully process processorPath");
     }
 
 
@@ -122,7 +151,10 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
         MessageProcessStack messageProcessStack = messageProcessStackMap.get(muleEvent.getMessage().getUniqueId());
         messageProcessStack.print(0);
         messageProcessStack.finishProcessing();
-        messageProcessStackMap.remove(muleEvent.getMessage().getUniqueId());
+        //TODO - read but catch is not working
+        //messageProcessStackMap.remove(muleEvent.getMessage().getUniqueId());
+        System.out.println("MessageProcessingStackManager -- Pipeline complete - sending stack");
+        System.out.println("MessageProcessingStackManager -- onPipelineNotificationComplete - children size: " + messageProcessStack.getChildrenMessageProcessorStack().size());
         muleContext.fireNotification(new MessageProcessingStackNotification(messageProcessStack));
     }
 
@@ -135,6 +167,7 @@ public class MessageProcessingStackManager implements MuleContextAware, Initiali
         processorDebugLine.setXml("\n<flow name=\"" + flowName + "\" />");
 
         MessageProcessStack messageProcessStack = new MessageProcessStack();
+        messageProcessStack.setFlow(flowName);
         messageProcessStack.setProcessorDebugLine(processorDebugLine);
         messageProcessStackMap.put(muleEvent.getMessage().getUniqueId(), messageProcessStack);
     }

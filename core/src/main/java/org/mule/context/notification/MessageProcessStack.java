@@ -22,6 +22,7 @@ public class MessageProcessStack implements Serializable
     private ProcessorDebugLine elementDebugLine;
     private List<MessageProcessStack> childrenMessageProcessorStack = new ArrayList<>();
     private Calendar finishProcessingTime;
+    private String flow;
 
     public void print(int ident)
     {
@@ -70,6 +71,11 @@ public class MessageProcessStack implements Serializable
         return childrenMessageProcessorStack.get(childIndex);
     }
 
+    public List<MessageProcessStack> getChildrenMessageProcessorStack()
+    {
+        return childrenMessageProcessorStack;
+    }
+
     public void finishProcessing()
     {
         this.finishProcessingTime = Calendar.getInstance();
@@ -83,5 +89,20 @@ public class MessageProcessStack implements Serializable
     public Calendar getFinishProcessingTime()
     {
         return finishProcessingTime;
+    }
+
+    public ProcessorDebugLine getElementDebugLine()
+    {
+        return elementDebugLine;
+    }
+
+    public String getFlow()
+    {
+        return flow;
+    }
+
+    public void setFlow(String flow)
+    {
+        this.flow = flow;
     }
 }
