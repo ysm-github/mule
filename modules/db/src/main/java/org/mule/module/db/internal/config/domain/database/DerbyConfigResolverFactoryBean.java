@@ -7,16 +7,16 @@
 
 package org.mule.module.db.internal.config.domain.database;
 
-public class MySqlConfigFactoryBean extends AbstractVendorConfigFactoryBean
+import org.mule.module.db.internal.domain.database.GenericDbConfigFactory;
+
+public class DerbyConfigResolverFactoryBean extends DbConfigResolverFactoryBean
 {
 
-    private static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-    private static final String MYSQL_URL_PREFIX = "jdbc:mysql://";
+    private static final String DRIVER_CLASS_NAME = "org.apache.derby.jdbc.EmbeddedDriver";
 
-    public MySqlConfigFactoryBean()
+    public DerbyConfigResolverFactoryBean()
     {
-        super(MYSQL_URL_PREFIX);
-
+        super(new GenericDbConfigFactory());
         setDriverClassName(DRIVER_CLASS_NAME);
     }
 }
