@@ -56,6 +56,16 @@ public abstract class AbstractVendorConfigResolverFactoryBean extends DbConfigRe
         return urlPrefix;
     }
 
+    public String getDatabase()
+    {
+        return database;
+    }
+
+    public void setDatabase(String database)
+    {
+        this.database = database;
+    }
+
     @Override
     protected String getEffectiveUrl()
     {
@@ -136,15 +146,5 @@ public abstract class AbstractVendorConfigResolverFactoryBean extends DbConfigRe
         {
             throw new IllegalArgumentException("Unable to parse database config URL", e);
         }
-    }
-
-    public String getDatabase()
-    {
-        return database;
-    }
-
-    public void setDatabase(String database)
-    {
-        this.database = database;
     }
 }

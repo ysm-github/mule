@@ -113,7 +113,7 @@ public class DataSourceConfig implements MuleContextAware
 
     private boolean isDynamicAttribute(String attribute)
     {
-        return !StringUtils.isEmpty(attribute) && muleContext.getExpressionManager().isExpression(attribute);
+        return !StringUtils.isEmpty(attribute) && muleContext.getExpressionManager().isValidExpression(attribute);
     }
 
     public DataSourceConfig resolve(MuleEvent muleEvent)
@@ -139,7 +139,7 @@ public class DataSourceConfig implements MuleContextAware
 
     private String resolveAttribute(String value, MuleEvent muleEvent)
     {
-        return isDynamicAttribute(value) ? (String) muleContext.getExpressionManager().evaluate(value, muleEvent) : value;
+        return isDynamicAttribute(value) ? muleContext.getExpressionManager().parse(value, muleEvent) : value;
     }
 
     @Override

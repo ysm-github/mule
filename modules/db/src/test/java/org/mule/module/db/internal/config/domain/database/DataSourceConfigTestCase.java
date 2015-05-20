@@ -153,7 +153,7 @@ public class DataSourceConfigTestCase extends AbstractMuleTestCase
         MuleContext context = mock(MuleContext.class);
         ExpressionManager expressionManager = mock(ExpressionManager.class);
         when(context.getExpressionManager()).thenReturn(expressionManager);
-        when(expressionManager.isExpression(MULE_EXPRESSION)).thenReturn(true);
+        when(expressionManager.isValidExpression(MULE_EXPRESSION)).thenReturn(true);
         dataSourceConfig.setMuleContext(context);
     }
 
@@ -162,8 +162,8 @@ public class DataSourceConfigTestCase extends AbstractMuleTestCase
         ExpressionManager expressionManager = mock(ExpressionManager.class);
         MuleContext context = mock(MuleContext.class);
         when(context.getExpressionManager()).thenReturn(expressionManager);
-        when(expressionManager.isExpression(MULE_EXPRESSION)).thenReturn(true);
-        when(expressionManager.evaluate(MULE_EXPRESSION, muleEvent)).thenReturn(RESOLVED_EXPRESSION);
+        when(expressionManager.isValidExpression(MULE_EXPRESSION)).thenReturn(true);
+        when(expressionManager.parse(MULE_EXPRESSION, muleEvent)).thenReturn(RESOLVED_EXPRESSION);
         dataSourceConfig.setMuleContext(context);
         dataSourceConfig.setUrl(MULE_EXPRESSION);
     }
