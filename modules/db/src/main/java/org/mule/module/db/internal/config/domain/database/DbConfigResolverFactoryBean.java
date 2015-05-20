@@ -14,6 +14,7 @@ import org.mule.api.retry.RetryPolicyTemplate;
 import org.mule.module.db.internal.domain.connection.DbPoolingProfile;
 import org.mule.module.db.internal.domain.database.ConfigurableDbConfigFactory;
 import org.mule.module.db.internal.domain.database.DbConfig;
+import org.mule.module.db.internal.domain.database.GenericDbConfigFactory;
 import org.mule.module.db.internal.domain.type.DbType;
 import org.mule.module.db.internal.resolver.database.DbConfigResolver;
 import org.mule.module.db.internal.resolver.database.DynamicDbConfigResolver;
@@ -37,6 +38,13 @@ public class DbConfigResolverFactoryBean extends AbstractFactoryBean<DbConfigRes
     private DataSourceFactory dataSourceFactory;
     private final DataSourceConfig dataSourceConfig = new DataSourceConfig();
     private final ConfigurableDbConfigFactory dbConfigFactory;
+
+    @SuppressWarnings("unused")
+    public DbConfigResolverFactoryBean()
+    {
+        // Default constructor needed by Spring
+        this(new GenericDbConfigFactory());
+    }
 
     public DbConfigResolverFactoryBean(ConfigurableDbConfigFactory dbConfigFactory)
     {

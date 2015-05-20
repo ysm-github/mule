@@ -18,9 +18,9 @@ import java.util.List;
 public class TestDbConfig
 {
 
-    private static final boolean USE_DERBY = true;
-    private static final boolean USE_MYSQL = true;
-    private static final boolean USE_ORACLE = false;
+    private static boolean USE_DERBY = true;
+    private static boolean USE_MYSQL = true;
+    private static boolean USE_ORACLE = true;
 
 
     public static List<Object[]> getResources()

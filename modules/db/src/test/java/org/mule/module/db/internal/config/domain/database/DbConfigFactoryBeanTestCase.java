@@ -26,7 +26,7 @@ public class DbConfigFactoryBeanTestCase extends AbstractMuleTestCase
     {
         final DataSourceFactory dataSourceFactory = mock(DataSourceFactory.class);
 
-        DbConfigResolverFactoryBean dbConfigFactoryBean = new DbConfigResolverFactoryBean(null)
+        DbConfigResolverFactoryBean dbConfigFactoryBean = new DbConfigResolverFactoryBean()
         {
             @Override
             protected DataSourceFactory createDataSourceFactory()

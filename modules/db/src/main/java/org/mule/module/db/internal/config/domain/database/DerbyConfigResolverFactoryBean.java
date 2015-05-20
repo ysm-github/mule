@@ -7,8 +7,6 @@
 
 package org.mule.module.db.internal.config.domain.database;
 
-import org.mule.module.db.internal.domain.database.GenericDbConfigFactory;
-
 public class DerbyConfigResolverFactoryBean extends DbConfigResolverFactoryBean
 {
 
@@ -16,7 +14,6 @@ public class DerbyConfigResolverFactoryBean extends DbConfigResolverFactoryBean
 
     public DerbyConfigResolverFactoryBean()
     {
-        super(new GenericDbConfigFactory());
         setDriverClassName(DRIVER_CLASS_NAME);
     }
 }
