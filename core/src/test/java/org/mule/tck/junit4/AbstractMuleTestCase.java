@@ -54,6 +54,10 @@ public abstract class AbstractMuleTestCase
 
     public static final String TEST_TIMEOUT_SYSTEM_PROPERTY = "mule.test.timeoutSecs";
 
+    public static final int DEFAULT_POLLING_PROBER_TEST_TIMEOUT = DEFAULT_TEST_TIMEOUT_SECS * 1000;
+
+    public static final String TEST_POLLING_PROBER_TIMEOUT_SYSTEM_PROPERTY = "mule.test.polling.prober.timeout";
+
     /**
      * Indicates whether the text boxes will be logged when starting each test case.
      */
@@ -198,6 +202,39 @@ public abstract class AbstractMuleTestCase
         }
 
         int result = DEFAULT_TEST_TIMEOUT_SECS;
+        if (timeoutString != null)
+        {
+            try
+            {
+                result = Integer.parseInt(timeoutString);
+            }
+            catch (NumberFormatException e)
+            {
+                // Uses the default value
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Defines the number of milliseconds that a test has in order to run before
+     * throwing a timeout. If the property if not defined then uses the
+     * <code>DEFAULT_POLLING_PROBER_TEST_TIMEOUT</code> constant.
+     *
+     * @return the timeout value expressed in seconds
+     */
+    protected int getPollingProberTimeoutSystemProperty()
+    {
+        String timeoutString = System.getProperty(TEST_POLLING_PROBER_TIMEOUT_SYSTEM_PROPERTY, null);
+        if (timeoutString == null)
+        {
+            // unix style: MULE_TEST_TIMEOUTSECS
+            String variableName = TEST_POLLING_PROBER_TIMEOUT_SYSTEM_PROPERTY.toUpperCase().replace(".", "_");
+            timeoutString = System.getenv(variableName);
+        }
+
+        int result = DEFAULT_POLLING_PROBER_TEST_TIMEOUT;
         if (timeoutString != null)
         {
             try
