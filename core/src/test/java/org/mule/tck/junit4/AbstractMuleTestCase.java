@@ -218,11 +218,11 @@ public abstract class AbstractMuleTestCase
     }
 
     /**
-     * Defines the number of milliseconds that a test has in order to run before
+     * Defines the number of milliseconds that a polling prober has to run before
      * throwing a timeout. If the property if not defined then uses the
      * <code>DEFAULT_POLLING_PROBER_TEST_TIMEOUT</code> constant.
      *
-     * @return the timeout value expressed in seconds
+     * @return the timeout value expressed in milliseconds
      */
     protected int getPollingProberTimeoutSystemProperty()
     {
