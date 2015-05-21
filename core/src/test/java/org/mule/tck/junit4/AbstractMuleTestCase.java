@@ -98,6 +98,7 @@ public abstract class AbstractMuleTestCase
     private boolean offline = "true".equalsIgnoreCase(System.getProperty("org.mule.offline"));
 
     private int testTimeoutSecs = getTimeoutSystemProperty();
+    private static int testPollingProberTimeout = getPollingProberTimeoutSystemProperty();
 
     @Rule
     public TestName name = new TestName();
@@ -224,7 +225,7 @@ public abstract class AbstractMuleTestCase
      *
      * @return the timeout value expressed in milliseconds
      */
-    protected int getPollingProberTimeoutSystemProperty()
+    protected static int getPollingProberTimeoutSystemProperty()
     {
         String timeoutString = System.getProperty(TEST_POLLING_PROBER_TIMEOUT_SYSTEM_PROPERTY, null);
         if (timeoutString == null)
@@ -301,6 +302,16 @@ public abstract class AbstractMuleTestCase
     public int getTestTimeoutSecs()
     {
         return testTimeoutSecs;
+    }
+
+    /**
+     * Defines the timeout in milliseconds that will be used in a prober polling in the tests.
+     *
+     * @return the timeout in seconds
+     */
+    public static int getTestPollingProberTimeout()
+    {
+        return testPollingProberTimeout;
     }
 
     @Before
