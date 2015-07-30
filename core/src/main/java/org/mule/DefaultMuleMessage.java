@@ -1630,16 +1630,16 @@ public class DefaultMuleMessage implements MuleMessage, ThreadSafeAccess, Deseri
         }
         else
         {
-            final DataType<?> mergedDataType = mergeDataType(dataType, transformer.getReturnDataType());
+            final DataType<?> mergedDataType = mergeDataType(dataType, transformer.getReturnDataType(), result);
             setPayload(result, mergedDataType);
         }
     }
 
-    private DataType<?> mergeDataType(DataType<?> original, DataType<?> transformed)
+    private DataType<?> mergeDataType(DataType<?> original, DataType<?> transformed, Object result)
     {
         String mimeType = transformed.getMimeType() == null || MimeTypes.ANY.equals(transformed.getMimeType()) ? original.getMimeType() : transformed.getMimeType();
         String encoding = transformed.getEncoding() == null ? this.getEncoding() : transformed.getEncoding();
-        Class<?> type = transformed.getType() == Object.class ? original.getType() : transformed.getType();
+        Class<?> type = result == null ? Object.class : result.getClass();
 
         DataType mergedDataType = DataTypeFactory.create(type, mimeType);
         mergedDataType.setEncoding(encoding);
