@@ -48,7 +48,7 @@ public class ProxyWithValidationTestCase extends FunctionalTestCase
     public static Collection<Object[]> parameters()
     {
         return Arrays.asList(new Object[][] {
-                {"proxy-with-validation-config.xml"},
+                //{"proxy-with-validation-config.xml"},
                 {"proxy-with-validation-config-httpn.xml"}
         });
     }

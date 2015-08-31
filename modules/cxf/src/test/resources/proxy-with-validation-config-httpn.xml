@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule
+        xmlns:spring="http://www.springframework.org/schema/beans"
         xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf"
         xmlns="http://www.mulesoft.org/schema/mule/core"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd">
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <http:listener-config name="listenerConfig" host="localhost" port="${port1}"/>
+
+
+    <!-- All the beans which include pojos and Components are declared in a
+        seperate beans config file. that beans config file is imported here. -->
+    <spring:beans>
+        <spring:bean id="xmlInputFactoryBean"
+                     class="com.sun.xml.internal.stream.XMLInputFactoryImpl"></spring:bean>
+    </spring:beans>
+
+    <!-- Mule transformer to throw convert XML to XMLStreamReader. The Transformer
+        is removed as a global transformer as this is causing issue in HTTP when
+        the response is about to be removed. In Mule 3.7 -->
+    <custom-transformer name="MuleXMLToXMLStreamReaderTransformer"
+                        class="org.mule.module.xml.transformer.XmlToXMLStreamReader">
+        <spring:property name="xMLInputFactory" ref="xmlInputFactoryBean" />
+    </custom-transformer>
 
     <flow name="testFlow">
         <http:listener path="*" config-ref="listenerConfig" allowedMethods="POST" />
@@ -18,5 +36,14 @@ http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/
                            validationEnabled="true" payload="envelope"/>
 
         <echo-component/>
+    </flow>
+
+    <!-- The following flow is added to load the Mule XML to XMLStreamReader transformer to replicate the issue.
+Could not find a transformer to transform "SimpleDataType{type=java.lang.String, mimeType='*/*', encoding='null'}" to "SimpleDataType{type=javax.xml.stream.XMLStreamReader, mimeType='*/*', encoding='null'}".
+-->
+    <flow name="extra_flow">
+        <logger level="INFO" />
+        <transformer ref="MuleXMLToXMLStreamReaderTransformer" />
+        <logger level="INFO" />
     </flow>
 </mule>
