@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<features name="mule-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+
+    <feature name="mule-logging" version="${project.version}">
+        <bundle>mvn:com.lmax/disruptor/3.3.0/jar</bundle>
+        <bundle>mvn:org.slf4j/slf4j-api/1.7.7/jar</bundle>
+        <bundle>mvn:org.slf4j/jcl-over-slf4j/1.7.7/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-api/2.1/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-core/2.1/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-1.2-api/2.1/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-slf4j-impl/2.1/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-jcl/2.1/jar</bundle>
+        <bundle>mvn:org.apache.logging.log4j/log4j-jul/2.1/jar</bundle>
+        <bundle>mvn:commons-logging/commons-logging/1.2/jar</bundle>
+    </feature>
+
+    <feature name="mule-common" version="${project.version}">
+        <bundle>wrap:mvn:org.mule.common/mule-common/4.0-SNAPSHOT/jar</bundle>
+        <bundle>wrap:mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlbeans/2.4.0_5/jar</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.4.3/jar</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.4.3/jar</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.4.3/jar</bundle>
+        <bundle>wrap:mvn:org.antlr/antlr-runtime/3.5/jar</bundle>
+        <bundle>wrap:mvn:org.antlr/stringtemplate/3.2.1/jar</bundle>
+        <bundle>wrap:mvn:commons-io/commons-io/2.4/jar</bundle>
+        <bundle>wrap:mvn:org.json/json/20140107/jar</bundle>
+    </feature>
+
+    <feature name="mule-core" version="${project.version}">
+        <feature>mule-logging</feature>
+        <feature>mule-common</feature>
+        <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/jar</bundle>
+        <bundle>mvn:org.apache.geronimo.specs/geronimo-j2ee-connector_1.5_spec/2.0.0/jar</bundle>
+        <bundle>mvn:com.github.stephenc.eaio-uuid/uuid/3.4.0-osgi/jar</bundle>
+        <bundle>mvn:com.google.guava/guava/18.0/jar</bundle>
+        <bundle>wrap:mvn:commons-beanutils/commons-beanutils/1.8.0/jar</bundle>
+        <bundle>wrap:mvn:commons-collections/commons-collections/3.2.1/jar</bundle>
+        <bundle>wrap:mvn:commons-cli/commons-cli/1.2/jar</bundle>
+        <bundle>wrap:mvn:commons-lang/commons-lang/2.4/jar</bundle>
+        <bundle>wrap:mvn:commons-pool/commons-pool/1.6/jar</bundle>
+        <bundle>wrap:mvn:org.jgrapht/jgrapht-jdk1.5/0.7.3/jar</bundle>
+        <bundle>mvn:org.mule/mule-core/4.0-SNAPSHOT/jar</bundle>
+    </feature>
+
+    <feature name="mule-spring-config" version="${project.version}">
+        <feature>mule-logging</feature>
+        <feature>mule-core</feature>
+        <bundle>mvn:org.mule.modules/mule-module-spring-config/4.0-SNAPSHOT/jar</bundle>
+        <bundle>wrap:mvn:dom4j/dom4j/1.6.1/jar</bundle>
+        <bundle>mvn:org.eclipse.gemini.blueprint/gemini-blueprint-io/1.0.2.RELEASE/jar</bundle>
+        <bundle>mvn:org.eclipse.gemini.blueprint/gemini-blueprint-core/1.0.2.RELEASE/jar</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/2.2_2/jar</bundle>
+        <bundle>mvn:org.mule.modules/mule-module-annotations/4.0-SNAPSHOT/jar</bundle>
+    </feature>
+</features>
