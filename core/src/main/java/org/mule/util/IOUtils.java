@@ -131,6 +131,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils
                                        final Class callingClass,
                                        boolean tryAsFile, boolean tryAsUrl)
     {
+        //TODO(pablo.kraan):  OSGI - remove this method
         if (resourceName == null)
         {
             throw new IllegalArgumentException(
@@ -169,7 +170,77 @@ public class IOUtils extends org.apache.commons.io.IOUtils
                 {
                     public Object run()
                     {
-                        return ClassUtils.getResource(resourceName, callingClass);
+                        return ClassUtils.getResource(resourceName, callingClass.getClassLoader());
+                    }
+                });
+                if (url == null)
+                {
+                    logger.debug("Unable to load resource " + resourceName + " from the classpath");
+                }
+            }
+            catch (Exception e)
+            {
+                logger.debug("Unable to load resource " + resourceName + " from the classpath: " + e.getMessage());
+            }
+        }
+
+        if(url==null)
+        {
+            try
+            {
+                url = new URL(resourceName);
+            }
+            catch (MalformedURLException e)
+            {
+                //ignore
+            }
+        }
+        return url;
+    }
+
+    public static URL getResourceAsUrl(final String resourceName,
+                                       final ClassLoader classLoader,
+                                       boolean tryAsFile, boolean tryAsUrl)
+    {
+        if (resourceName == null)
+        {
+            throw new IllegalArgumentException(
+                    CoreMessages.objectIsNull("Resource name").getMessage());
+        }
+        URL url = null;
+
+        // Try to load the resource from the file system.
+        if (tryAsFile)
+        {
+            try
+            {
+                File file = FileUtils.newFile(resourceName);
+                if (file.exists())
+                {
+                    url = file.getAbsoluteFile().toURL();
+                }
+                else
+                {
+                    logger.debug("Unable to load resource from the file system: "
+                                 + file.getAbsolutePath());
+                }
+            }
+            catch (Exception e)
+            {
+                logger.debug("Unable to load resource from the file system: " + e.getMessage());
+            }
+        }
+
+        // Try to load the resource from the classpath.
+        if (url == null)
+        {
+            try
+            {
+                url = (URL)AccessController.doPrivileged(new PrivilegedAction()
+                {
+                    public Object run()
+                    {
+                        return ClassUtils.getResource(resourceName, classLoader);
                     }
                 });
                 if (url == null)

@@ -7,23 +7,97 @@
         <version>4.0-SNAPSHOT</version>
     </parent>
     <artifactId>mule-module-spring-config</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
     <name>Spring Config</name>
     <description>
         Mule Builder for use with Spring 2.X Namespace based XML configuration.
     </description>
 
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>
+                            <!--//TODO(pablo.kraan): OSGi - filter packages-->
+                            org.mule.config.spring.handlers,
+                            org.mule.config.spring.factories,
+                            org.mule.config.spring.parsers,
+                            org.mule.config.spring.parsers.specific,
+                            org.mule.config.spring.parsers.specific.endpoint,
+                            org.mule.config.spring.parsers.specific.endpoint.support,
+                            org.mule.config.spring.osgi,
+                            org.mule.config.spring.*
+                        </Export-Package>
+                        <!--<Export-Service>-->
+                            <!--org.mule.config.spring.SpringXmlConfigurationBuilderFactory-->
+                        <!--</Export-Service>-->
+                        <!--<Bundle-Activator>org.mule.config.spring.osgi.SpringConfigActivator</Bundle-Activator>-->
+                        <Import-Package>
+                            org.mule.config.factories,
+                            org.mule.config.bootstrap,
+                            org.mule.util.queue,
+                            org.mule.execution,
+                            org.mule.util.lock,
+                            org.mule.management.stats,
+                            org.springframework.*,
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
     <dependencies>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.mule</groupId>
             <artifactId>mule-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-         <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-annotations</artifactId>
-            <version>${project.version}</version>
+
+
+        <dependency>
+            <groupId>org.eclipse.gemini.blueprint</groupId>
+            <artifactId>gemini-blueprint-io</artifactId>
+            <version>2.0.0.BUILD-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.gemini.blueprint</groupId>
+            <artifactId>gemini-blueprint-core</artifactId>
+            <version>2.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.gemini.blueprint</groupId>
+            <artifactId>gemini-blueprint-extender</artifactId>
+            <version>2.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
+
+        <!--//TODO(pablo.kraan): OSGi - review this dependency version-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.aries.blueprint</groupId>-->
+            <!--<artifactId>org.apache.aries.blueprint.core</artifactId>-->
+            <!--<version>1.0.0</version>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
+         <!--<dependency>-->
+            <!--<groupId>org.mule.modules</groupId>-->
+            <!--<artifactId>mule-module-annotations</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

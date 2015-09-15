@@ -22,6 +22,7 @@ import org.mule.tck.junit4.FunctionalTestCase;
 import java.util.List;
 
 import org.junit.Test;
+import org.osgi.framework.BundleContext;
 
 public class ManuallyRegisteredObjectLifecycleTestCase extends FunctionalTestCase
 {
@@ -43,7 +44,7 @@ public class ManuallyRegisteredObjectLifecycleTestCase extends FunctionalTestCas
         builders.add(new AbstractConfigurationBuilder()
         {
             @Override
-            protected void doConfigure(MuleContext muleContext) throws Exception
+            protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
             {
                 muleContext.getRegistry().registerObject("TestInitialisableObject", new TestInitialisableObject());
                 muleContext.getRegistry().registerObject("TestStartableObject", new TestStartableObject());

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -47,15 +48,16 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     protected ApplicationContext domainContext;
     protected ApplicationContext parentContext;
     protected ApplicationContext applicationContext;
+    private final ClassLoader classLoader = this.getClass().getClassLoader();
 
     public SpringXmlConfigurationBuilder(String[] configResources) throws ConfigurationException
     {
         super(configResources);
     }
 
-    public SpringXmlConfigurationBuilder(String configResources) throws ConfigurationException
+    public SpringXmlConfigurationBuilder(String configResources, BundleContext bundleContext) throws ConfigurationException
     {
-        super(configResources);
+        super(configResources, bundleContext);
     }
 
     public SpringXmlConfigurationBuilder(ConfigResource[] configResources)
@@ -64,34 +66,35 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
+        ClassLoader springModuleClassLoader = this.getClass().getClassLoader();
         List<ConfigResource> allResources = new ArrayList<>();
         if (useMinimalConfigResource)
         {
-            allResources.add(new ConfigResource(MULE_DOMAIN_REGISTRY_BOOTSTRAP_SPRING_CONFIG));
-            allResources.add(new ConfigResource(MULE_MINIMAL_SPRING_CONFIG));
-            allResources.add(new ConfigResource(MULE_SPRING_CONFIG));
+            allResources.add(new ConfigResource(MULE_DOMAIN_REGISTRY_BOOTSTRAP_SPRING_CONFIG, springModuleClassLoader));
+            allResources.add(new ConfigResource(MULE_MINIMAL_SPRING_CONFIG, springModuleClassLoader));
+            allResources.add(new ConfigResource(MULE_SPRING_CONFIG, springModuleClassLoader));
             allResources.addAll(Arrays.asList(configResources));
         }
         else if (useDefaultConfigResource)
         {
-            allResources.add(new ConfigResource(MULE_REGISTRY_BOOTSTRAP_SPRING_CONFIG));
-            allResources.add(new ConfigResource(MULE_MINIMAL_SPRING_CONFIG));
-            allResources.add(new ConfigResource(MULE_SPRING_CONFIG));
-            allResources.add( new ConfigResource(MULE_DEFAULTS_CONFIG));
+            allResources.add(new ConfigResource(MULE_REGISTRY_BOOTSTRAP_SPRING_CONFIG, springModuleClassLoader));
+            allResources.add(new ConfigResource(MULE_MINIMAL_SPRING_CONFIG, springModuleClassLoader));
+            allResources.add(new ConfigResource(MULE_SPRING_CONFIG, springModuleClassLoader));
+            allResources.add( new ConfigResource(MULE_DEFAULTS_CONFIG, springModuleClassLoader));
             allResources.addAll(Arrays.asList(configResources));
         }
         else
         {
-            allResources.add(new ConfigResource(MULE_SPRING_CONFIG));
+            allResources.add(new ConfigResource(MULE_SPRING_CONFIG, springModuleClassLoader));
             allResources.addAll(Arrays.asList(configResources));
         }
 
         addResources(allResources);
 
         ConfigResource[] configResourcesArray = new ConfigResource[allResources.size()];
-        applicationContext = createApplicationContext(muleContext, allResources.toArray(configResourcesArray));
+        applicationContext = createApplicationContext(muleContext, allResources.toArray(configResourcesArray), bundleContext);
         createSpringRegistry(muleContext, applicationContext);
     }
 
@@ -118,7 +121,7 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     }
 
     private ApplicationContext createApplicationContext(MuleContext muleContext,
-                                                        ConfigResource[] configResources) throws Exception
+                                                        ConfigResource[] configResources, BundleContext bundleContext) throws Exception
     {
         OptionalObjectsController applicationObjectcontroller = new DefaultOptionalObjectsController();
         OptionalObjectsController parentObjectController = null;
@@ -134,12 +137,12 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
             applicationObjectcontroller = new CompositeOptionalObjectsController(applicationObjectcontroller, parentObjectController);
         }
 
-        return doCreateApplicationContext(muleContext, configResources, applicationObjectcontroller);
+        return doCreateApplicationContext(muleContext, configResources, applicationObjectcontroller, bundleContext);
     }
 
-    protected ApplicationContext doCreateApplicationContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController)
+    protected ApplicationContext doCreateApplicationContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController, BundleContext bundleContext)
     {
-        return new MuleArtifactContext(muleContext, configResources, optionalObjectsController);
+        return new MuleArtifactContext(muleContext, configResources, optionalObjectsController, bundleContext);
     }
 
 

@@ -136,7 +136,7 @@ public class ExceptionStrategyConfigurationFailuresTestCase extends AbstractMule
     {
         MuleContextFactory muleContextFactory = new DefaultMuleContextFactory();
         List<ConfigurationBuilder> builders = new ArrayList<ConfigurationBuilder>();
-        builders.add(new SpringXmlConfigurationBuilder(configuration));
+        builders.add(new SpringXmlConfigurationBuilder(configuration, null));
         MuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
         MuleContext muleContext = muleContextFactory.createMuleContext(builders, contextBuilder);
         final AtomicReference<Latch> contextStartedLatch = new AtomicReference<Latch>();

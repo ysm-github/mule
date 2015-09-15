@@ -26,12 +26,12 @@ final class MuleDomainContext extends MuleArtifactContext
 
     MuleDomainContext(MuleContext muleContext, ConfigResource[] configResources) throws BeansException
     {
-        super(muleContext, configResources);
+        super(muleContext, configResources, null);
     }
 
     MuleDomainContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController) throws BeansException
     {
-        super(muleContext, configResources, optionalObjectsController);
+        super(muleContext, configResources, optionalObjectsController, null);
     }
 
     @Override

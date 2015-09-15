@@ -9,9 +9,9 @@ package org.mule.module.launcher;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.tck.size.SmallTest;
+import org.mule.util.ClassUtils;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import org.mule.util.ClassUtils;
 
 @SmallTest
 public class FineGrainedControlClassLoaderTestCase extends AbstractMuleTestCase
@@ -168,12 +167,12 @@ public class FineGrainedControlClassLoaderTestCase extends AbstractMuleTestCase
 
     private URL hello()
     {
-        return ClassUtils.getResource("classloader-test-hello.jar", this.getClass());
+        return ClassUtils.getResource("classloader-test-hello.jar", this.getClass().getClassLoader());
     }
 
     private URL bye()
     {
-        return ClassUtils.getResource("classloader-test-bye.jar", this.getClass());
+        return ClassUtils.getResource("classloader-test-bye.jar", this.getClass().getClassLoader());
     }
 
     private String callHi(ClassLoader loader) throws Exception

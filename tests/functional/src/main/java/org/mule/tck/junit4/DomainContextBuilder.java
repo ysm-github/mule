@@ -43,7 +43,7 @@ public class DomainContextBuilder
 
     protected ConfigurationBuilder getDomainBuilder(String configResource) throws Exception
     {
-        return new SpringXmlDomainConfigurationBuilder(configResource);
+        return new SpringXmlDomainConfigurationBuilder(configResource, null);
     }
 
     public void disableMuleContextStart()

@@ -13,8 +13,23 @@
     <name>Mule OSGi</name>
     <description>Infrastructure for OSGi support in Mule</description>
 
+    <properties>
+
+        <!--<karaf.version>4.0.1</karaf.version>-->
+        <karaf.version>3.0.4</karaf.version>
+        <log4j.version>1.2.13</log4j.version>
+        <pax.exam.version>4.6.0</pax.exam.version>
+        <slf4j.version>1.4.3</slf4j.version>
+        <osgi.compendium.version>4.3.1</osgi.compendium.version>
+
+        <osgi.package.exports>!*</osgi.package.exports>
+        <osgi.package.imports>*</osgi.package.imports>
+    </properties>
+
     <modules>
         <module>integration-tests</module>
         <module>features</module>
+        <module>sample-app</module>
+        <module>distribution</module>
     </modules>
 </project>

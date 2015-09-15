@@ -10,14 +10,10 @@ import org.mule.api.MuleContext;
 import org.mule.api.MuleRuntimeException;
 import org.mule.api.config.ThreadingProfile;
 import org.mule.api.context.MuleContextAware;
-import org.mule.config.PreferredObjectSelector;
 import org.mule.config.i18n.MessageFactory;
 
-import java.util.Iterator;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
-
-import javax.imageio.spi.ServiceRegistry;
 
 /**
  * Uses a standard JDK's
@@ -44,10 +40,12 @@ public abstract class ThreadPoolFactory implements MuleContextAware
            Also, Sun, Bea JRockit and IBM JDK all have it readily available for use, so it's safe to
            rely on.
         */
-        final Iterator<ThreadPoolFactory> servicesIterator = ServiceRegistry.lookupProviders(ThreadPoolFactory.class);
-
-        PreferredObjectSelector<ThreadPoolFactory> selector = new PreferredObjectSelector<ThreadPoolFactory>();
-        ThreadPoolFactory threadPoolFactory = selector.select(servicesIterator);
+        //final Iterator<ThreadPoolFactory> servicesIterator = ServiceRegistry.lookupProviders(ThreadPoolFactory.class);
+        //
+        //PreferredObjectSelector<ThreadPoolFactory> selector = new PreferredObjectSelector<ThreadPoolFactory>();
+        //ThreadPoolFactory threadPoolFactory = selector.select(servicesIterator);
+        //TODO(pablo.kraan): OSGi - update this in order to be able to override thread factory in EE
+        ThreadPoolFactory threadPoolFactory = new DefaultThreadPoolFactory();
 
         if (threadPoolFactory == null)
         {

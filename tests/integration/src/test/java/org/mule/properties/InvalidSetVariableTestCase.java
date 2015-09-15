@@ -36,7 +36,7 @@ public class InvalidSetVariableTestCase extends AbstractMuleTestCase
     public void emptyVariableNameValidatedBySchema() throws Exception
     {
         MuleContext context = new DefaultMuleContextFactory().createMuleContext();
-        SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(muleConfigPath);
-        builder.configure(context);
+        SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(muleConfigPath, null);
+        builder.configure(context, null);
     }
 }

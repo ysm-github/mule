@@ -22,9 +22,18 @@ public class MuleContainerTestCase extends AbstractOsgiTestCase
     @Test
     public void startsContainer() throws Exception
     {
+
+        Thread.sleep(5000);
         for (Bundle bundle : bundleContext.getBundles())
         {
             System.out.println("BUNDLE: " + bundle.getBundleId() + " " + bundle.getSymbolicName() + " version: " + bundle.getVersion());
         }
+
+        //final ServiceReference<BlueprintContainer> blueprintContainerServiceReference = bundleContext.getServiceReference(BlueprintContainer.class);
+        //final BlueprintContainer blueprintContainer = bundleContext.getService(blueprintContainerServiceReference);
+        //for (String id : blueprintContainer.getComponentIds())
+        //{
+        //    System.out.println("Bean id: " + id);
+        //}
     }
 }

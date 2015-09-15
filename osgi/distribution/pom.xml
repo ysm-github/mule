@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mule.osgi</groupId>
+        <artifactId>mule-osgi</artifactId>
+        <version>4.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mule-osgi-standalone</artifactId>
+    <packaging>karaf-assembly</packaging>
+    <name>Mule OSGi Standalone Distribution</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <!-- scope is compile so all features (there is only one) are installed into startup.properties and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>framework</artifactId>
+            <version>${karaf.version}</version>
+            <type>kar</type>
+        </dependency>
+        <dependency>
+            <!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg file, and features will installed into the system directory -->
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>standard</artifactId>
+            <version>${karaf.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+            <scope>runtime</scope>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-log4j12</artifactId>-->
+        <!--<version>1.4.3</version>-->
+        <!--<scope>test</scope>-->
+        <!--</dependency>-->
+    </dependencies>
+
+    <build>
+        <!-- if you want to include resources in the distribution -->
+        <resources>
+            <resource>
+                <directory>src/main/resources/etc</directory>
+                <filtering>false</filtering>
+                <targetPath>${basedir}/target/assembly/etc</targetPath>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/filtered-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- if you want to include resources in the distribution -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>process-resources</id>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- karaf-maven-plugin will call both install-kar and instance-create-archive goals -->
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <bootRepositories>
+                        <featureRepository>mvn:org.apache.karaf.features/framework/3.0.4/xml/features
+                        </featureRepository>
+                        <featureRepository>mvn:org.apache.karaf.features/standard/3.0.4/xml/features</featureRepository>
+                        <featureRepository>mvn:org.apache.karaf.features/enterprise/3.0.4/xml/features
+                        </featureRepository>
+                        <featureRepository>mvn:org.ops4j.pax.web/pax-web-features/3.1.4/xml/features</featureRepository>
+                        <featureRepository>mvn:org.apache.karaf.features/spring/3.0.4/xml/features</featureRepository>
+                    </bootRepositories>
+
+                    <!-- no startupFeatures -->
+                    <!--<startupBundles>-->
+                    <!--<startupBundle>mvn:commons-logging/commons-logging/1.2/jar</startupBundle>-->
+                    <!--</startupBundles>-->
+                    <bootFeatures>
+                        <bootFeature>aries-annotation/3.0.4</bootFeature>
+                        <bootFeature>blueprint-web/3.0.4</bootFeature>
+                        <bootFeature>config/3.0.4</bootFeature>
+                        <bootFeature>eventadmin/3.0.4</bootFeature>
+                        <bootFeature>framework-security/3.0.4</bootFeature>
+                        <bootFeature>http-whiteboard/3.0.4</bootFeature>
+                        <bootFeature>http/3.0.4</bootFeature>
+                        <bootFeature>jasypt-encryption/3.0.4</bootFeature>
+                        <bootFeature>jetty/8.1.15.v20140411</bootFeature>
+                        <bootFeature>kar/3.0.4</bootFeature>
+                        <bootFeature>management/3.0.4</bootFeature>
+                        <bootFeature>obr/3.0.4</bootFeature>
+                        <bootFeature>package/3.0.4</bootFeature>
+                        <bootFeature>region/3.0.4</bootFeature>
+                        <bootFeature>scheduler/3.0.4</bootFeature>
+                        <bootFeature>scr/3.0.4</bootFeature>
+                        <bootFeature>service-wrapper/3.0.4</bootFeature>
+                        <bootFeature>ssh/3.0.4</bootFeature>
+                        <bootFeature>standard/3.0.4</bootFeature>
+                        <bootFeature>war/3.0.4</bootFeature>
+                        <bootFeature>webconsole/3.0.4</bootFeature>
+                        <bootFeature>wrapper/3.0.4</bootFeature>
+                    </bootFeatures>
+
+                    <!-- no installedFeatures -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

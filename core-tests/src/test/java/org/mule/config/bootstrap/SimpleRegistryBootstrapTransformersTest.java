@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.junit.Test;
+import org.osgi.framework.BundleContext;
 
 public class SimpleRegistryBootstrapTransformersTest extends AbstractMuleContextTestCase
 {
@@ -66,7 +67,7 @@ public class SimpleRegistryBootstrapTransformersTest extends AbstractMuleContext
     {
 
         @Override
-        protected void doConfigure(MuleContext muleContext) throws Exception
+        protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
         {
             // Do nothing
         }

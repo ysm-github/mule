@@ -12,7 +12,6 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
@@ -36,7 +35,7 @@ public abstract class AbstractOsgiTestCase
     public String karafVersion()
     {
         ConfigurationManager cm = new ConfigurationManager();
-        String karafVersion = cm.getProperty("pax.exam.karaf.version", "3.0.3");
+        String karafVersion = cm.getProperty("pax.exam.karaf.version", "4.0.1");
         return karafVersion;
     }
 
@@ -44,10 +43,15 @@ public abstract class AbstractOsgiTestCase
     public Option[] config() throws URISyntaxException
     {
         MavenArtifactUrlReference karafUrl = maven()
-                .groupId("org.apache.karaf")
-                .artifactId("apache-karaf")
-                .version(karafVersion())
+                .groupId("org.mule.osgi")
+                .artifactId("mule-osgi-standalone")
+                .versionAsInProject()
                 .type("zip");
+        //MavenArtifactUrlReference karafUrl = maven()
+        //        .groupId("org.apache.karaf")
+        //        .artifactId("apache-karaf")
+        //        .version(karafVersion())
+        //        .type("zip");
         MavenUrlReference karafStandardRepo = maven()
                 .groupId("org.apache.karaf.features")
                 .artifactId("standard")
@@ -66,7 +70,7 @@ public abstract class AbstractOsgiTestCase
                         .useDeployFolder(false),
 
                 // This install only the specified default features
-                editConfigurationFilePut("etc/org.apache.karaf.features.cfg", "featuresBoot", "mule-core"),
+                editConfigurationFilePut("etc/org.apache.karaf.features.cfg", "featuresBoot", "mule-core,mule-spring-config"),
                 editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories",", file:${maven.local.repo}@id=mavenlocalrepo@snapshots"),
 
                 //editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg","org.ops4j.pax.url.mvn.defaultRepositories",
@@ -79,13 +83,13 @@ public abstract class AbstractOsgiTestCase
                 //systemProperty("pax.exam.osgi.unresolved.fail").value("true"),
                 logLevel(LogLevelOption.LogLevel.INFO),
                 configureConsole().ignoreLocalConsole(),
-                features(karafStandardRepo, "scr"),
+                //features(karafStandardRepo, "scr"),
                 //features(maven().groupId("org.mule.osgi")
                 //                 .artifactId("mule-osgi-features").type("xml").classifier("features")
-                //                 .versionAsInProject(), "mule"),
+                //                 .versionAsInProject(), "mule-spring-config"),
                 mavenBundle()
-                        .groupId("org.ops4j.pax.exam.samples")
-                        .artifactId("pax-exam-sample8-ds")
+                        .groupId("org.mule.osgi")
+                        .artifactId("mule-osgi-sample-app")
                         .versionAsInProject().start(),
 
                 //vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"),

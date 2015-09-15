@@ -50,6 +50,8 @@ import java.util.Set;
 // @ThreadSafe
 public class ClassUtils extends org.apache.commons.lang.ClassUtils
 {
+    public static final boolean SHOW_CLASSLOADING_EVENTS = isShowClassLoadingEvents();
+
     public static final Object[] NO_ARGS = new Object[]{};
     public static final Class<?>[] NO_ARGS_TYPE = new Class<?>[]{};
 
@@ -117,18 +119,26 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
      * </ul>
      *
      * @param resourceName The name of the resource to load
-     * @param callingClass The Class object of the calling object
+     * @param classLoader The classlaoder to use to load the resource
      *
      * @return A URL pointing to the resource to load or null if the resource is not found
      */
-    public static URL getResource(final String resourceName, final Class<?> callingClass)
+    public static URL getResource(final String resourceName, final ClassLoader classLoader)
     {
         URL url = AccessController.doPrivileged(new PrivilegedAction<URL>()
         {
             public URL run()
             {
                 final ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                return cl != null ? cl.getResource(resourceName) : null;
+                if (cl != null)
+                {
+                    logClassLoadingEvent("OSGi loading resource: " + resourceName + " classloader:" + cl);
+                    return cl.getResource(resourceName);
+                }
+                else
+                {
+                    return null;
+                }
             }
         });
 
@@ -138,7 +148,9 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
             {
                 public URL run()
                 {
-                    return ClassUtils.class.getClassLoader().getResource(resourceName);
+                    ClassLoader classLoader = ClassUtils.class.getClassLoader();
+                    logClassLoadingEvent("OSGi loading resource: " + resourceName + " classloader:" + classLoader);
+                    return classLoader.getResource(resourceName);
                 }
             });
         }
@@ -149,7 +161,9 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
             {
                 public URL run()
                 {
-                    return callingClass.getClassLoader().getResource(resourceName);
+                    //ClassLoader classLoader = callingClass.getClassLoader();
+                    logClassLoadingEvent("OSGi loading resource: " + resourceName + " classloader:" + classLoader);
+                    return classLoader.getResource(resourceName);
                 }
             });
         }
@@ -1061,7 +1075,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
         // object,
         // as this method is usually protected in those classloaders
         Class refClass = URLClassLoader.class;
-        Method methodAddUrl = refClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+        Method methodAddUrl = refClass.getDeclaredMethod("addURL", new Class[] {URL.class});
         methodAddUrl.setAccessible(true);
         for (Iterator it = urls.iterator(); it.hasNext();)
         {
@@ -1161,6 +1175,21 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
         return Primitives.isWrapperType(type);
     }
 
+
+    private static void logClassLoadingEvent(String message)
+    {
+        if (SHOW_CLASSLOADING_EVENTS)
+        {
+            System.out.println(message);
+        }
+    }
+
+    private static boolean isShowClassLoadingEvents()
+    {
+        String value = System.getProperty("mule.core.showClassLoadingEvents", "false");
+
+        return Boolean.valueOf(value);
+    }
     /**
      * Determines if the payload of this message is consumable i.e. it can't be read
      * more than once.

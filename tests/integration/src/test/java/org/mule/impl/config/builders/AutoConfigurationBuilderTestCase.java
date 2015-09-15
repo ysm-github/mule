@@ -36,7 +36,7 @@ public class AutoConfigurationBuilderTestCase extends AbstractMuleContextTestCas
     {
         ConfigurationBuilder configurationBuilder = new AutoConfigurationBuilder(
             "org/mule/test/spring/config1/test-xml-mule2-config.xml");
-        configurationBuilder.configure(muleContext);
+        configurationBuilder.configure(muleContext, null);
 
         // Just a few of the asserts from AbstractConfigBuilderTestCase
         Flow flow = (Flow) muleContext.getRegistry().lookupFlowConstruct("appleComponent");

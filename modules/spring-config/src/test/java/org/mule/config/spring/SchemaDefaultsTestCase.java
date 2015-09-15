@@ -26,7 +26,7 @@ public class SchemaDefaultsTestCase extends AbstractMuleContextTestCase
     {
         super.doSetUp();
         SAXReader reader = new SAXReader();
-        schema = reader.read(ClassUtils.getResource(MULE_CORE_SCHEMA_FILE, this.getClass()).openStream());
+        schema = reader.read(ClassUtils.getResource(MULE_CORE_SCHEMA_FILE, this.getClass().getClassLoader()).openStream());
     }
     
     @Override

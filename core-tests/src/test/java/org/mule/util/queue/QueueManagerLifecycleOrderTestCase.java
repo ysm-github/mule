@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.junit.Test;
+import org.osgi.framework.BundleContext;
 
 @SmallTest
 public class QueueManagerLifecycleOrderTestCase extends AbstractMuleTestCase
@@ -100,7 +101,7 @@ public class QueueManagerLifecycleOrderTestCase extends AbstractMuleTestCase
     private class QueueManagerOnlyConfigurationBuilder extends DefaultsConfigurationBuilder
     {
         @Override
-        protected void doConfigure(MuleContext muleContext) throws Exception
+        protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
         {
             muleContext.getRegistry().registerObject(MuleProperties.OBJECT_QUEUE_MANAGER, rtqm);
             muleContext.getRegistry().registerObject(MuleProperties.OBJECT_SECURITY_MANAGER,

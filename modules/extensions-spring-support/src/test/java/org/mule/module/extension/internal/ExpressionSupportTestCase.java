@@ -45,7 +45,7 @@ public class ExpressionSupportTestCase extends ExtensionsFunctionalTestCase
     private void tryConfigure(String configResource) throws Exception
     {
         MuleContext context = new DefaultMuleContextFactory().createMuleContext();
-        SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(configResource);
-        builder.configure(context);
+        SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(configResource, null);
+        builder.configure(context, null);
     }
 }

@@ -23,11 +23,11 @@ public class MuleApplicationContext extends MuleArtifactContext
 
     public MuleApplicationContext(MuleContext muleContext, ConfigResource[] configResources) throws BeansException
     {
-        super(muleContext, configResources);
+        super(muleContext, configResources, null);
     }
 
     public MuleApplicationContext(MuleContext muleContext, Resource[] springResources) throws BeansException
     {
-        super(muleContext, springResources);
+        super(muleContext, springResources, null);
     }
 }

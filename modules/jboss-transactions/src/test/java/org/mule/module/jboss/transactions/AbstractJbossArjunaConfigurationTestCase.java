@@ -32,7 +32,7 @@ public abstract class AbstractJbossArjunaConfigurationTestCase extends AbstractT
     @Override
     protected ConfigurationBuilder getBuilder() throws Exception
     {
-        return new SpringXmlConfigurationBuilder(getConfigResources());
+        return new SpringXmlConfigurationBuilder(getConfigResources(), null);
     }
 
     @Override

@@ -21,6 +21,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.osgi.framework.BundleContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.context.ApplicationContext;
@@ -57,7 +58,7 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     public WebappMuleXmlConfigurationBuilder(ServletContext servletContext, String configResources)
         throws ConfigurationException
     {
-        super(configResources);
+        super(configResources, null);
         context = servletContext;
     }
 
@@ -69,14 +70,14 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
         if (getParentContext() == null)
         {
             setParentContext(loadParentContext(context));
         }
 
-        super.doConfigure(muleContext);
+        super.doConfigure(muleContext, bundleContext);
     }
 
     protected ConfigResource[] loadConfigResources(String[] configs) throws ConfigurationException
@@ -97,7 +98,7 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     }
 
     @Override
-    protected ApplicationContext doCreateApplicationContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController)
+    protected ApplicationContext doCreateApplicationContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController, BundleContext bundleContext)
     {
         Resource[] servletContextResources = new Resource[configResources.length];
         for (int i = 0; i < configResources.length; i++)
@@ -105,7 +106,7 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
             servletContextResources[i] = new ServletContextOrClassPathResource(context, configResources[i].getResourceName());
         }
 
-        return new MuleArtifactContext(muleContext, servletContextResources);
+        return new MuleArtifactContext(muleContext, servletContextResources, bundleContext);
     }
 
     /**
@@ -142,7 +143,7 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     {
         public ServletContextOrClassPathConfigResource(String resourceName) throws IOException
         {
-            super(resourceName, null);
+            super(resourceName, (ClassLoader) null);
         }
 
     }

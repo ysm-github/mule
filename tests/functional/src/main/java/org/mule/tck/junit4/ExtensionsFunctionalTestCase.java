@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.osgi.framework.BundleContext;
 
 /**
  * Base test class for {@link FunctionalTestCase}s
@@ -124,7 +125,7 @@ public abstract class ExtensionsFunctionalTestCase extends FunctionalTestCase
         builders.add(0, new AbstractConfigurationBuilder()
         {
             @Override
-            protected void doConfigure(MuleContext muleContext) throws Exception
+            protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
             {
                 createExtensionsManager(muleContext);
             }

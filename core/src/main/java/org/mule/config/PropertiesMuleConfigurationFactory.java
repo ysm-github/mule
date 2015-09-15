@@ -41,7 +41,7 @@ public class PropertiesMuleConfigurationFactory
     
     public PropertiesMuleConfigurationFactory(String muleAppConfiguration)
     {
-        URL muleAppURL = ClassUtils.getResource(muleAppConfiguration, getClass());
+        URL muleAppURL = ClassUtils.getResource(muleAppConfiguration, getClass().getClassLoader());
         if (muleAppURL != null)
         {
             this.properties = new Properties();

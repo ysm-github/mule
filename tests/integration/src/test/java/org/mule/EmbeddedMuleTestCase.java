@@ -26,7 +26,7 @@ public class EmbeddedMuleTestCase extends AbstractMuleTestCase
     public void testStartup() throws Exception
     {
         SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(
-                "org/mule/test/spring/mule-root-test.xml");
+                "org/mule/test/spring/mule-root-test.xml", null);
         MuleContextFactory muleContextFactory = new DefaultMuleContextFactory();
         MuleContext context = muleContextFactory.createMuleContext(builder);
         // MuleContext must be started explicitly after MULE-1988

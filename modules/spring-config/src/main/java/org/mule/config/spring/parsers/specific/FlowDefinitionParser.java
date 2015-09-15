@@ -28,6 +28,7 @@ public class FlowDefinitionParser extends OrphanDefinitionParser
     @java.lang.Override
     protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder)
     {
+        System.out.println("PARSING A FLOW!!!");
         builder.addConstructorArgValue(element.getAttribute(ATTRIBUTE_NAME));
         builder.addConstructorArgReference(MuleProperties.OBJECT_MULE_CONTEXT);
         ProcessingStrategyUtils.configureProcessingStrategy(element, builder,

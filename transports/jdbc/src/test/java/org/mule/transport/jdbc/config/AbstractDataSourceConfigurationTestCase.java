@@ -19,7 +19,7 @@ public class AbstractDataSourceConfigurationTestCase extends AbstractMuleTestCas
     protected void tryBuildingMuleContextFromInvalidConfig(String config) throws MuleException
     {
         MuleContextFactory muleContextFactory = new DefaultMuleContextFactory();
-        ConfigurationBuilder builder = new SpringXmlConfigurationBuilder(config);
+        ConfigurationBuilder builder = new SpringXmlConfigurationBuilder(config, null);
         muleContextFactory.createMuleContext(builder);
         fail();
     }

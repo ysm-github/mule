@@ -13,6 +13,7 @@ import org.mule.api.registry.Registry;
 import org.mule.config.builders.AbstractConfigurationBuilder;
 import org.mule.config.i18n.MessageFactory;
 
+import org.osgi.framework.BundleContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -36,7 +37,7 @@ public class SpringConfigurationBuilder extends AbstractConfigurationBuilder
         this.parentContext = parentContext;
     }
 
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
         Registry registry;
         

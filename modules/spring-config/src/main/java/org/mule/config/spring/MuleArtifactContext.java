@@ -11,11 +11,9 @@ import static org.mule.util.Preconditions.checkArgument;
 import static org.springframework.context.annotation.AnnotationConfigUtils.AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME;
 import static org.springframework.context.annotation.AnnotationConfigUtils.CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME;
 import static org.springframework.context.annotation.AnnotationConfigUtils.REQUIRED_ANNOTATION_PROCESSOR_BEAN_NAME;
-
 import org.mule.api.MuleContext;
 import org.mule.config.ConfigResource;
 import org.mule.config.spring.editors.MulePropertyEditorRegistrar;
-import org.mule.config.spring.processors.AnnotatedTransformerObjectPostProcessor;
 import org.mule.config.spring.processors.DiscardedOptionalBeanPostProcessor;
 import org.mule.config.spring.processors.ExpressionEnricherPostProcessor;
 import org.mule.config.spring.processors.LifecycleStatePostProcessor;
@@ -27,12 +25,13 @@ import org.mule.util.IOUtils;
 
 import java.io.IOException;
 
+import org.eclipse.gemini.blueprint.context.support.OsgiBundleXmlApplicationContext;
+import org.osgi.framework.BundleContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionReader;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -40,7 +39,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.context.annotation.ContextAnnotationAutowireCandidateResolver;
-import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -50,7 +48,7 @@ import org.springframework.core.io.UrlResource;
  * that allows resources to be loaded from the Classpath of file system using the
  * MuleBeanDefinitionReader.
  */
-public class MuleArtifactContext extends AbstractXmlApplicationContext
+public class MuleArtifactContext extends OsgiBundleXmlApplicationContext
 {
     private static final ThreadLocal<MuleContext> currentMuleContext = new ThreadLocal<>();
 
@@ -65,12 +63,13 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
      *
      * @param muleContext     the {@link MuleContext} that own this context
      * @param configResources the configuration resources to use
+     * @param bundleContext
      * @see org.mule.config.spring.SpringRegistry
      */
-    public MuleArtifactContext(MuleContext muleContext, ConfigResource[] configResources)
+    public MuleArtifactContext(MuleContext muleContext, ConfigResource[] configResources, BundleContext bundleContext)
             throws BeansException
     {
-        this(muleContext, convert(configResources));
+        this(muleContext, convert(configResources), bundleContext);
     }
 
     /**
@@ -84,15 +83,15 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
      * @see org.mule.config.spring.SpringRegistry
      * @since 3.7.0
      */
-    public MuleArtifactContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController)
+    public MuleArtifactContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController, BundleContext bundleContext)
             throws BeansException
     {
-        this(muleContext, convert(configResources), optionalObjectsController);
+        this(muleContext, convert(configResources), optionalObjectsController, bundleContext);
     }
 
-    public MuleArtifactContext(MuleContext muleContext, Resource[] springResources) throws BeansException
+    public MuleArtifactContext(MuleContext muleContext, Resource[] springResources, BundleContext bundleContext) throws BeansException
     {
-        this(muleContext, springResources, new DefaultOptionalObjectsController());
+        this(muleContext, springResources, new DefaultOptionalObjectsController(), bundleContext);
     }
 
     /**
@@ -103,15 +102,38 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
      * @param muleContext               the {@link MuleContext} that own this context
      * @param springResources           the configuration resources to use
      * @param optionalObjectsController the {@link OptionalObjectsController} to use. Cannot be {@code null}
+     * @param bundleContext
      * @see org.mule.config.spring.SpringRegistry
      * @since 3.7.0
      */
-    public MuleArtifactContext(MuleContext muleContext, Resource[] springResources, OptionalObjectsController optionalObjectsController) throws BeansException
+    public MuleArtifactContext(MuleContext muleContext, Resource[] springResources, OptionalObjectsController optionalObjectsController, BundleContext bundleContext) throws BeansException
     {
+        super(resourceToStrings(springResources), null);
         checkArgument(optionalObjectsController != null, "optionalObjectsController cannot be null");
         this.muleContext = muleContext;
         this.springResources = springResources;
         this.optionalObjectsController = optionalObjectsController;
+        setBundleContext(bundleContext);
+    }
+
+    private static String[] resourceToStrings(Resource[] springResources)
+    {
+        //TODO(pablo.kraan): OSGi - makes no sense to convert to two different formats
+        String[] resources = new String[springResources.length];
+        int i = 0;
+        for (Resource springResource : springResources)
+        {
+            try
+            {
+                resources[i++] = springResource.getURI().toString();
+            }
+            catch (IOException e)
+            {
+                throw new IllegalStateException("Unable to convert resource to string", e);
+            }
+        }
+
+        return resources;
     }
 
     @Override
@@ -126,7 +148,6 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
                               new ExpressionEvaluatorPostProcessor(muleContext),
                               new GlobalNamePostProcessor(),
                               new ExpressionEnricherPostProcessor(muleContext),
-                              new AnnotatedTransformerObjectPostProcessor(muleContext),
                               new PostRegistrationActionsPostProcessor(this, (MuleRegistryHelper) muleContext.getRegistry()),
                               new DiscardedOptionalBeanPostProcessor(optionalObjectsController, (DefaultListableBeanFactory) beanFactory),
                               new LifecycleStatePostProcessor(muleContext.getLifecycleManager().getState())
@@ -175,21 +196,21 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
         return configResources;
     }
 
-    @Override
-    protected Resource[] getConfigResources()
-    {
-        return springResources;
-    }
+    //@Override
+    //protected Resource[] getConfigResources()
+    //{
+    //    return springResources;
+    //}
 
     @Override
     protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws IOException
     {
-        BeanDefinitionReader beanDefinitionReader = createBeanDefinitionReader(beanFactory);
+        //BeanDefinitionReader beanDefinitionReader = createBeanDefinitionReader(beanFactory);
         // Communicate mule context to parsers
         try
         {
             currentMuleContext.set(muleContext);
-            beanDefinitionReader.loadBeanDefinitions(springResources);
+            super.loadBeanDefinitions(beanFactory);
         }
         finally
         {
@@ -197,19 +218,15 @@ public class MuleArtifactContext extends AbstractXmlApplicationContext
         }
     }
 
-    protected BeanDefinitionReader createBeanDefinitionReader(DefaultListableBeanFactory beanFactory)
+    @Override
+    protected void initBeanDefinitionReader(XmlBeanDefinitionReader beanDefinitionReader)
     {
-        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
-        // annotate parsed elements with metadata
-
         beanDefinitionReader.setDocumentLoader(new MuleDocumentLoader());
         // hook in our custom hierarchical reader
         beanDefinitionReader.setDocumentReaderClass(getBeanDefinitionDocumentReaderClass());
         // add error reporting
         beanDefinitionReader.setProblemReporter(new MissingParserProblemReporter());
-        registerAnnotationConfigProcessors(beanDefinitionReader.getRegistry(), null);
-
-        return beanDefinitionReader;
+        //registerAnnotationConfigProcessors(beanDefinitionReader.getRegistry(), null);
     }
 
     private void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, Object source)

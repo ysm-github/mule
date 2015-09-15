@@ -23,10 +23,10 @@ public class ConfigResource
     private URL url;
     private InputStream inputStream;
 
-    public ConfigResource(String resourceName) throws IOException
+    public ConfigResource(String resourceName, ClassLoader classLoader) throws IOException
     {
         this.resourceName = resourceName;
-        url = IOUtils.getResourceAsUrl(resourceName, getClass(), true, true);
+        url = IOUtils.getResourceAsUrl(resourceName, classLoader, true, true);
         if(url == null)
         {
             throw new FileNotFoundException(resourceName);

@@ -239,9 +239,8 @@ public abstract class MessageFactory
      */
     protected ClassLoader getClassLoader()
     {
-        final ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-        // if there's a deployment classloader present, use it for finding resources
-        return ccl == null ? getClass().getClassLoader() : ccl;
+        //TODO(pablo.kraan): OSGI - resources must be found locally
+        return this.getClass().getClassLoader();
     }
 
     /**

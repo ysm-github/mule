@@ -9,8 +9,6 @@ package org.mule;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import org.junit.Ignore;
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.util.ClassUtils;
 import org.mule.util.FilenameUtils;
@@ -19,6 +17,7 @@ import org.mule.util.JdkVersionUtils;
 import java.security.Permission;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MuleServerTestCase extends AbstractMuleTestCase
@@ -36,7 +35,7 @@ public class MuleServerTestCase extends AbstractMuleTestCase
     public void testMuleServer() throws Exception
     {
         MuleServer muleServer = new MuleServer();
-        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class).toString(),
+        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class.getClassLoader()).toString(),
             muleServer.getConfigurationResources());
         assertEquals(MuleServer.CLASSNAME_DEFAULT_CONFIG_BUILDER, MuleServer.getConfigBuilderClassName());
         muleServer.initialize();
@@ -77,7 +76,7 @@ public class MuleServerTestCase extends AbstractMuleTestCase
     {
         MuleServer muleServer = new MuleServer(new String[]{"-builder",
             "org.mule.config.spring.SpringXmlConfigurationBuilder"});
-        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class).toString(),
+        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class.getClassLoader()).toString(),
             muleServer.getConfigurationResources());
         assertEquals("org.mule.config.spring.SpringXmlConfigurationBuilder", MuleServer.getConfigBuilderClassName());
         muleServer.initialize();
@@ -87,7 +86,7 @@ public class MuleServerTestCase extends AbstractMuleTestCase
     public void testMuleServerSpringBuilerArg() throws Exception
     {
         MuleServer muleServer = new MuleServer(new String[]{"-builder", "spring"});
-        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class).toString(),
+        assertEquals(ClassUtils.getResource("mule-config.xml", MuleServer.class.getClassLoader()).toString(),
             muleServer.getConfigurationResources());
         assertEquals("org.mule.config.spring.SpringXmlConfigurationBuilder", MuleServer.getConfigBuilderClassName());
         muleServer.initialize();

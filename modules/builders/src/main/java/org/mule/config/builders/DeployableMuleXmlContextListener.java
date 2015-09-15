@@ -73,7 +73,7 @@ public class DeployableMuleXmlContextListener implements ServletContextListener
             {
                 configurationBuilder.setParentContext(parentContext);
             }
-            configurationBuilder.configure(muleContext);
+            configurationBuilder.configure(muleContext, null);
         }
         catch (MuleException ex)
         {

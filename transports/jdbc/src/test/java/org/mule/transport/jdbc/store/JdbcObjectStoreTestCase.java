@@ -6,13 +6,14 @@
  */
 package org.mule.transport.jdbc.store;
 
-import java.io.Serializable;
-
-import org.apache.commons.dbutils.QueryRunner;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.store.ObjectStore;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.util.store.AbstractObjectStoreContractTestCase;
+
+import java.io.Serializable;
+
+import org.apache.commons.dbutils.QueryRunner;
 
 public class JdbcObjectStoreTestCase extends AbstractObjectStoreContractTestCase
 {
@@ -71,6 +72,6 @@ public class JdbcObjectStoreTestCase extends AbstractObjectStoreContractTestCase
     @Override
     protected ConfigurationBuilder getBuilder() throws Exception
     {
-        return new SpringXmlConfigurationBuilder(getConfigurationResources());
+        return new SpringXmlConfigurationBuilder(getConfigurationResources(), null);
     }
 }

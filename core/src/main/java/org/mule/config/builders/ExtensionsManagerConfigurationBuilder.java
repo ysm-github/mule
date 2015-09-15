@@ -12,6 +12,8 @@ import org.mule.api.MuleContext;
 import org.mule.extension.api.ExtensionManager;
 import org.mule.util.ClassUtils;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * Implementation of {@link org.mule.api.config.ConfigurationBuilder}
  * that register a {@link ExtensionManager} if
@@ -25,7 +27,7 @@ public class ExtensionsManagerConfigurationBuilder extends AbstractConfiguration
     private static final String EXTENSIONS_MANAGER_CLASS_NAME = "org.mule.module.extension.internal.manager.DefaultExtensionManager";
 
     @Override
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
         if (muleContext instanceof DefaultMuleContext &&
             ClassUtils.isClassOnPath(EXTENSIONS_MANAGER_CLASS_NAME, getClass()))

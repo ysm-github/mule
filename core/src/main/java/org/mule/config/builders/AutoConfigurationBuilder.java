@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * Configures Mule from a configuration resource or comma seperated list of configuration resources by
  * auto-detecting the ConfigurationBuilder to use for each resource. This is resolved by either checking the
@@ -47,7 +49,7 @@ public class AutoConfigurationBuilder extends AbstractResourceConfigurationBuild
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext) throws ConfigurationException
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws ConfigurationException
     {
         autoConfigure(muleContext, configResources);
     }
@@ -72,7 +74,7 @@ public class AutoConfigurationBuilder extends AbstractResourceConfigurationBuild
         try
         {
             Properties props = new Properties();
-            props.load(ClassUtils.getResource("configuration-builders.properties", this.getClass()).openStream());
+            props.load(ClassUtils.getResource("configuration-builders.properties", this.getClass().getClassLoader()).openStream());
 
             for (Map.Entry<String, List<ConfigResource>> e : configsMap.entrySet())
             {
@@ -98,7 +100,7 @@ public class AutoConfigurationBuilder extends AbstractResourceConfigurationBuild
                 {
                     throw new MuleRuntimeException(CoreMessages.createStaticMessage(String.format("ConfigurationBuilder %s does not support domain context", cb.getClass().getCanonicalName())));
                 }
-                cb.configure(muleContext);
+                cb.configure(muleContext, null);
             }
         }
         catch (ConfigurationException e)

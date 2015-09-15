@@ -52,6 +52,6 @@ public abstract class AbstractBadConfigTestCase extends FunctionalTestCase
 
     protected ConfigurationBuilder getConfigurationBuilder() throws Exception
     {
-        return new SpringXmlConfigurationBuilder(getConfigFile());
+        return new SpringXmlConfigurationBuilder(getConfigFile(), null);
     }
 }

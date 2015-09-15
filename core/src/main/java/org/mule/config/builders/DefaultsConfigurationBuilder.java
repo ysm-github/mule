@@ -33,6 +33,8 @@ import org.mule.util.queue.QueueManager;
 import org.mule.util.store.DefaultObjectStoreFactoryBean;
 import org.mule.util.store.MuleObjectStoreManager;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * Configures defaults required by Mule. This configuration builder is used to
  * configure mule with these defaults when no other ConfigurationBuilder that sets
@@ -56,7 +58,7 @@ import org.mule.util.store.MuleObjectStoreManager;
 public class DefaultsConfigurationBuilder extends AbstractConfigurationBuilder
 {
     @Override
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
         MuleRegistry registry = muleContext.getRegistry();
 

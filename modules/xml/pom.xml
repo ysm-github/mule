@@ -39,6 +39,12 @@
             <artifactId>xstream</artifactId>
             <version>${xstreamVersion}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-annotations</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--
             This dependency is needed by some extra XStream converters
         -->

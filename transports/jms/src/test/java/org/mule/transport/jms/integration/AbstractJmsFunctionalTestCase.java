@@ -143,7 +143,7 @@ public abstract class AbstractJmsFunctionalTestCase extends FunctionalTestCase
     public static Collection<?> jmsProviderConfigs()
     {
         JmsVendorConfiguration[][] configs;
-        URL url = ClassUtils.getResource("jms-vendor-configs.txt", AbstractJmsFunctionalTestCase.class);
+        URL url = ClassUtils.getResource("jms-vendor-configs.txt", AbstractJmsFunctionalTestCase.class.getClassLoader());
 
         if (url == null)
         {

@@ -202,7 +202,7 @@ public class MuleDerbyTestUtils
     public static String loadDatabaseName(String propertiesLocation, String propertyName) throws IOException
     {
         Properties derbyProperties = new Properties();
-        URL resource = ClassUtils.getResource(propertiesLocation, MuleDerbyTestUtils.class);
+        URL resource = ClassUtils.getResource(propertiesLocation, MuleDerbyTestUtils.class.getClassLoader());
         derbyProperties.load(resource.openStream());
         return derbyProperties.getProperty(propertyName);
     }

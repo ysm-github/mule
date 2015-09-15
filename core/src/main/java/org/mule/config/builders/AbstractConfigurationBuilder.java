@@ -13,6 +13,7 @@ import org.mule.api.lifecycle.LifecycleManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.osgi.framework.BundleContext;
 
 /**
  * A support class for {@link org.mule.api.config.ConfigurationBuilder} implementations
@@ -29,18 +30,19 @@ public abstract class AbstractConfigurationBuilder implements ConfigurationBuild
 
     /**
      * Will configure a MuleContext object based on the builders configuration settings.
-     * This method will delegate the actual processing to {@link #doConfigure(org.mule.api.MuleContext)}
+     * This method will delegate the actual processing to {@link #doConfigure(MuleContext, BundleContext)}
      *
-     * @param muleContext The current {@link org.mule.api.MuleContext}
+     * @param muleContext The current {@link MuleContext}
+     * @param bundleContext
      * @throws ConfigurationException if the configuration fails i.e. an object cannot be created or
      * initialised properly
      */
     @Override
-    public void configure(MuleContext muleContext) throws ConfigurationException
+    public void configure(MuleContext muleContext, BundleContext bundleContext) throws ConfigurationException
     {
         try
         {
-            doConfigure(muleContext);
+            doConfigure(muleContext, bundleContext);
             applyLifecycle(muleContext.getLifecycleManager());
             configured = true;
         }
@@ -55,11 +57,12 @@ public abstract class AbstractConfigurationBuilder implements ConfigurationBuild
      * {@link org.mule.api.config.ConfigurationBuilder} implementation as bean properties before this method
      * has been called.
      *
-     * @param muleContext The current {@link org.mule.api.MuleContext}
+     * @param muleContext The current {@link MuleContext}
+     * @param bundleContext
      * @throws ConfigurationException if the configuration fails i.e. an object cannot be created or
      * initialised properly
      */
-    protected abstract void doConfigure(MuleContext muleContext) throws Exception;
+    protected abstract void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception;
 
     /**
      * Allows a configuration builder to check and customise the lifecycle of objects in the registry
@@ -86,7 +89,7 @@ public abstract class AbstractConfigurationBuilder implements ConfigurationBuild
 
     /**
      * Has this builder been configured already
-     * @return true if the {@link #configure(org.mule.api.MuleContext)} method has been called
+     * @return true if the {@link ConfigurationBuilder#configure(MuleContext, BundleContext)} method has been called
      */
     @Override
     public boolean isConfigured()

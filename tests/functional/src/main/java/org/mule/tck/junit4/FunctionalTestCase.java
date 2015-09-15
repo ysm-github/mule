@@ -72,7 +72,7 @@ public abstract class FunctionalTestCase extends AbstractMuleContextTestCase
         String configResources = getConfigResources();
         if (configResources != null)
         {
-            return new SpringXmlConfigurationBuilder(configResources);
+            return new SpringXmlConfigurationBuilder(configResources, null);
         }
         configResources = getConfigFile();
         if (configResources != null)
@@ -81,7 +81,7 @@ public abstract class FunctionalTestCase extends AbstractMuleContextTestCase
             {
                 throw new RuntimeException("Do not use this method when the config is composed of several files. Use getConfigFiles method instead.");
             }
-            return new SpringXmlConfigurationBuilder(configResources);
+            return new SpringXmlConfigurationBuilder(configResources, null);
         }
         String[] multipleConfigResources = getConfigFiles();
         return new SpringXmlConfigurationBuilder(multipleConfigResources);

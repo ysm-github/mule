@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.osgi.framework.BundleContext;
 
 public class ConvertersNotRegisteredTwiceTestCase extends FunctionalTestCase
 {
@@ -49,7 +50,7 @@ public class ConvertersNotRegisteredTwiceTestCase extends FunctionalTestCase
         builders.add(0, new AbstractConfigurationBuilder()
         {
             @Override
-            protected void doConfigure(MuleContext muleContext) throws Exception
+            protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
             {
                 registryHelper = (MuleRegistryHelper) muleContext.getRegistry();
                 registryHelper = spy(registryHelper);

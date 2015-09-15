@@ -10,6 +10,8 @@ import org.mule.api.MuleContext;
 import org.mule.config.builders.AbstractConfigurationBuilder;
 import org.mule.config.endpoint.RegistryBackedAnnotationsParserFactory;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * Enables Mule annotation processing so that annotated objects registered with the
  * Mule registry will automatically be configured. This helper also enables JSR-330
@@ -26,7 +28,7 @@ import org.mule.config.endpoint.RegistryBackedAnnotationsParserFactory;
 public class AnnotationsConfigurationBuilder extends AbstractConfigurationBuilder
 {
     @Override
-    protected void doConfigure(MuleContext muleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
         // Make the annotation parsers available
         AnnotationsParserFactory factory = createAnnotationsParserFactory();

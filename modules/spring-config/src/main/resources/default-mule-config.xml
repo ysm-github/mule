@@ -8,7 +8,8 @@
 
     <spring:beans>
 
-        <spring:bean name="_muleTransformerAnnotationProcessor" class="org.mule.config.spring.processors.TransformerAnnotatedBeanProcessor"/>
+        <!--//TODO(pablo.kraan): OSGi - removed this for now-->
+        <!--<spring:bean name="_muleTransformerAnnotationProcessor" class="org.mule.config.spring.processors.TransformerAnnotatedBeanProcessor"/>-->
 
         <spring:bean name="_muleSecurityManager" class="org.mule.security.MuleSecurityManager"/>
 
