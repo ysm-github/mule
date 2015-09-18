@@ -19,7 +19,7 @@ public class HttpsSpecialCharKeystoreTestCase extends HttpsFunctionalTestCase
     protected void doSetUpBeforeMuleContextCreation() throws Exception
     {
         super.doSetUpBeforeMuleContextCreation();
-        File serverKeystore = new File(IOUtils.getResourceAsUrl(SERVER_KEYSTORE, getClass()).getPath());
+        File serverKeystore = new File(IOUtils.getResourceAsUrl(SERVER_KEYSTORE, getClass().getClassLoader()).getPath());
         File serverKeystoreCopy = new File(workingDirectory.getRoot().getPath() + "/dir$/serverKeystore");
         FileUtils.copyFile(serverKeystore, serverKeystoreCopy);
         //this is a SystemProperty rule defined in the superclass

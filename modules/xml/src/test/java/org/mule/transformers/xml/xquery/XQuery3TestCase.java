@@ -91,8 +91,8 @@ public class XQuery3TestCase extends FunctionalTestCase
     @Test
     public void multipleInputsByPath() throws Exception
     {
-        URL booksUrl = IOUtils.getResourceAsUrl("books.xml", getClass());
-        URL citiesURL = IOUtils.getResourceAsUrl("cities.xml", getClass());
+        URL booksUrl = IOUtils.getResourceAsUrl("books.xml", getClass().getClassLoader());
+        URL citiesURL = IOUtils.getResourceAsUrl("cities.xml", getClass().getClassLoader());
 
         assertMultipleInputs("multipleInputsByPath", booksUrl.getPath(), citiesURL.getPath());
     }

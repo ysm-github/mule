@@ -104,7 +104,7 @@ public class FtpClient
     public boolean putFile(String fileName, String targetDir) throws IOException
     {
         connect();
-        File file = new File(IOUtils.getResourceAsUrl(fileName, getClass()).getFile()); //hacky way to get the file shortname
+        File file = new File(IOUtils.getResourceAsUrl(fileName, getClass().getClassLoader()).getFile()); //hacky way to get the file shortname
         return ftpClient.storeFile(targetDir + "/" + file.getName(), IOUtils.getResourceAsStream(fileName, getClass()));
     }
 

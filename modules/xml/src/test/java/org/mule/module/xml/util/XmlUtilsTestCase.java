@@ -86,7 +86,7 @@ public class XmlUtilsTestCase extends AbstractMuleTestCase
     @Test
     public void testConvertsToW3cDocumentFromFile() throws Exception
     {
-        URL asUrl = IOUtils.getResourceAsUrl(SIMPLE_XML_RESOURCE, getClass());
+        URL asUrl = IOUtils.getResourceAsUrl(SIMPLE_XML_RESOURCE, getClass().getClassLoader());
         File payload = new File(asUrl.getFile());
         assertToW3cDocumentSuccessfullyConvertsPayload(payload);
     }

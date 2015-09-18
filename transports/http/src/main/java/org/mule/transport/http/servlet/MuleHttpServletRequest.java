@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
+import javax.servlet.ReadListener;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -34,6 +35,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
 import org.apache.commons.collections.iterators.IteratorEnumeration;
@@ -78,6 +80,12 @@ public class MuleHttpServletRequest implements HttpServletRequest
         return -1;
     }
 
+    @Override
+    public long getContentLengthLong()
+    {
+        return 0;
+    }
+
     public String getContentType()
     {
         return message.getInboundProperty(HttpConstants.HEADER_CONTENT_TYPE);
@@ -87,6 +95,25 @@ public class MuleHttpServletRequest implements HttpServletRequest
     {
         return new ServletInputStream()
         {
+
+            @Override
+            public boolean isFinished()
+            {   //TODO(pablo.kraan): OSGi - added because of the new servlet version
+                return false;
+            }
+
+            @Override
+            public boolean isReady()
+            {
+                //TODO(pablo.kraan): OSGi - added because of the new servlet version
+                return false;
+            }
+
+            @Override
+            public void setReadListener(ReadListener readListener)
+            {
+                //TODO(pablo.kraan): OSGi - added because of the new servlet version
+            }
 
             @Override
             public int read() throws IOException
@@ -209,6 +236,7 @@ public class MuleHttpServletRequest implements HttpServletRequest
         return null;
     }
 
+    @SuppressWarnings("PackageAccessibility")
     public Cookie[] getCookies()
     {
         org.apache.commons.httpclient.Cookie[] cookies = message.getInboundProperty(HttpConnector.HTTP_COOKIES_PROPERTY);
@@ -337,6 +365,12 @@ public class MuleHttpServletRequest implements HttpServletRequest
         return null;
     }
 
+    @Override
+    public String changeSessionId()
+    {   //TODO(pablo.kraan): OSGi - added because of the new servlet version
+        return null;
+    }
+
     public boolean isRequestedSessionIdValid()
     {
         return false;
@@ -400,6 +434,14 @@ public class MuleHttpServletRequest implements HttpServletRequest
     @Override
     public Part getPart(String s) throws IOException, ServletException
     {
+        //TODO(pablo.kraan): OSGi - added because of the new servlet version
+        return null;
+    }
+
+    @Override
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException
+    {
+        //TODO(pablo.kraan): OSGi - added because of the new servlet version
         return null;
     }
 

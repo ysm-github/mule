@@ -343,7 +343,7 @@ public class WSConsumer implements MessageProcessor, Initialisable, MuleContextA
     {
         Definition wsdlDefinition = null;
 
-        URL url = IOUtils.getResourceAsUrl(config.getWsdlLocation(), getClass());
+        URL url = IOUtils.getResourceAsUrl(config.getWsdlLocation(), getClass().getClassLoader());
         if (url == null)
         {
             throw new InitialisationException(MessageFactory.createStaticMessage("Can't find wsdl at %s", config.getWsdlLocation()), this);

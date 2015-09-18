@@ -31,7 +31,7 @@ public abstract class AbstractRefreshableBeanTestCase extends FunctionalTestCase
 
     protected String nameToPath(String name)
     {
-        URL url = IOUtils.getResourceAsUrl(name, getClass());
+        URL url = IOUtils.getResourceAsUrl(name, getClass().getClassLoader());
         String path = url.getFile();
         logger.info(url + " -> " + path);
         return path;

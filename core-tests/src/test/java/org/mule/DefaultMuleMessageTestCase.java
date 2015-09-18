@@ -266,7 +266,7 @@ public class DefaultMuleMessageTestCase extends AbstractMuleContextTestCase
         assertEquals(0, message.getOutboundAttachmentNames().size());
 
         //Try with content type set
-        message.addOutboundAttachment("spi-props", IOUtils.getResourceAsUrl("test-spi.properties", getClass()), MimeTypes.TEXT);
+        message.addOutboundAttachment("spi-props", IOUtils.getResourceAsUrl("test-spi.properties", getClass().getClassLoader()), MimeTypes.TEXT);
 
         assertTrue(message.getOutboundAttachmentNames().contains("spi-props"));
         handler = message.getOutboundAttachment("spi-props");
@@ -274,7 +274,7 @@ public class DefaultMuleMessageTestCase extends AbstractMuleContextTestCase
         assertEquals(1, message.getOutboundAttachmentNames().size());
 
         //Try without content type set
-        message.addOutboundAttachment("dummy", IOUtils.getResourceAsUrl("dummy.xml", getClass()), null);
+        message.addOutboundAttachment("dummy", IOUtils.getResourceAsUrl("dummy.xml", getClass().getClassLoader()), null);
         handler = message.getOutboundAttachment("dummy");
         assertEquals(MimeTypes.APPLICATION_XML, handler.getContentType());
         assertEquals(2, message.getOutboundAttachmentNames().size());

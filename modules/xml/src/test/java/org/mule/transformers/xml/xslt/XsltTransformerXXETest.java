@@ -89,6 +89,6 @@ public class XsltTransformerXXETest extends FunctionalTestCase
                              "<root>\n" +
                              "<elem>&spi_entity_ref;</elem>\n" +
                              "<something/>\n" +
-                             "</root>", IOUtils.getResourceAsUrl("xxe-passwd.txt", this.getClass()).getPath());
+                             "</root>", IOUtils.getResourceAsUrl("xxe-passwd.txt", this.getClass().getClassLoader()).getPath());
     }
 }

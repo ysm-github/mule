@@ -138,7 +138,7 @@ public class JXPathExpressionEvaluatorTestCase extends AbstractMuleContextTestCa
                                    "<root>\n" +
                                    "<elem>&spi_entity_ref;</elem>\n" +
                                    "<something/>\n" +
-                                   "</root>", IOUtils.getResourceAsUrl("xxe-passwd.txt", this.getClass()).getPath());
+                                   "</root>", IOUtils.getResourceAsUrl("xxe-passwd.txt", this.getClass().getClassLoader()).getPath());
 
         JXPathExpressionEvaluator evaluator = new JXPathExpressionEvaluator();
         evaluator.setMuleContext(muleContext);

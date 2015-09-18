@@ -55,7 +55,7 @@ public class TestAttachments
     @WebMethod(action = "downloadAttachment")
     public DataHandler downloadAttachment(@WebParam(mode = WebParam.Mode.IN, name = "fileName") String fileName)
     {
-        File file = new File(IOUtils.getResourceAsUrl(fileName, getClass()).getPath());
+        File file = new File(IOUtils.getResourceAsUrl(fileName, getClass().getClassLoader()).getPath());
         return new DataHandler(new FileDataSource(file));
     }
 

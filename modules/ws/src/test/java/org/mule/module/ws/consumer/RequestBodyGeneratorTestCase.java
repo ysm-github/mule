@@ -103,7 +103,7 @@ public class RequestBodyGeneratorTestCase extends AbstractMuleTestCase
 
     private String generateRequestBody(String wsdlLocation, String serviceName, String portName, String operationName) throws Exception
     {
-        URL url = IOUtils.getResourceAsUrl(wsdlLocation, getClass());
+        URL url = IOUtils.getResourceAsUrl(wsdlLocation, getClass().getClassLoader());
 
         WSDLReader wsdlReader = WSDLFactory.newInstance().newWSDLReader();
         Definition wsdlDefinition = wsdlReader.readWSDL(url.toString());

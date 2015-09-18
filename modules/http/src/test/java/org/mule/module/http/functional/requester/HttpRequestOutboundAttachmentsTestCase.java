@@ -101,7 +101,7 @@ public class HttpRequestOutboundAttachmentsTestCase extends AbstractHttpRequestT
     public void fileOutboundAttachmentSetsContentDispositionWithFileName() throws Exception
     {
         MuleEvent event = getTestEvent(TEST_MESSAGE);
-        File file = new File(IOUtils.getResourceAsUrl(TEST_FILE_NAME, getClass()).getPath());
+        File file = new File(IOUtils.getResourceAsUrl(TEST_FILE_NAME, getClass().getClassLoader()).getPath());
         DataHandler dataHandler = new DataHandler(new FileDataSource(file));
         event.getMessage().addOutboundAttachment(TEST_PART_NAME, dataHandler);
 

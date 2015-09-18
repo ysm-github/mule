@@ -33,12 +33,12 @@ public class IOUtils extends org.apache.commons.io.IOUtils
     private static final Log logger = LogFactory.getLog(IOUtils.class);
 
     protected static int bufferSize = NumberUtils.toInt(
-        System.getProperty(MuleProperties.MULE_STREAMING_BUFFER_SIZE), 4 * 1024);
+            System.getProperty(MuleProperties.MULE_STREAMING_BUFFER_SIZE), 4 * 1024);
 
     /**
      * Attempts to load a resource from the file system, from a URL, or from the
      * classpath, in that order.
-     * 
+     *
      * @param resourceName The name of the resource to load
      * @param callingClass The Class object of the calling object
      * @return the requested resource as a string
@@ -63,7 +63,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils
     /**
      * Attempts to load a resource from the file system, from a URL, or from the
      * classpath, in that order.
-     * 
+     *
      * @param resourceName The name of the resource to load
      * @param callingClass The Class object of the calling object
      * @return an InputStream to the resource or null if resource not found
@@ -72,13 +72,13 @@ public class IOUtils extends org.apache.commons.io.IOUtils
     public static InputStream getResourceAsStream(final String resourceName,
                                                   final Class callingClass) throws IOException
     {
-        return getResourceAsStream(resourceName, callingClass, true, true);
+        return getResourceAsStream(parseResourceName(resourceName), callingClass, true, true);
     }
 
     /**
      * Attempts to load a resource from the file system, from a URL, or from the
      * classpath, in that order.
-     * 
+     *
      * @param resourceName The name of the resource to load
      * @param callingClass The Class object of the calling object
      * @param tryAsFile - try to load the resource from the local file system
@@ -92,7 +92,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils
                                                   boolean tryAsUrl) throws IOException
     {
 
-        URL url = getResourceAsUrl(resourceName, callingClass, tryAsFile, tryAsUrl);
+        URL url = getResourceAsUrl(resourceName, callingClass.getClassLoader(), tryAsFile, tryAsUrl);
 
         if (url == null)
         {
@@ -107,97 +107,26 @@ public class IOUtils extends org.apache.commons.io.IOUtils
     /**
      * Attempts to load a resource from the file system or from the classpath, in
      * that order.
-     * 
+     *
      * @param resourceName The name of the resource to load
      * @param callingClass The Class object of the calling object
      * @return an URL to the resource or null if resource not found
      */
-    public static URL getResourceAsUrl(final String resourceName, final Class callingClass)
+    public static URL getResourceAsUrl(final String resourceName, final ClassLoader classLoader)
     {
-        return getResourceAsUrl(resourceName, callingClass, true, true);
+        return getResourceAsUrl(resourceName, classLoader, true, true);
     }
 
     /**
      * Attempts to load a resource from the file system or from the classpath, in
      * that order.
-     * 
+     *
      * @param resourceName The name of the resource to load
      * @param callingClass The Class object of the calling object
      * @param tryAsFile - try to load the resource from the local file system
      * @param tryAsUrl - try to load the resource as a Url string
      * @return an URL to the resource or null if resource not found
      */
-    public static URL getResourceAsUrl(final String resourceName,
-                                       final Class callingClass,
-                                       boolean tryAsFile, boolean tryAsUrl)
-    {
-        //TODO(pablo.kraan):  OSGI - remove this method
-        if (resourceName == null)
-        {
-            throw new IllegalArgumentException(
-                CoreMessages.objectIsNull("Resource name").getMessage());
-        }
-        URL url = null;
-
-        // Try to load the resource from the file system.
-        if (tryAsFile)
-        {
-            try
-            {
-                File file = FileUtils.newFile(resourceName);
-                if (file.exists())
-                {
-                    url = file.getAbsoluteFile().toURL();
-                }
-                else
-                {
-                    logger.debug("Unable to load resource from the file system: "
-                                 + file.getAbsolutePath());
-                }
-            }
-            catch (Exception e)
-            {
-                logger.debug("Unable to load resource from the file system: " + e.getMessage());
-            }
-        }
-
-        // Try to load the resource from the classpath.
-        if (url == null)
-        {
-            try
-            {
-                url = (URL)AccessController.doPrivileged(new PrivilegedAction()
-                {
-                    public Object run()
-                    {
-                        return ClassUtils.getResource(resourceName, callingClass.getClassLoader());
-                    }
-                });
-                if (url == null)
-                {
-                    logger.debug("Unable to load resource " + resourceName + " from the classpath");
-                }
-            }
-            catch (Exception e)
-            {
-                logger.debug("Unable to load resource " + resourceName + " from the classpath: " + e.getMessage());
-            }
-        }
-
-        if(url==null)
-        {
-            try
-            {
-                url = new URL(resourceName);
-            }
-            catch (MalformedURLException e)
-            {
-                //ignore
-            }
-        }
-        return url;
-    }
-
     public static URL getResourceAsUrl(final String resourceName,
                                        final ClassLoader classLoader,
                                        boolean tryAsFile, boolean tryAsUrl)
@@ -267,7 +196,63 @@ public class IOUtils extends org.apache.commons.io.IOUtils
         }
         return url;
     }
-    
+
+    /**
+     * This method checks whether the name of the resource needs to be parsed. If it
+     * is, it parses the name and tries to get the variable from the Environmental
+     * Variables configured on the system.
+     *
+     * @param src
+     */
+    private static String parseResourceName(String src)
+    {
+        String var;
+        String[] split;
+        String ps = File.separator;
+
+        if (src.indexOf('$') > -1)
+        {
+            split = src.split("}");
+        }
+        else
+        {
+            return src;
+        }
+
+        var = split[0].substring(2);
+        var = SystemUtils.getenv(var);
+        if (split.length > 1)
+        {
+            if (var == null)
+            {
+                var = System.getProperty(split[0].substring(2));
+                if (var == null)
+                {
+                    return split[1].substring(1);
+                }
+                else
+                {
+                    return var + ps + split[1].substring(1);
+                }
+            }
+            else
+            {
+                return var + ps + split[1].substring(1);
+            }
+        }
+        else
+        {
+            if (var == null)
+            {
+                return "";
+            }
+            else
+            {
+                return var;
+            }
+        }
+    }
+
     /**
      * This method wraps {@link org.apache.commons.io.IOUtils}' <code>toString(InputStream)</code>
      * method but catches any {@link IOException} and wraps it into a {@link RuntimeException}.
@@ -283,7 +268,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils
             throw new RuntimeException(iox);
         }
     }
-    
+
     /**
      * This method wraps {@link org.apache.commons.io.IOUtils}' <code>toByteArray(InputStream)</code>
      * method but catches any {@link IOException} and wraps it into a {@link RuntimeException}.
@@ -299,7 +284,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils
             throw new RuntimeException(iox);
         }
     }
-    
+
     /**
      * Re-implement copy method to allow buffer size to be configured. This won't impact all methods because
      * there is no polymorphism for static methods, but rather just direct use of these two methods.

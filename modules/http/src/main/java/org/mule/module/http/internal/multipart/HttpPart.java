@@ -119,6 +119,13 @@ public class HttpPart implements Part
     }
 
     @Override
+    public String getSubmittedFileName()
+    {
+      //TODO(pablo.kraan): OSGi - added because of the new servlet version
+        return null;
+    }
+
+    @Override
     public long getSize()
     {
         return size;

@@ -76,6 +76,12 @@ public class MuleHttpServletResponse implements HttpServletResponse
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void setContentLengthLong(long l)
+    {
+        //TODO(pablo.kraan): OSGi - added because of the new servlet version
+    }
+
     public void setContentType(String type)
     {
         message.setProperty(HttpConstants.HEADER_CONTENT_TYPE, type, PropertyScope.OUTBOUND);

@@ -46,13 +46,16 @@ final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
     {
         checkArgument(classLoader != null, "classloader cannot be null");
 
+        System.out.println("DISCOVERING EXTENSIONS...");
         Collection<Describer> describers = serviceRegistry.lookupProviders(Describer.class, classLoader);
         if (describers.isEmpty())
         {
+            System.out.println("NO EXTENSIONS DISCOVERED");
             return ImmutableList.of();
         }
 
         return describers.stream().map(describer -> {
+            System.out.println("DISCOVERRED EXTENSION: " + describer);
             Descriptor descriptor = describer.describe(new DefaultDescribingContext());
             return extensionFactory.createFrom(descriptor);
         }).collect(new ImmutableListCollector<>());

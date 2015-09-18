@@ -14,6 +14,8 @@ import org.mule.config.PropertiesMuleConfigurationFactory;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
+import org.mule.module.extension.internal.manager.DefaultExtensionManager;
+import org.mule.module.http.api.listener.HttpListenerBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +48,10 @@ public class MuleApplicationActivator implements BundleActivator
             //TODO(pablo.kraan): OSGi - need to bundleContext here
             SpringXmlConfigurationBuilder cfgBuilder = new SpringXmlConfigurationBuilder(configResource, bundleContext);
 
+            final DefaultExtensionManager extensionManager = new DefaultExtensionManager();
             //TODO(pablo.kraan): add the rest of the original configuration builders
             List<ConfigurationBuilder> configBuilders = new ArrayList<ConfigurationBuilder>(1);
+            configBuilders.add(new ExtensionsManagerConfigurationBuilder(extensionManager));
 
             // need to add the annotations config builder before Spring so we can use Mule
             // annotations in Spring
@@ -57,6 +61,8 @@ public class MuleApplicationActivator implements BundleActivator
 
             //TODO(pablo.kraan): OSGi - need to register all the service wrappers to registering services (like TransportDescriptorServiceWrapper)
             MuleConfiguration configuration = createMuleConfiguration(configResource);
+
+            //final ExtensionManagerWrapper extensionManagerWrapper = new ExtensionManagerWrapper(bundleContext, extensionManager);
 
             //transportDescriptorServiceWrapper = TransportDescriptorServiceWrapper.createTransportDescriptorServiceWrapper(bundleContext);
             //
@@ -74,7 +80,9 @@ public class MuleApplicationActivator implements BundleActivator
             //contextFactory.setRegistryBootstrapService(registryBootstrapService);
 
             muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
+            new HttpListenerBuilder(muleContext);
             muleContext.start();
+
             System.out.println("Application started: " + bundleContext.getBundle().getSymbolicName());
         }
         catch (Throwable e)
