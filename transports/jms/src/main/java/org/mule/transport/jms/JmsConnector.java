@@ -6,6 +6,7 @@
  */
 package org.mule.transport.jms;
 
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.api.Closeable;
 import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
@@ -42,6 +43,8 @@ import org.mule.transport.jms.redelivery.AutoDiscoveryRedeliveryHandlerFactory;
 import org.mule.transport.jms.redelivery.RedeliveryHandlerFactory;
 import org.mule.util.BeanUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1462,5 +1465,24 @@ public class JmsConnector extends AbstractConnector implements ExceptionListener
     protected Object getOperationResourceFactory()
     {
         return getConnection();
+    }
+
+    public ConnectionMetadata.ConnectionMetadataBuilder newConnectionMetadataBuilder()
+    {
+        String brokerURL = getBrokerURL();
+        try
+        {
+            URI brokerUri = new URI(brokerURL);
+            return new ConnectionMetadata.ConnectionMetadataBuilder().setHost(brokerUri.getHost()).setPort(brokerUri.getPort()).setResourceType("JMS");
+        }
+        catch (URISyntaxException e)
+        {
+            throw new MuleRuntimeException(e);
+        }
+    }
+
+    public String getBrokerURL()
+    {
+        return null;
     }
 }

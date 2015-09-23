@@ -41,6 +41,8 @@
 
         <spring:bean name="_muleMessageProcessingStackManager" class="org.mule.context.notification.MessageProcessingStackManager"/>
 
+        <spring:bean name="_muleConnectionMetadataServer" class="org.mule.instrospection.ConnectionMetadataServer"/>
+
     </spring:beans>
 
     <!-- Default Transformers are now loaded from META-INF/services/org/mule/config/registry-bootstrap.properties so that

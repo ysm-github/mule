@@ -1,0 +1,195 @@
+[
+  {
+    "apps": [
+      {
+        "appName": "mule-api-1.0",
+        "externalConnections": [
+          {
+            "port": 10000,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/test"
+          },
+          {
+            "port": 10001,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/flow"
+          },
+          {
+            "port": 10001,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/connector"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out2"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in2"
+          },
+          {
+            "port": 21,
+            "host": "172.16.20.25",
+            "type": "CONSUMER",
+            "resourceType": "FTP",
+            "destination": "\/test\/gleriaTests\/inbound"
+          }
+        ]
+      },
+      {
+        "appName": "twitter-to-facebook",
+        "externalConnections": [
+          {
+            "port": 10010,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/test"
+          },
+          {
+            "port": 10011,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/flow"
+          },
+          {
+            "port": 10011,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/connector"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out2"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in"
+          },
+          {
+            "port": 61616,
+            "host": "172.16.20.95",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in2"
+          },
+          {
+            "port": 21,
+            "host": "172.16.20.25",
+            "type": "CONSUMER",
+            "resourceType": "FTP",
+            "destination": "\/test\/gleriaTests\/inbound"
+          }
+        ]
+      }
+    ],
+    "serverIp": "192.168.1.9"
+  },
+  {
+    "apps": [
+      {
+        "appName": "facebook-to-git",
+        "externalConnections": [
+          {
+            "port": 10000,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/test"
+          },
+          {
+            "port": 10001,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/flow"
+          },
+          {
+            "port": 10001,
+            "host": "localhost",
+            "type": "LISTENER",
+            "resourceType": "HTTP",
+            "destination": "\/api\/connector"
+          },
+          {
+            "port": 61616,
+            "host": "localhost",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out"
+          },
+          {
+            "port": 61616,
+            "host": "localhost",
+            "type": "OUTBOUND",
+            "resourceType": "JMS",
+            "destination": "out2"
+          },
+          {
+            "port": 61616,
+            "host": "localhost",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in"
+          },
+          {
+            "port": 61616,
+            "host": "localhost",
+            "type": "CONSUMER",
+            "resourceType": "JMS",
+            "destination": "queue:\/\/in2"
+          },
+          {
+            "port": 21,
+            "host": "172.16.20.25",
+            "type": "CONSUMER",
+            "resourceType": "FTP",
+            "destination": "\/test\/gleriaTests\/inbound"
+          }
+        ]
+      }
+    ],
+    "serverIp": "192.168.1.129"
+  }
+]

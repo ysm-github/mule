@@ -30,6 +30,7 @@ import org.mule.config.MuleManifest;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.exception.ChoiceMessagingExceptionStrategy;
 import org.mule.exception.RollbackMessagingExceptionStrategy;
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.processor.AbstractRedeliveryPolicy;
 import org.mule.transport.ConnectException;
 import org.mule.transport.polling.MessageProcessorPollingMessageReceiver;
@@ -264,4 +265,5 @@ public class DefaultInboundEndpoint extends AbstractEndpoint implements InboundE
     {
         return flowConstruct;
     }
+
 }

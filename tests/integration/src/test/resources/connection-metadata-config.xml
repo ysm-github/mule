@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+      xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+      xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+        http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+        http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+    <http:listener-config name="listenerConfigPort1" host="localhost" port="10000"/>
+
+    <http:listener-config name="listenerConfigPort2" host="localhost" port="10001"/>
+
+    <jms:activemq-connector name="localJmsBroker" brokerURL="tcp://localhost:61616"/>
+
+    <flow name="main-http" processingStrategy="synchronous">
+        <http:listener config-ref="listenerConfigPort1" path="/test"/>
+        <set-payload value=""/>
+    </flow>
+
+    <flow name="main-http2" processingStrategy="synchronous">
+        <http:listener config-ref="listenerConfigPort2" path="/api/flow"/>
+        <set-payload value=""/>
+    </flow>
+
+    <flow name="main-http3" processingStrategy="synchronous">
+        <http:listener config-ref="listenerConfigPort2" path="/api/connector"/>
+        <set-payload value=""/>
+    </flow>
+
+
+    <flow name="main-jms" processingStrategy="synchronous">
+        <jms:inbound-endpoint queue="in"/>
+        <set-payload value=""/>
+        <jms:outbound-endpoint queue="out"/>
+    </flow>
+
+    <flow name="main-jms2" processingStrategy="synchronous">
+        <jms:inbound-endpoint queue="in2"/>
+        <set-payload value=""/>
+        <jms:outbound-endpoint queue="out2"/>
+    </flow>
+
+    <flow name="anotherFlow" >
+        <ftp:inbound-endpoint host="172.16.20.25" port="21" path="/test/gleriaTests/inbound" user="mule"
+                              password="mulemanishere" responseTimeout="10000" pollingFrequency="100000"/>
+        <logger/>
+    </flow>
+</mule>

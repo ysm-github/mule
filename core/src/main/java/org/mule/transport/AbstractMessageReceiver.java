@@ -6,6 +6,7 @@
  */
 package org.mule.transport;
 
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.DefaultMuleEvent;
 import org.mule.OptimizedRequestContext;
 import org.mule.ResponseOutputStream;
@@ -90,6 +91,7 @@ public abstract class AbstractMessageReceiver extends AbstractTransportMessageHa
     private MessageProcessingManager messageProcessingManager;
 
     private WorkManager messageReceiverWorkManager;
+    public ConnectionMetadata connectionMetadata;
 
     /**
      * Creates the Message Receiver

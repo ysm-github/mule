@@ -15,12 +15,16 @@ import org.mule.api.execution.ExecutionCallback;
 import org.mule.api.execution.ExecutionTemplate;
 import org.mule.api.lifecycle.CreateException;
 import org.mule.api.lifecycle.InitialisationException;
+import org.mule.api.registry.RegistrationException;
 import org.mule.api.retry.RetryContext;
 import org.mule.api.transport.Connector;
 import org.mule.construct.Flow;
+import org.mule.instrospection.ConnectionMetadata;
+import org.mule.instrospection.ExternalConnection;
 import org.mule.processor.strategy.SynchronousProcessingStrategy;
 import org.mule.transport.AbstractConnector;
 import org.mule.transport.AbstractPollingMessageReceiver;
+import org.mule.util.UUID;
 import org.mule.util.lock.LockFactory;
 
 import java.io.FilenameFilter;
@@ -85,6 +89,21 @@ public class FtpMessageReceiver extends AbstractPollingMessageReceiver
             synchronousProcessing = ((Flow)getFlowConstruct()).getProcessingStrategy() instanceof SynchronousProcessingStrategy;
         }
         this.poolOnPrimaryInstanceOnly = Boolean.valueOf(System.getProperty("mule.transport.ftp.singlepollinstance","false")) || (!synchronousProcessing && ((AbstractConnector)getConnector()).getReceiverThreadingProfile().isDoThreading());
+        try
+        {
+            getConnector().getMuleContext().getRegistry().registerObject(UUID.getUUID(), new ExternalConnection()
+            {
+                @Override
+                public ConnectionMetadata getConnectionMetadata()
+                {
+                    return new ConnectionMetadata.ConnectionMetadataBuilder().setPort(getEndpointURI().getPort()).setType(ConnectionMetadata.ConnectionType.CONSUMER).setHost(getEndpointURI().getHost()).setResourceType("FTP").setDestination(getEndpointURI().getPath()).build();
+                }
+            });
+        }
+        catch (RegistrationException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 

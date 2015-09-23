@@ -6,6 +6,9 @@
  */
 package org.mule.transport.jms;
 
+import org.mule.api.lifecycle.InitialisationException;
+import org.mule.api.registry.RegistrationException;
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.api.DefaultMuleException;
 import org.mule.api.MessagingException;
 import org.mule.api.MuleException;
@@ -19,6 +22,7 @@ import org.mule.api.retry.RetryContext;
 import org.mule.api.transaction.Transaction;
 import org.mule.api.transaction.TransactionException;
 import org.mule.api.transport.Connector;
+import org.mule.instrospection.ExternalConnection;
 import org.mule.transaction.TransactionCollection;
 import org.mule.transport.AbstractMessageReceiver;
 import org.mule.transport.AbstractReceiverWorker;
@@ -27,6 +31,7 @@ import org.mule.transport.jms.filters.JmsSelectorFilter;
 import org.mule.transport.jms.reconnect.ReconnectWorkManager;
 import org.mule.transport.jms.redelivery.RedeliveryHandler;
 import org.mule.util.ClassUtils;
+import org.mule.util.UUID;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,7 +53,7 @@ import org.apache.commons.logging.LogFactory;
  * resource allocation, if needed. This class honors the <code>numberOfConcurrentTransactedReceivers</code> strictly
  * and will create exactly this number of consumers.
  */
-public class MultiConsumerJmsMessageReceiver extends AbstractMessageReceiver
+public class MultiConsumerJmsMessageReceiver extends AbstractMessageReceiver implements ExternalConnection
 {
     protected final List<SubReceiver> consumers;
 
@@ -61,6 +66,7 @@ public class MultiConsumerJmsMessageReceiver extends AbstractMessageReceiver
     private final ReconnectWorkManager reconnectWorkManager;
     private boolean reconnecting = false;
     private boolean started = false;
+    private Destination dest;
 
     public MultiConsumerJmsMessageReceiver(Connector connector, FlowConstruct flowConstruct, InboundEndpoint endpoint)
             throws CreateException
@@ -236,6 +242,33 @@ public class MultiConsumerJmsMessageReceiver extends AbstractMessageReceiver
         return !this.isTopic;
     }
 
+    @Override
+    public ConnectionMetadata getConnectionMetadata()
+    {
+        this.connectionMetadata = jmsConnector.newConnectionMetadataBuilder().setDestination(dest.toString()).setType(ConnectionMetadata.ConnectionType.CONSUMER).build();
+        return this.connectionMetadata;
+    }
+
+    protected void doInitialise() throws InitialisationException
+    {
+        super.doInitialise();
+        try
+        {
+            getConnector().getMuleContext().getRegistry().registerObject(UUID.getUUID(), new ExternalConnection()
+            {
+                @Override
+                public ConnectionMetadata getConnectionMetadata()
+                {
+                    return MultiConsumerJmsMessageReceiver.this.getConnectionMetadata();
+                }
+            });
+        }
+        catch (RegistrationException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected class SubReceiver implements MessageListener
     {
         private final Log subLogger = LogFactory.getLog(getClass());
@@ -372,7 +405,7 @@ public class MultiConsumerJmsMessageReceiver extends AbstractMessageReceiver
                 }
 
                 // Create destination
-                Destination dest = jmsSupport.createDestination(session, endpoint);
+                dest = jmsSupport.createDestination(session, endpoint);
 
                 // Extract jms selector
                 String selector = null;

@@ -6,6 +6,7 @@
  */
 package org.mule.module.http.internal.listener;
 
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
@@ -274,5 +275,11 @@ public class DefaultHttpListener implements HttpListener, Initialisable, MuleCon
     public String[] getAllowedMethods()
     {
         return parsedAllowedMethods;
+    }
+
+    @Override
+    public ConnectionMetadata getConnectionMetadata()
+    {
+        return new ConnectionMetadata.ConnectionMetadataBuilder().setHost(config.getHost()).setPort(config.getPort()).setResourceType("HTTP").setType(ConnectionMetadata.ConnectionType.LISTENER).setDestination(this.path).build();
     }
 }

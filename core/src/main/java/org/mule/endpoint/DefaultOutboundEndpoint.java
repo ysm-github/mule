@@ -21,6 +21,7 @@ import org.mule.api.endpoint.OutboundEndpoint;
 import org.mule.api.exception.MessagingExceptionHandler;
 import org.mule.api.exception.MessagingExceptionHandlerAware;
 import org.mule.api.lifecycle.Initialisable;
+import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.processor.MessageProcessor;
 import org.mule.api.retry.RetryPolicyTemplate;
 import org.mule.api.transaction.TransactionConfig;
@@ -34,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultOutboundEndpoint extends AbstractEndpoint implements OutboundEndpoint
+public class DefaultOutboundEndpoint extends AbstractEndpoint implements OutboundEndpoint, Initialisable
 {
     private static final long serialVersionUID = 8860985949279708638L;
     private List<String> responseProperties;
@@ -141,9 +142,24 @@ public class DefaultOutboundEndpoint extends AbstractEndpoint implements Outboun
         return chain;
     }
 
+
+
     @Override
     public void setMessagingExceptionHandler(MessagingExceptionHandler messagingExceptionHandler)
     {
        this.exceptionHandler = messagingExceptionHandler;
+    }
+
+    @Override
+    public void initialise() throws InitialisationException
+    {
+        try
+        {
+            getConnector().getDispatcherFactory().create(this).initialise();
+        }
+        catch (MuleException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

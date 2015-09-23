@@ -52,9 +52,9 @@
             <set-payload value="#['works']"/>
         </first-successful>
         <append-string-transformer message="aaaa"/>
-        <!--<expression-component>-->
-            <!--thrw new asdf;-->
-        <!--</expression-component>-->
+        <expression-component>
+            thrw new asdf;
+        </expression-component>
         <transactional>
             <logger message="within transacton"/>
         </transactional>

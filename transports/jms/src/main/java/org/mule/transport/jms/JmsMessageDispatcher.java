@@ -6,6 +6,9 @@
  */
 package org.mule.transport.jms;
 
+import org.mule.api.lifecycle.Initialisable;
+import org.mule.api.registry.RegistrationException;
+import org.mule.instrospection.ConnectionMetadata;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
@@ -18,11 +21,13 @@ import org.mule.api.transaction.Transaction;
 import org.mule.api.transformer.TransformerException;
 import org.mule.api.transport.DispatchException;
 import org.mule.config.i18n.CoreMessages;
+import org.mule.instrospection.ExternalConnection;
 import org.mule.transaction.TransactionCoordination;
 import org.mule.transport.AbstractMessageDispatcher;
 import org.mule.transport.jms.i18n.JmsMessages;
 import org.mule.util.ClassUtils;
 import org.mule.util.NumberUtils;
+import org.mule.util.UUID;
 import org.mule.util.concurrent.Latch;
 import org.mule.util.concurrent.WaitableBoolean;
 
@@ -45,12 +50,13 @@ import javax.jms.TemporaryTopic;
  * properties are read from the event properties or defaults are used (according to
  * the JMS specification)
  */
-public class JmsMessageDispatcher extends AbstractMessageDispatcher
+public class JmsMessageDispatcher extends AbstractMessageDispatcher implements ExternalConnection, Initialisable
 {
 
     private JmsConnector connector;
     private boolean disableTemporaryDestinations = false;
     private boolean returnOriginalMessageAsReply = false;
+    private Destination dest;
 
     public JmsMessageDispatcher(OutboundEndpoint endpoint)
     {
@@ -125,7 +131,7 @@ public class JmsMessageDispatcher extends AbstractMessageDispatcher
 
             boolean topic = connector.getTopicResolver().isTopic(endpoint, true);
 
-            Destination dest = connector.getJmsSupport().createDestination(session, endpoint);
+            dest = connector.getJmsSupport().createDestination(session, endpoint);
             producer = connector.getJmsSupport().createProducer(session, dest, topic);
 
             Object message = event.getMessage().getPayload();
@@ -454,6 +460,33 @@ public class JmsMessageDispatcher extends AbstractMessageDispatcher
         }
         return replyTo;
 
+    }
+
+    @Override
+    public ConnectionMetadata getConnectionMetadata()
+    {
+        return ((JmsConnector) getConnector()).newConnectionMetadataBuilder().setDestination(endpoint.getEndpointURI().getAddress()).setType(ConnectionMetadata.ConnectionType.OUTBOUND).build();
+    }
+
+    @Override
+    protected void doInitialise() throws InitialisationException
+    {
+        super.doInitialise();
+        try
+        {
+            getConnector().getMuleContext().getRegistry().registerObject(UUID.getUUID(), new ExternalConnection()
+            {
+                @Override
+                public ConnectionMetadata getConnectionMetadata()
+                {
+                    return JmsMessageDispatcher.this.getConnectionMetadata();
+                }
+            });
+        }
+        catch (RegistrationException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     protected class ReplyToListener implements MessageListener
