@@ -7,8 +7,8 @@
 
 package org.mule.module.extension;
 
-import org.mule.extension.ExtensionManager;
-import org.mule.extension.introspection.ExtensionModel;
+import org.mule.extension.api.ExtensionManager;
+import org.mule.extension.api.introspection.ExtensionModel;
 import org.mule.osgi.OsgiServiceWrapper;
 
 import org.osgi.framework.BundleContext;

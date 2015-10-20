@@ -8,7 +8,7 @@
     </parent>
     <artifactId>mule-module-spring-config</artifactId>
     <packaging>bundle</packaging>
-    <name>Spring Config</name>
+    <name>Mule Spring Config</name>
     <description>
         Mule Builder for use with Spring 2.X Namespace based XML configuration.
     </description>

@@ -1,2 +1,2 @@
-org.mule.module.extension.internal.capability.xml.XmlModelEnricher
-org.mule.module.extension.internal.capability.xml.schema.SchemaDocumenterModelEnricher
+org.mule.module.extension.spring.internal.xml.XmlModelEnricher
+org.mule.module.extension.spring.internal.xml.schema.SchemaDocumenterModelEnricher

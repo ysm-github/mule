@@ -11,7 +11,7 @@ import static org.mule.api.lifecycle.LifecycleUtils.initialiseIfNeeded;
 import org.mule.DefaultMuleContext;
 import org.mule.api.MuleContext;
 import org.mule.config.builders.AbstractConfigurationBuilder;
-import org.mule.extension.ExtensionManager;
+import org.mule.extension.api.ExtensionManager;
 import org.mule.module.extension.internal.manager.DefaultExtensionManager;
 
 import org.osgi.framework.BundleContext;

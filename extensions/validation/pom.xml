@@ -12,16 +12,53 @@
 
     <groupId>org.mule.modules</groupId>
     <artifactId>mule-module-validation</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <name>Mule Validation Extension</name>
     <description>A Mule extension that provides functionality for performing validations</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <!--//TODO(pablo.kraan): OSGi - review exported packages-->
+                        <Export-Package>org.mule.extension.validation.*</Export-Package>
+                        <Import-Package>
+                            org.springframework.beans.factory.xml;version="[4.1,5)",
+                            org.mule.module.extension.spring.internal.*,
+                            *
+                        </Import-Package>
+                        <Dynamic-Import>*</Dynamic-Import>
+                        <Bundle-Activator>org.mule.module.extension.ExtensionActivator</Bundle-Activator>
+                        <Include-Resource>{maven-resources}, META-INF/mule-validation.xsd=target/classes/META-INF/mule-validation.xsd, META-INF/spring.handlers=target/classes/META-INF/spring.handlers,META-INF/spring.schemas=target/classes/META-INF/spring.schemas</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.4.0</version>
+        </dependency>
+        <!--//TODO(pablo.kraan): OSGi - added to access ExtensionActivator. Maybe it has to be moved to a different bundle-->
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-extensions-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--//TODO(pablo.kraan): OSGi - added to get access to extension namespace handler-->
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-extensions-spring-support</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @since 3.7.0
  */
-final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
+public final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
 {
 
     private final ExtensionFactory extensionFactory;
@@ -46,6 +46,7 @@ final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
     {
         checkArgument(classLoader != null, "classloader cannot be null");
 
+        //TODO(pablo.kraan): OSGi - remove these logs
         System.out.println("DISCOVERING EXTENSIONS...");
         Collection<Describer> describers = serviceRegistry.lookupProviders(Describer.class, classLoader);
         if (describers.isEmpty())

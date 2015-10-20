@@ -10,11 +10,37 @@
     <groupId>org.mule.modules</groupId>
     <artifactId>mule-module-extensions-spring-support</artifactId>
     <name>Mule Extensions Spring Support</name>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
     <description>
         Support for extensions to be configured through a mule config file
         backed by the spring framework
     </description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <!--//TODO(pablo.kraan): OSGi - review exported packages-->
+                        <Import-Package>
+                            com.sun.tools.*;resolution:="optional",
+                            *
+                        </Import-Package>
+                        <Export-Package>
+                            org.mule.module.extension.spring.internal.*
+                        </Export-Package>
+                            <!--org.mule.module.extension.spring.internal.config.*,-->
+                            <!--org.mule.module.extension.spring.internal.*-->
+                        <!--</Export-Package>-->
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- Mule Dependencies -->
