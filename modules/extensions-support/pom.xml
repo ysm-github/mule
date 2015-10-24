@@ -101,6 +101,7 @@
                 <configuration>
                     <instructions>
                         <Export-Package>org.mule.module.extension.*</Export-Package>
+                        <Import-Package>*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

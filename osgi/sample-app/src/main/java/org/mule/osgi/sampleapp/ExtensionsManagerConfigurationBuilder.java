@@ -26,20 +26,20 @@ import org.osgi.framework.BundleContext;
 public class ExtensionsManagerConfigurationBuilder extends AbstractConfigurationBuilder
 {
 
-    private static final String EXTENSIONS_MANAGER_CLASS_NAME = "org.mule.module.extension.internal.manager.DefaultExtensionManager";
     private final DefaultExtensionManager extensionManager;
+    private OsgiExtensionManager osgiExtensionManager;
 
     public ExtensionsManagerConfigurationBuilder(DefaultExtensionManager extensionManager)
     {
-
         this.extensionManager = extensionManager;
     }
 
     @Override
     protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
     {
+        //TODO(pablo.kraan): OSGi - probably can avoid passing the bundleContext in this method if can be injected in the constructor of some configuration builder
         ((DefaultMuleContext) muleContext).setExtensionManager(extensionManager);
         initialiseIfNeeded(extensionManager, muleContext);
-        //extensionManager.discoverExtensions(Thread.currentThread().getContextClassLoader());
+        osgiExtensionManager = OsgiExtensionManager.create(bundleContext, extensionManager);
     }
 }

@@ -7,6 +7,7 @@
 
 package org.mule.module.extension;
 
+import org.mule.api.registry.ServiceRegistry;
 import org.mule.extension.api.introspection.ExtensionModel;
 import org.mule.module.extension.internal.introspection.DefaultExtensionFactory;
 import org.mule.module.extension.internal.manager.DefaultExtensionDiscoverer;
@@ -32,8 +33,9 @@ public class ExtensionActivator implements BundleActivator
     {
         BundleWiring bundleWiring = bundleContext.getBundle().adapt(BundleWiring.class);
         ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
-        final SpiServiceRegistry serviceRegistry = new SpiServiceRegistry();
-        final DefaultExtensionDiscoverer bundleExtensionDiscoverer = new DefaultExtensionDiscoverer(new DefaultExtensionFactory(serviceRegistry, bundleClassLoader), serviceRegistry);
+        final ServiceRegistry serviceRegistry = OsgiServiceRegistry.create(bundleContext);
+        final DefaultExtensionDiscoverer bundleExtensionDiscoverer = new DefaultExtensionDiscoverer(new DefaultExtensionFactory(serviceRegistry, bundleClassLoader), new SpiServiceRegistry());
+
         final List<ExtensionModel> discoveredExtensionModels = bundleExtensionDiscoverer.discover(bundleClassLoader);
 
         for (ExtensionModel discoveredExtensionModel : discoveredExtensionModels)

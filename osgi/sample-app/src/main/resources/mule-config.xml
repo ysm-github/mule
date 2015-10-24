@@ -11,6 +11,7 @@
         Sample Mule Application
     </description>
 
+    <!--<http:listener-config name="listenerConfig" host="localhost" port="7777"/>-->
     <http:request-config name="requestConfig" host="localhost" port="7777" basePath="basePath" />
 
     <flow name="main">
@@ -22,28 +23,10 @@
 
         <validation:is-not-empty value="#[payload]"/>
     </flow>
+
+    <!--<flow name="httpMain">-->
+        <!--<http:listener path="hello" config-ref="listenerConfig"/>-->
+
+        <!--<logger level="ERROR" message="Mule says #[payload] via HTTP"/>-->
+    <!--</flow>-->
 </mule>
-
-<!--
-<?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
-      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-      http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
-
-    <description>
-        Sample Mule Application
-    </description>
-
-    <flow name="main">
-        <poll frequency="2000">
-            <set-payload value="Hello!!"/>
-        </poll>
-
-        <logger level="ERROR" message="Mule says #[payload]"/>
-
-        <validation:is-not-empty value="#[payload]"/>
-    </flow>
-</mule>
--->

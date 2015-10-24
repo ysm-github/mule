@@ -26,6 +26,7 @@
                 <configuration>
                     <instructions>
                         <!--//TODO(pablo.kraan): OSGi - review exported packages-->
+                        <Bundle-Activator>org.mule.module.extension.spring.internal.ExtensionsSpringSupportActivator</Bundle-Activator>
                         <Import-Package>
                             com.sun.tools.*;resolution:="optional",
                             *

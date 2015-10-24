@@ -226,7 +226,7 @@ public class MuleArtifactContext extends OsgiBundleXmlApplicationContext
         beanDefinitionReader.setDocumentReaderClass(getBeanDefinitionDocumentReaderClass());
         // add error reporting
         beanDefinitionReader.setProblemReporter(new MissingParserProblemReporter());
-        //registerAnnotationConfigProcessors(beanDefinitionReader.getRegistry(), null);
+        registerAnnotationConfigProcessors(beanDefinitionReader.getRegistry(), null);
     }
 
     private void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, Object source)

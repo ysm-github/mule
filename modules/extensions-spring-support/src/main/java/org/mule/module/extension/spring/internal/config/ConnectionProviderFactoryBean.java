@@ -4,10 +4,10 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.module.extension.internal.config;
+package org.mule.module.extension.spring.internal.config;
 
 import static org.mule.config.i18n.MessageFactory.createStaticMessage;
-import static org.mule.module.extension.internal.config.XmlExtensionParserUtils.getResolverSet;
+import static org.mule.module.extension.spring.internal.config.XmlExtensionParserUtils.getResolverSet;
 import org.mule.api.MuleRuntimeException;
 import org.mule.api.config.ConfigurationException;
 import org.mule.api.config.PoolingProfile;

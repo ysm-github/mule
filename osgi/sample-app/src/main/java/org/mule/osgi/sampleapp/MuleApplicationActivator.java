@@ -8,17 +8,13 @@
 package org.mule.osgi.sampleapp;
 
 import org.mule.api.MuleContext;
-import org.mule.api.MuleEvent;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.config.MuleConfiguration;
 import org.mule.config.PropertiesMuleConfigurationFactory;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
-import org.mule.extension.validation.api.ValidationResult;
-import org.mule.extension.validation.api.Validator;
 import org.mule.module.extension.internal.manager.DefaultExtensionManager;
-import org.mule.module.http.api.listener.HttpListenerBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +24,8 @@ import org.osgi.framework.BundleContext;
 
 public class MuleApplicationActivator implements BundleActivator
 {
-    //protected transient Log logger = LogFactory.getLog(MuleApplicationActivator.class);
-
     //TODO(pablo.kraan): OSGi - move this class to another package/module
     private MuleContext muleContext;
-    private OsgiExtensionManager osgiExtensionManager;
-    //private TransportDescriptorServiceWrapper transportDescriptorServiceWrapper;
-    //private RegistryBootstrapServiceWrapper registryBootstrapServiceWrapper;
 
     @Override
     public void start(BundleContext bundleContext) throws Exception
@@ -47,17 +38,8 @@ public class MuleApplicationActivator implements BundleActivator
 
         try
         {
-            Validator validator = new Validator()
-            {
-                @Override
-                public ValidationResult validate(MuleEvent event)
-                {
-                    return null;
-                }
-            };
             String configResource = "mule-config.xml";
 
-            //TODO(pablo.kraan): OSGi - need to bundleContext here
             SpringXmlConfigurationBuilder cfgBuilder = new SpringXmlConfigurationBuilder(configResource, bundleContext);
 
             final DefaultExtensionManager extensionManager = new DefaultExtensionManager();
@@ -81,15 +63,7 @@ public class MuleApplicationActivator implements BundleActivator
             DefaultMuleContextFactory contextFactory = new DefaultMuleContextFactory();
             contextFactory.setBundleContext(bundleContext);
 
-            osgiExtensionManager = OsgiExtensionManager.create(bundleContext, extensionManager);
-
             muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
-            extensionManager.setMuleContext(muleContext);
-            extensionManager.initialise();
-
-
-            //TODO(pablo.kraan): OSGi - added to force a dependency against HTTP, remove and test that still works
-            new HttpListenerBuilder(muleContext);
 
             muleContext.start();
 
@@ -123,11 +97,6 @@ public class MuleApplicationActivator implements BundleActivator
     {
         String bundleName = bundleContext.getBundle().getSymbolicName();
         System.out.println("Stopping application " + bundleName);
-
-        if (osgiExtensionManager != null)
-        {
-            bundleContext.removeServiceListener(osgiExtensionManager);
-        }
 
         if (muleContext != null)
         {
