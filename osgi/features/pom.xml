@@ -11,7 +11,7 @@
         <version>4.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mule-osgi-features</artifactId>
+    <artifactId>mule-full</artifactId>
     <packaging>pom</packaging>
     <name>Mule OSGi Features</name>
 

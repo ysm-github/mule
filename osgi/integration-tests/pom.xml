@@ -103,7 +103,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mule-osgi-features</artifactId>
+            <artifactId>mule-full</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
             <scope>test</scope>

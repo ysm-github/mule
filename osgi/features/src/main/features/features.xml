@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<features name="mule-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+<features name="mule" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
 
     <feature name="mule-logging" start-level="4" version="${project.version}">
         <bundle>mvn:com.lmax/disruptor/3.3.0/jar</bundle>
@@ -30,6 +30,7 @@
     <feature name="mule-core" version="${project.version}">
         <feature>mule-logging</feature>
         <feature>mule-common</feature>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_2/jar</bundle>
         <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/jar</bundle>
         <bundle>mvn:org.apache.geronimo.specs/geronimo-j2ee-connector_1.5_spec/2.0.0/jar</bundle>
         <bundle>mvn:com.github.stephenc.eaio-uuid/uuid/3.4.0-osgi/jar</bundle>
@@ -99,5 +100,10 @@
         <bundle>wrap:mvn:javax.mail/mail/1.4.3/jar</bundle>
 
         <bundle>mvn:org.mule.modules/mule-module-http/4.0-SNAPSHOT/jar</bundle>
+    </feature>
+
+    <feature name="mule-full" version="${project.version}">
+        <feature>mule-http-connector</feature>
+        <feature>mule-extension-validation</feature>
     </feature>
 </features>
