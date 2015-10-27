@@ -29,36 +29,38 @@ import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 import org.ops4j.pax.exam.options.MavenUrlReference;
 
 @RunWith(PaxExam.class)
+//@ExamReactorStrategy(PerSuite.class)
 public abstract class AbstractOsgiTestCase
 {
 
     public String karafVersion()
     {
         ConfigurationManager cm = new ConfigurationManager();
-        String karafVersion = cm.getProperty("pax.exam.karaf.version", "4.0.1");
+        String karafVersion = cm.getProperty("pax.exam.karaf.version", "3.0.5");
         return karafVersion;
     }
 
     @Configuration
     public Option[] config() throws URISyntaxException
     {
-        MavenArtifactUrlReference karafUrl = maven()
-                .groupId("org.mule.osgi")
-                .artifactId("mule-osgi-standalone")
-                .versionAsInProject()
-                .type("zip");
         //MavenArtifactUrlReference karafUrl = maven()
-        //        .groupId("org.apache.karaf")
-        //        .artifactId("apache-karaf")
-        //        .version(karafVersion())
+        //        .groupId("org.mule.osgi")
+        //        .artifactId("mule-osgi-standalone")
+        //        .versionAsInProject()
         //        .type("zip");
+        MavenArtifactUrlReference karafUrl = maven()
+                .groupId("org.apache.karaf")
+                .artifactId("apache-karaf")
+                .version(karafVersion())
+                .type("zip");
         MavenUrlReference karafStandardRepo = maven()
                 .groupId("org.apache.karaf.features")
                 .artifactId("standard")
                 .version(karafVersion())
                 .classifier("features")
                 .type("xml");
-        //TODO(pablo.kraan): OSGi - Use version from a mavel URL
+        //TODO(pablo.kraan): OSGi - Use version from a maven URL
+        //TODO(pablo.kraan): OSGi - review how to make the test work with the lastest feature changes without having to compile from maven
         final String muleFeatures = "mvn:org.mule.osgi/mule-osgi-features/4.0-SNAPSHOT/xml/features";
         final File unpackDirectory = new File("target", "exam");
         return new Option[] {
@@ -70,7 +72,8 @@ public abstract class AbstractOsgiTestCase
                         .useDeployFolder(false),
 
                 // This install only the specified default features
-                editConfigurationFilePut("etc/org.apache.karaf.features.cfg", "featuresBoot", "mule-core,mule-spring-config"),
+                //TODO(pablo.kraan): OSGi - find a way to define feature dependencies for tests
+                editConfigurationFilePut("etc/org.apache.karaf.features.cfg", "featuresBoot", "mule-core,mule-spring-config,mule-extension-api,mule-extension-validation,mule-http-connector"),
                 editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories",", file:${maven.local.repo}@id=mavenlocalrepo@snapshots"),
 
                 //editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg","org.ops4j.pax.url.mvn.defaultRepositories",
@@ -90,7 +93,7 @@ public abstract class AbstractOsgiTestCase
                 mavenBundle()
                         .groupId("org.mule.osgi")
                         .artifactId("mule-osgi-sample-app")
-                        .versionAsInProject().start(),
+                        .versionAsInProject(),
 
                 //vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"),
                 //systemTimeout(0),

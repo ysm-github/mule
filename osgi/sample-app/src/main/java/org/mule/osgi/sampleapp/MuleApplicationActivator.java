@@ -24,6 +24,7 @@ import org.osgi.framework.BundleContext;
 
 public class MuleApplicationActivator implements BundleActivator
 {
+
     //TODO(pablo.kraan): OSGi - move this class to another package/module
     private MuleContext muleContext;
 
@@ -36,44 +37,44 @@ public class MuleApplicationActivator implements BundleActivator
         //TODO(pablo.kraan): OSGi - setting property to see full exceptions
         System.setProperty("mule.verbose.exceptions", "true");
 
-        try
-        {
-            String configResource = "mule-config.xml";
+        //try
+        //{
+        String configResource = "mule-config.xml";
 
-            SpringXmlConfigurationBuilder cfgBuilder = new SpringXmlConfigurationBuilder(configResource, bundleContext);
+        SpringXmlConfigurationBuilder cfgBuilder = new SpringXmlConfigurationBuilder(configResource, bundleContext);
 
-            final DefaultExtensionManager extensionManager = new DefaultExtensionManager();
+        final DefaultExtensionManager extensionManager = new DefaultExtensionManager();
 
-            //TODO(pablo.kraan): add the rest of the original configuration builders
-            List<ConfigurationBuilder> configBuilders = new ArrayList<ConfigurationBuilder>(1);
-            configBuilders.add(new ExtensionsManagerConfigurationBuilder(extensionManager));
+        //TODO(pablo.kraan): add the rest of the original configuration builders
+        List<ConfigurationBuilder> configBuilders = new ArrayList<ConfigurationBuilder>(1);
+        configBuilders.add(new ExtensionsManagerConfigurationBuilder(extensionManager));
 
-            // need to add the annotations config builder before Spring so we can use Mule
-            // annotations in Spring
-            //addAnnotationsConfigBuilder(configBuilders);
-            //addStartupPropertiesConfigBuilder(configBuilders);
-            configBuilders.add(cfgBuilder);
+        // need to add the annotations config builder before Spring so we can use Mule
+        // annotations in Spring
+        //addAnnotationsConfigBuilder(configBuilders);
+        //addStartupPropertiesConfigBuilder(configBuilders);
+        configBuilders.add(cfgBuilder);
 
-            //TODO(pablo.kraan): OSGi - need to register all the service wrappers to registering services (like TransportDescriptorServiceWrapper)
-            MuleConfiguration configuration = createMuleConfiguration(configResource);
+        //TODO(pablo.kraan): OSGi - need to register all the service wrappers to registering services (like TransportDescriptorServiceWrapper)
+        MuleConfiguration configuration = createMuleConfiguration(configResource);
 
-            DefaultMuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
-            contextBuilder.setMuleConfiguration(configuration);
+        DefaultMuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
+        contextBuilder.setMuleConfiguration(configuration);
 
-            DefaultMuleContextFactory contextFactory = new DefaultMuleContextFactory();
-            contextFactory.setBundleContext(bundleContext);
+        DefaultMuleContextFactory contextFactory = new DefaultMuleContextFactory();
+        contextFactory.setBundleContext(bundleContext);
 
-            muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
+        muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
 
-            muleContext.start();
+        muleContext.start();
 
-            System.out.println("Application started: " + bundleContext.getBundle().getSymbolicName());
-        }
-        catch (Throwable e)
-        {
-            System.out.println("Error starting bundle: " + bundleContext.getBundle().getSymbolicName() + ". " + e.getMessage());
-            e.printStackTrace();
-        }
+        System.out.println("Application started: " + bundleContext.getBundle().getSymbolicName());
+        //}
+        //catch (Throwable e)
+        //{
+        //    System.out.println("Error starting bundle: " + bundleContext.getBundle().getSymbolicName() + ". " + e.getMessage());
+        //    e.printStackTrace();
+        //}
     }
 
     protected MuleConfiguration createMuleConfiguration(String appConfigurationResource)
