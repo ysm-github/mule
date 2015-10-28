@@ -11,7 +11,7 @@
         Sample Mule Application
     </description>
 
-    <!--<http:listener-config name="listenerConfig" host="localhost" port="7777"/>-->
+    <http:listener-config name="listenerConfig" host="localhost" port="7777"/>
     <http:request-config name="requestConfig" host="localhost" port="7777" basePath="basePath" />
 
     <flow name="main">
@@ -24,9 +24,9 @@
         <validation:is-not-empty value="#[payload]"/>
     </flow>
 
-    <!--<flow name="httpMain">-->
-        <!--<http:listener path="hello" config-ref="listenerConfig"/>-->
+    <flow name="httpMain">
+        <http:listener path="hello" config-ref="listenerConfig"/>
 
-        <!--<logger level="ERROR" message="Mule says #[payload] via HTTP"/>-->
-    <!--</flow>-->
+        <logger level="ERROR" message="Mule says hello via HTTP"/>
+    </flow>
 </mule>

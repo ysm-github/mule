@@ -9,6 +9,9 @@ package org.mule.osgi;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
+import static org.ops4j.pax.exam.CoreOptions.vmOption;
+import static org.ops4j.pax.exam.CoreOptions.when;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -35,13 +38,13 @@ public abstract class AbstractOsgiTestCase
     public Option[] config() throws URISyntaxException
     {
         return new Option[] {
-                //TODO(pablo.kraan): OSGi - add some system property to enable debugging without needing re-build
-                //KarafDistributionOption.debugConfiguration("5005", true),
                 karafDistributionConfiguration()
                         .frameworkUrl(getDistributionArtifactUrl())
                         .unpackDirectory(new File("target", "exam"))
                         .useDeployFolder(false),
-
+                when(isDebugEnabled() ).useOptions(
+                        vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" ),
+                        systemTimeout(0)),
                 keepRuntimeFolder(),
                 //systemProperty("pax.exam.osgi.unresolved.fail").value("true"),
                 logLevel(LogLevelOption.LogLevel.INFO),
@@ -51,11 +54,12 @@ public abstract class AbstractOsgiTestCase
                         .groupId("org.mule.osgi")
                         .artifactId("mule-osgi-sample-app")
                         .versionAsInProject(),
-
-                //vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"),
-                //debugConfiguration("5005", true),
-                // KarafDistributionOption.debugConfiguration("5005", true),
         };
+    }
+
+    private boolean isDebugEnabled()
+    {
+        return System.getProperty("mule.test.debug") != null;
     }
 
     private MavenArtifactUrlReference getDistributionArtifactUrl()

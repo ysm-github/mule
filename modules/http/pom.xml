@@ -22,8 +22,7 @@
                 <configuration>
                     <instructions>
                         <Export-Package>org.mule.module.http.*</Export-Package>
-                        <!--<Bundle-Activator>org.mule.osgi.TransportActivator</Bundle-Activator>-->
-                        <!--<Mule-Transport>vm</Mule-Transport>-->
+                        <Bundle-Activator>org.mule.module.http.internal.HttpConnectorActivator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>
