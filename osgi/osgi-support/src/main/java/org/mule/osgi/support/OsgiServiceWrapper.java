@@ -55,6 +55,8 @@ public abstract class OsgiServiceWrapper implements ServiceListener
     private void unregisterService(ServiceReference serviceReference)
     {
         doUnregisterService(serviceReference);
+
+        bundleContext.ungetService(serviceReference);
     }
 
     protected abstract void doUnregisterService(ServiceReference serviceReference);

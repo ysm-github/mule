@@ -44,7 +44,6 @@ public class OsgiServiceRegistry extends OsgiServiceWrapper implements ServiceRe
     {
         final Object service = bundleContext.getService(serviceReference);
         providers.remove(service);
-        bundleContext.ungetService(serviceReference);
     }
 
     @Override

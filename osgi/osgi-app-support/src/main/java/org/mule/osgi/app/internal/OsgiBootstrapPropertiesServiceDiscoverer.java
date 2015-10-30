@@ -43,7 +43,6 @@ public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper
     {
         BootstrapPropertiesService bootstrapPropertiesService = (BootstrapPropertiesService) bundleContext.getService(serviceReference);
         services.remove(bootstrapPropertiesService);
-        bundleContext.ungetService(serviceReference);
     }
 
     @Override
