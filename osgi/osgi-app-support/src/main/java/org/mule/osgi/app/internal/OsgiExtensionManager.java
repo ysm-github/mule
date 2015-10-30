@@ -9,7 +9,7 @@ package org.mule.osgi.app.internal;
 
 import org.mule.extension.api.ExtensionManager;
 import org.mule.extension.api.introspection.ExtensionModel;
-import org.mule.osgi.OsgiServiceWrapper;
+import org.mule.osgi.support.OsgiServiceWrapper;
 
 import java.util.Collection;
 

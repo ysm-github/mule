@@ -29,7 +29,8 @@
     <modules>
         <module>integration-tests</module>
         <module>features</module>
-        <module>app-support</module>
+        <module>osgi-support</module>
+        <module>osgi-app-support</module>
         <module>distribution</module>
         <module>sample-app</module>
     </modules>

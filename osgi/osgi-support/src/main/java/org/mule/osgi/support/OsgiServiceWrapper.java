@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi;
+package org.mule.osgi.support;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
@@ -18,7 +18,6 @@ import org.osgi.framework.ServiceReference;
 public abstract class OsgiServiceWrapper implements ServiceListener
 {
 
-    //TODO(pablo.kraan): OSGi - move these classes to core and refactor to remove duplication
     protected final BundleContext bundleContext;
 
     public OsgiServiceWrapper(BundleContext bundleContext)

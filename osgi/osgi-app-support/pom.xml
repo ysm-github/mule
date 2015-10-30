@@ -54,6 +54,11 @@
             <artifactId>mule-module-extensions-support</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mule.osgi</groupId>
+            <artifactId>mule-osgi-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
 

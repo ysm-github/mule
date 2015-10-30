@@ -11,7 +11,7 @@ import org.mule.api.MuleContext;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.config.MuleConfiguration;
 import org.mule.config.PropertiesMuleConfigurationFactory;
-import org.mule.config.bootstrap.OsgiBootstrapPropertiesServiceDiscoverer;
+import org.mule.osgi.app.internal.OsgiBootstrapPropertiesServiceDiscoverer;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;

@@ -105,6 +105,7 @@
     <feature name="mule-full" version="${project.version}">
         <feature>mule-http-connector</feature>
         <feature>mule-extension-validation</feature>
+        <bundle>mvn:org.mule.osgi/mule-osgi-support/4.0-SNAPSHOT/jar</bundle>
         <bundle>mvn:org.mule.osgi/mule-osgi-app-support/4.0-SNAPSHOT/jar</bundle>
     </feature>
 </features>

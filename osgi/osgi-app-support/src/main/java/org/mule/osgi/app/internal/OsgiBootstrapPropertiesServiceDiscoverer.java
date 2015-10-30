@@ -5,9 +5,11 @@
  * LICENSE.txt file.
  */
 
-package org.mule.config.bootstrap;
+package org.mule.osgi.app.internal;
 
-import org.mule.osgi.OsgiServiceWrapper;
+import org.mule.config.bootstrap.BootstrapPropertiesService;
+import org.mule.config.bootstrap.BootstrapPropertiesServiceDiscoverer;
+import org.mule.osgi.support.OsgiServiceWrapper;
 
 import java.util.Collection;
 import java.util.Collections;

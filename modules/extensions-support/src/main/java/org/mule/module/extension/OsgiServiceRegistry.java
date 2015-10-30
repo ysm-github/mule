@@ -8,7 +8,7 @@ package org.mule.module.extension;
 
 import org.mule.api.registry.ServiceRegistry;
 import org.mule.extension.api.introspection.declaration.spi.ModelEnricher;
-import org.mule.osgi.OsgiServiceWrapper;
+import org.mule.osgi.support.OsgiServiceWrapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +42,9 @@ public class OsgiServiceRegistry extends OsgiServiceWrapper implements ServiceRe
     @Override
     protected void doUnregisterService(ServiceReference serviceReference)
     {
-        //TODO(pablo.kraan): OSGi - unregister services
+        final Object service = bundleContext.getService(serviceReference);
+        providers.remove(service);
+        bundleContext.ungetService(serviceReference);
     }
 
     @Override
