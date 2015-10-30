@@ -10,9 +10,9 @@
         <version>4.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mule-osgi-sample-app</artifactId>
+    <artifactId>mule-osgi-app-support</artifactId>
     <packaging>bundle</packaging>
-    <name>Sample Application</name>
+    <name>OSGi Application Support</name>
 
     <build>
         <plugins>
@@ -23,8 +23,10 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>org.mule.osgi.app.MuleApplicationActivator</Bundle-Activator>
-                        <DynamicImport-Package>*</DynamicImport-Package>
+                        <!--<Bundle-Activator>org.mule.osgi.sampleapp.MuleApplicationActivator</Bundle-Activator>-->
+                        <!--<Connector-Name>Hello</Connector-Name>-->
+                        <!--<Connector-Version>${project.version}</Connector-Version>-->
+                        <Package-Export>org.mule.osgi.app</Package-Export>
                     </instructions>
                 </configuration>
             </plugin>
@@ -37,7 +39,6 @@
             <artifactId>org.osgi.core</artifactId>
             <version>5.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.mule</groupId>
             <artifactId>mule-core</artifactId>
@@ -49,24 +50,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mule.osgi</groupId>
-            <artifactId>mule-osgi-app-support</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-validation</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.transports</groupId>
-            <artifactId>mule-transport-http</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-http</artifactId>
+            <artifactId>mule-module-extensions-support</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
+

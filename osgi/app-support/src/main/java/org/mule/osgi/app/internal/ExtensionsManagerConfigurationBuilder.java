@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.sampleapp;
+package org.mule.osgi.app.internal;
 
 import static org.mule.api.lifecycle.LifecycleUtils.initialiseIfNeeded;
 import org.mule.DefaultMuleContext;

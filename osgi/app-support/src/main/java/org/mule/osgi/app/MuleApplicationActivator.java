@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.sampleapp;
+package org.mule.osgi.app;
 
 import org.mule.api.MuleContext;
 import org.mule.api.config.ConfigurationBuilder;
@@ -16,6 +16,7 @@ import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.module.extension.internal.manager.DefaultExtensionManager;
+import org.mule.osgi.app.internal.ExtensionsManagerConfigurationBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ import org.osgi.framework.BundleContext;
 public class MuleApplicationActivator implements BundleActivator
 {
 
-    //TODO(pablo.kraan): OSGi - move this class to another package/module
     private MuleContext muleContext;
 
     @Override
@@ -35,11 +35,6 @@ public class MuleApplicationActivator implements BundleActivator
 
         System.out.println("Starting application:" + bundleContext.getBundle().getSymbolicName());
 
-        //TODO(pablo.kraan): OSGi - setting property to see full exceptions
-        System.setProperty("mule.verbose.exceptions", "true");
-
-        //try
-        //{
         String configResource = "mule-config.xml";
 
         SpringXmlConfigurationBuilder cfgBuilder = new SpringXmlConfigurationBuilder(configResource, bundleContext);
@@ -72,12 +67,6 @@ public class MuleApplicationActivator implements BundleActivator
         muleContext.start();
 
         System.out.println("Application started: " + bundleContext.getBundle().getSymbolicName());
-        //}
-        //catch (Throwable e)
-        //{
-        //    System.out.println("Error starting bundle: " + bundleContext.getBundle().getSymbolicName() + ". " + e.getMessage());
-        //    e.printStackTrace();
-        //}
     }
 
     protected MuleConfiguration createMuleConfiguration(String appConfigurationResource)
