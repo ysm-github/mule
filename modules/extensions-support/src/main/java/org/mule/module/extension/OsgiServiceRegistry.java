@@ -12,13 +12,10 @@ import org.mule.osgi.support.OsgiServiceWrapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
 public class OsgiServiceRegistry extends OsgiServiceWrapper implements ServiceRegistry
@@ -61,51 +58,10 @@ public class OsgiServiceRegistry extends OsgiServiceWrapper implements ServiceRe
 
     public static OsgiServiceRegistry create(BundleContext bundleContext)
     {
-        final OsgiServiceRegistry osgiExtensionManager = new OsgiServiceRegistry(bundleContext);
+        final OsgiServiceRegistry listener = new OsgiServiceRegistry(bundleContext);
 
-        try
-        {
-            List<Class> classes = new LinkedList<>();
-            //classes.add(Describer.class);
-            classes.add(ModelEnricher.class);
+        registerListener(bundleContext, listener, ModelEnricher.class);
 
-            String filter = getClassFilter(classes);
-            bundleContext.addServiceListener(osgiExtensionManager, filter);
-
-            for (Class clazz : classes)
-            {
-                Collection<ServiceReference<Object>> serviceReferences = bundleContext.getServiceReferences(clazz, null);
-
-                for (ServiceReference<Object> serviceReference : serviceReferences)
-                {
-                    osgiExtensionManager.serviceChanged(new ServiceEvent(ServiceEvent.REGISTERED, serviceReference));
-                }
-            }
-        }
-        catch (InvalidSyntaxException e)
-        {
-            throw new IllegalStateException(e);
-        }
-
-        return osgiExtensionManager;
-    }
-
-    private static String getClassFilter(List<Class> classes)
-    {
-        StringBuilder builder = new StringBuilder("(");
-
-        for (Class clazz : classes)
-        {
-            if (builder.length() > 1)
-            {
-                builder.append("|");
-            }
-            builder.append("objectclass=");
-            builder.append(clazz.getName());
-        }
-
-        builder.append(")");
-
-        return builder.toString();
+        return listener;
     }
 }

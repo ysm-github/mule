@@ -7,14 +7,14 @@
 
 package org.mule.osgi.support;
 
+import java.util.Collection;
+
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
-/**
- *
- */
 public abstract class OsgiServiceWrapper implements ServiceListener
 {
 
@@ -57,6 +57,47 @@ public abstract class OsgiServiceWrapper implements ServiceListener
         doUnregisterService(serviceReference);
 
         bundleContext.ungetService(serviceReference);
+    }
+
+    protected static void registerListener(BundleContext bundleContext, ServiceListener listener, Class... trackedClasses)
+    {
+        try
+        {
+            bundleContext.addServiceListener(listener, createFilter(trackedClasses));
+
+            for (Class trackedClass : trackedClasses)
+            {
+                final Collection<ServiceReference> serviceReferences = bundleContext.getServiceReferences(trackedClass, null);
+
+                for (ServiceReference serviceReference : serviceReferences)
+                {
+                    listener.serviceChanged(new ServiceEvent(ServiceEvent.REGISTERED, serviceReference));
+                }
+            }
+        }
+        catch (InvalidSyntaxException e)
+        {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static String createFilter(Class... classes)
+    {
+        StringBuilder builder = new StringBuilder("(");
+
+        for (Class clazz : classes)
+        {
+            if (builder.length() > 1)
+            {
+                builder.append("|");
+            }
+            builder.append("objectclass=");
+            builder.append(clazz.getName());
+        }
+
+        builder.append(")");
+
+        return builder.toString();
     }
 
     protected abstract void doUnregisterService(ServiceReference serviceReference);

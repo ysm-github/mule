@@ -11,14 +11,11 @@ import org.mule.config.bootstrap.BootstrapPropertiesService;
 import org.mule.config.bootstrap.BootstrapPropertiesServiceDiscoverer;
 import org.mule.osgi.support.OsgiServiceWrapper;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
 public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper implements BootstrapPropertiesServiceDiscoverer
@@ -53,25 +50,10 @@ public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper
 
     public static OsgiBootstrapPropertiesServiceDiscoverer create(BundleContext bundleContext)
     {
-        final OsgiBootstrapPropertiesServiceDiscoverer propertiesServiceDiscoverer= new OsgiBootstrapPropertiesServiceDiscoverer(bundleContext);
+        final OsgiBootstrapPropertiesServiceDiscoverer listener = new OsgiBootstrapPropertiesServiceDiscoverer(bundleContext);
 
-        try
-        {
-            String filter = "(objectclass=" + BootstrapPropertiesService.class.getName() + ")";
-            bundleContext.addServiceListener(propertiesServiceDiscoverer, filter);
+        registerListener(bundleContext, listener, BootstrapPropertiesService.class);
 
-            Collection<ServiceReference<BootstrapPropertiesService>> serviceReferences = bundleContext.getServiceReferences(BootstrapPropertiesService.class, null);
-
-            for (ServiceReference<BootstrapPropertiesService> serviceReference : serviceReferences)
-            {
-                propertiesServiceDiscoverer.serviceChanged(new ServiceEvent(ServiceEvent.REGISTERED, serviceReference));
-            }
-        }
-        catch (InvalidSyntaxException e)
-        {
-            throw new IllegalStateException(e);
-        }
-
-        return propertiesServiceDiscoverer;
+        return listener;
     }
 }

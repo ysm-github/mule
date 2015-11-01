@@ -11,11 +11,7 @@ import org.mule.extension.api.ExtensionManager;
 import org.mule.extension.api.introspection.ExtensionModel;
 import org.mule.osgi.support.OsgiServiceWrapper;
 
-import java.util.Collection;
-
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
 public class OsgiExtensionManager extends OsgiServiceWrapper
@@ -44,25 +40,10 @@ public class OsgiExtensionManager extends OsgiServiceWrapper
 
     public static OsgiExtensionManager create(BundleContext bundleContext, ExtensionManager extensionManager)
     {
-        final OsgiExtensionManager osgiExtensionManager = new OsgiExtensionManager(bundleContext, extensionManager);
+        final OsgiExtensionManager listener = new OsgiExtensionManager(bundleContext, extensionManager);
 
-        try
-        {
-            String filter = "(objectclass=" + ExtensionModel.class.getName() + ")";
-            bundleContext.addServiceListener(osgiExtensionManager, filter);
+        registerListener(bundleContext, listener,  ExtensionModel.class);
 
-            Collection<ServiceReference<ExtensionModel>> serviceReferences = bundleContext.getServiceReferences(ExtensionModel.class, null);
-
-            for (ServiceReference<ExtensionModel> serviceReference : serviceReferences)
-            {
-                osgiExtensionManager.serviceChanged(new ServiceEvent(ServiceEvent.REGISTERED, serviceReference));
-            }
-        }
-        catch (InvalidSyntaxException e)
-        {
-            throw new IllegalStateException(e);
-        }
-
-        return osgiExtensionManager;
+        return listener;
     }
 }
