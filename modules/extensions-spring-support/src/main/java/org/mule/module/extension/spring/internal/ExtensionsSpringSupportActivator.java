@@ -15,20 +15,26 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class ExtensionsSpringSupportActivator implements BundleActivator
 {
+
+    private ServiceRegistration<ModelEnricher> registeredService;
 
     @Override
     public void start(BundleContext bundleContext) throws Exception
     {
         Dictionary<String, String> serviceProperties = new Hashtable<>();
-        bundleContext.registerService(ModelEnricher.class, new XmlModelEnricher(), serviceProperties);
+        registeredService = bundleContext.registerService(ModelEnricher.class, new XmlModelEnricher(), serviceProperties);
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
-        //TODO(pablo.kraan): OSGi - must unregister the registered service
+        if (registeredService != null)
+        {
+            registeredService.unregister();
+        }
     }
 }

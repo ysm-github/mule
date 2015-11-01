@@ -35,7 +35,7 @@ public class BootstrapPropertiesServiceTracker implements Initialisable, Disposa
     {
         if (registeredService != null)
         {
-            bundleContext.ungetService(registeredService.getReference());
+            registeredService.unregister();
         }
     }
 

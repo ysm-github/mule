@@ -43,6 +43,7 @@ public class ExtensionActivator implements BundleActivator
             Dictionary<String, String> serviceProperties = new Hashtable<>();
             serviceProperties.put("EXTENSION", discoveredExtensionModel.getName());
             serviceProperties.put("VERSION", discoveredExtensionModel.getVersion());
+
             registeredExtensionModels.add(bundleContext.registerService(ExtensionModel.class.getName(), discoveredExtensionModel, serviceProperties));
         }
     }
@@ -50,6 +51,6 @@ public class ExtensionActivator implements BundleActivator
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
-
+        registeredExtensionModels.forEach(org.osgi.framework.ServiceRegistration::unregister);
     }
 }
