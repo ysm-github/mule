@@ -7,7 +7,7 @@
 
 package org.mule.module.http.internal;
 
-import org.mule.config.bootstrap.BootstrapPropertiesServiceTracker;
+import org.mule.osgi.support.BootstrapPropertiesServiceTracker;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

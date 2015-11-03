@@ -5,11 +5,14 @@
  * LICENSE.txt file.
  */
 
-package org.mule.config.bootstrap;
+package org.mule.osgi.support;
 
 import org.mule.api.lifecycle.Disposable;
 import org.mule.api.lifecycle.Initialisable;
 import org.mule.api.lifecycle.InitialisationException;
+import org.mule.config.bootstrap.BootstrapPropertiesService;
+import org.mule.config.bootstrap.ClassPathRegistryBootstrapDiscoverer;
+import org.mule.config.bootstrap.MuleBootstrapPropertiesService;
 
 import java.io.IOException;
 import java.net.URL;
