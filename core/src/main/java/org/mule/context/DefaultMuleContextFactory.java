@@ -26,8 +26,6 @@ import java.util.Properties;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * Default implementation that uses {@link DefaultMuleContextBuilder} to build new
@@ -39,8 +37,6 @@ public class DefaultMuleContextFactory implements MuleContextFactory
     protected static final Log logger = LogFactory.getLog(DefaultMuleContextBuilder.class);
 
     private List<MuleContextListener> listeners = new LinkedList<MuleContextListener>();
-
-    private BundleContext bundleContext;
 
     /**
      * Use default ConfigurationBuilder, default MuleContextBuilder
@@ -212,7 +208,10 @@ public class DefaultMuleContextFactory implements MuleContextFactory
             throws InitialisationException, ConfigurationException
     {
         // Create muleContext instance and set it in MuleServer
-        MuleContext muleContext = buildMuleContext(muleContextBuilder);
+        MuleContext muleContext1 = muleContextBuilder.buildMuleContext();
+
+
+        MuleContext muleContext = muleContext1;
 
         notifyMuleContextCreation(muleContext);
 
@@ -244,27 +243,6 @@ public class DefaultMuleContextFactory implements MuleContextFactory
             }
             throw e;
         }
-        return muleContext;
-    }
-
-    protected MuleContext buildMuleContext(MuleContextBuilder muleContextBuilder)
-    {
-        MuleContext muleContext = muleContextBuilder.buildMuleContext();
-
-        //TODO(pablo.kraan): OSGi - kind of temporarily hack to maintain working other parts of mule
-        ClassLoader bundleClassLoader;
-        if (bundleContext == null)
-        {
-            bundleClassLoader = this.getClass().getClassLoader();
-        }
-        else
-        {
-            BundleWiring bundleWiring = bundleContext.getBundle().adapt(BundleWiring.class);
-            bundleClassLoader = bundleWiring.getClassLoader();
-        }
-
-        muleContext.setExecutionClassLoader(bundleClassLoader);
-
         return muleContext;
     }
 
@@ -308,10 +286,5 @@ public class DefaultMuleContextFactory implements MuleContextFactory
     {
 
         public abstract void configure(MuleContext muleContext) throws ConfigurationException;
-    }
-
-    public void setBundleContext(BundleContext bundleContext)
-    {
-        this.bundleContext = bundleContext;
     }
 }

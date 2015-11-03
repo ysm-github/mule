@@ -11,18 +11,19 @@ import org.mule.api.MuleContext;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.config.MuleConfiguration;
 import org.mule.config.PropertiesMuleConfigurationFactory;
-import org.mule.osgi.app.internal.OsgiBootstrapPropertiesServiceDiscoverer;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.module.extension.internal.manager.DefaultExtensionManager;
 import org.mule.osgi.app.internal.ExtensionsManagerConfigurationBuilder;
+import org.mule.osgi.app.internal.OsgiBootstrapPropertiesServiceDiscoverer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.wiring.BundleWiring;
 
 public class MuleApplicationActivator implements BundleActivator
 {
@@ -51,21 +52,28 @@ public class MuleApplicationActivator implements BundleActivator
         //addStartupPropertiesConfigBuilder(configBuilders);
         configBuilders.add(cfgBuilder);
 
-        //TODO(pablo.kraan): OSGi - need to register all the service wrappers to registering services (like TransportDescriptorServiceWrapper)
         MuleConfiguration configuration = createMuleConfiguration(configResource);
 
         DefaultMuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
         contextBuilder.setMuleConfiguration(configuration);
+        contextBuilder.setExecutionClassLoader(getBundleClassLoader(bundleContext));
         contextBuilder.setBootstrapPropertiesServiceDiscoverer(OsgiBootstrapPropertiesServiceDiscoverer.create(bundleContext));
 
         DefaultMuleContextFactory contextFactory = new DefaultMuleContextFactory();
-        contextFactory.setBundleContext(bundleContext);
 
         muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
 
         muleContext.start();
 
         System.out.println("Application started: " + bundleContext.getBundle().getSymbolicName());
+    }
+
+    //TODO(pablo.kraan): OSGi - move this method to some utility class
+    private ClassLoader getBundleClassLoader(BundleContext bundleContext)
+    {
+        BundleWiring bundleWiring = bundleContext.getBundle().adapt(BundleWiring.class);
+
+        return bundleWiring.getClassLoader();
     }
 
     protected MuleConfiguration createMuleConfiguration(String appConfigurationResource)
