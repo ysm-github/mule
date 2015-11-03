@@ -12,8 +12,6 @@ import org.mule.api.registry.Registry;
 
 import java.util.Map;
 
-import org.osgi.framework.BundleContext;
-
 /**
  * This simple ConfgurationBuilder implementation. This is useful for registering any
  * Map of objects with the {@link Registry} via the {@link ConfigurationBuilder}
@@ -31,7 +29,7 @@ public class SimpleConfigurationBuilder extends AbstractConfigurationBuilder
         this.objects = objects;
     }
 
-    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext) throws Exception
     {
         if (objects != null && objects.size() > 0)
         {

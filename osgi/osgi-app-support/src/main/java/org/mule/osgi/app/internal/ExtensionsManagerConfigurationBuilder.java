@@ -27,15 +27,17 @@ public class ExtensionsManagerConfigurationBuilder extends AbstractConfiguration
 {
 
     private final DefaultExtensionManager extensionManager;
+    private final BundleContext bundleContext;
     private OsgiExtensionManager osgiExtensionManager;
 
-    public ExtensionsManagerConfigurationBuilder(DefaultExtensionManager extensionManager)
+    public ExtensionsManagerConfigurationBuilder(DefaultExtensionManager extensionManager, BundleContext bundleContext)
     {
         this.extensionManager = extensionManager;
+        this.bundleContext = bundleContext;
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext) throws Exception
     {
         //TODO(pablo.kraan): OSGi - probably can avoid passing the bundleContext in this method if can be injected in the constructor of some configuration builder
         ((DefaultMuleContext) muleContext).setExtensionManager(extensionManager);

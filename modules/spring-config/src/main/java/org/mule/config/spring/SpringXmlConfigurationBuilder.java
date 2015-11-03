@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.wiring.BundleWiring;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -36,6 +37,7 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     public static final String MULE_MINIMAL_SPRING_CONFIG = "minimal-mule-config.xml";
     public static final String MULE_REGISTRY_BOOTSTRAP_SPRING_CONFIG = "registry-bootstrap-mule-config.xml";
     public static final String MULE_DOMAIN_REGISTRY_BOOTSTRAP_SPRING_CONFIG = "registry-bootstrap-mule-domain-config.xml";
+    private final BundleContext bundleContext;
 
     /**
      * Prepend "default-mule-config.xml" to the list of config resources.
@@ -48,25 +50,45 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     protected ApplicationContext domainContext;
     protected ApplicationContext parentContext;
     protected ApplicationContext applicationContext;
-    private final ClassLoader classLoader = this.getClass().getClassLoader();
 
     public SpringXmlConfigurationBuilder(String[] configResources) throws ConfigurationException
     {
+        //TODO(pablo.kraan): OSGi - remove this constructor
         super(configResources);
+        bundleContext = null;
     }
 
     public SpringXmlConfigurationBuilder(String configResources, BundleContext bundleContext) throws ConfigurationException
     {
-        super(configResources, bundleContext);
+        super(configResources, getClassLoader(bundleContext));
+        this.bundleContext = bundleContext;
     }
 
     public SpringXmlConfigurationBuilder(ConfigResource[] configResources)
     {
+        //TODO(pablo.kraan): OSGi - remove this constructor
         super(configResources);
+        bundleContext = null;
+    }
+
+
+    private static ClassLoader getClassLoader(BundleContext bundleContext)
+    {
+        if (bundleContext == null)
+        {
+            return SpringXmlConfigurationBuilder.class.getClassLoader();
+        }
+        else
+        {
+            BundleWiring bundleWiring = bundleContext.getBundle().adapt(BundleWiring.class);
+            ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
+
+            return bundleClassLoader;
+        }
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext) throws Exception
     {
         ClassLoader springModuleClassLoader = this.getClass().getClassLoader();
         List<ConfigResource> allResources = new ArrayList<>();

@@ -101,7 +101,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void initialiseOnStarted() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         ctx.start();
 
         // Attempt to initialise once started should fail!
@@ -112,7 +112,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void initialiseOnStopped() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         ctx.start();
         ctx.stop();
 
@@ -124,7 +124,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void initialiseOnDisposed() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         ctx.start();
         ctx.stop();
         ctx.dispose();
@@ -147,7 +147,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     {
         ctx.initialise();
 
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         NotificationListener listener = new NotificationListener();
         ctx.registerListener(listener);
         ctx.start();
@@ -167,7 +167,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     {
         ctx.initialise();
 
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         NotificationListener listener = new NotificationListener();
         ctx.registerListener(listener);
         ctx.start();
@@ -183,7 +183,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void startOnStopped() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         ctx.start();
 
         ctx.stop();
@@ -292,7 +292,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void disposeOnStarted() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         final NotificationListener listener = new NotificationListener();
         ctx.registerListener(listener);
 
@@ -315,7 +315,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void disposeOnStopped() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
         ctx.start();
         ctx.stop();
         ctx.dispose();
@@ -342,7 +342,7 @@ public class MuleContextLifecycleTestCase extends AbstractMuleTestCase
     public void notificationHasMuleContextRef() throws Exception
     {
         ctx.initialise();
-        new DefaultsConfigurationBuilder().configure(ctx, null);
+        new DefaultsConfigurationBuilder().configure(ctx);
 
         final AtomicReference<MuleContext> contextFromNotification = new AtomicReference<MuleContext>();
         final AtomicReference<String> resourceId = new AtomicReference<String>();

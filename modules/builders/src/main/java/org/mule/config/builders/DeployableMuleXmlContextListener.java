@@ -74,7 +74,7 @@ public class DeployableMuleXmlContextListener implements ServletContextListener
                 configurationBuilder.setParentContext(parentContext);
             }
             //TODO(pablo.kraan): OSGi - set the bundleContext
-            configurationBuilder.configure(muleContext, null);
+            configurationBuilder.configure(muleContext);
         }
         catch (MuleException ex)
         {

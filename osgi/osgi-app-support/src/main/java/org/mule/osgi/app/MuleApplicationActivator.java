@@ -43,7 +43,7 @@ public class MuleApplicationActivator implements BundleActivator
 
         //TODO(pablo.kraan): add the rest of the original configuration builders
         List<ConfigurationBuilder> configBuilders = new ArrayList<ConfigurationBuilder>(1);
-        configBuilders.add(new ExtensionsManagerConfigurationBuilder(extensionManager));
+        configBuilders.add(new ExtensionsManagerConfigurationBuilder(extensionManager, bundleContext));
 
         // need to add the annotations config builder before Spring so we can use Mule
         // annotations in Spring

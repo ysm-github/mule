@@ -70,14 +70,14 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     }
 
     @Override
-    protected void doConfigure(MuleContext muleContext, BundleContext bundleContext) throws Exception
+    protected void doConfigure(MuleContext muleContext) throws Exception
     {
         if (getParentContext() == null)
         {
             setParentContext(loadParentContext(context));
         }
 
-        super.doConfigure(muleContext, bundleContext);
+        super.doConfigure(muleContext);
     }
 
     protected ConfigResource[] loadConfigResources(String[] configs) throws ConfigurationException
