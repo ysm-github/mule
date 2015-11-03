@@ -28,7 +28,6 @@ public class ExtensionsManagerConfigurationBuilder extends AbstractConfiguration
 
     private final DefaultExtensionManager extensionManager;
     private final BundleContext bundleContext;
-    private OsgiExtensionManager osgiExtensionManager;
 
     public ExtensionsManagerConfigurationBuilder(DefaultExtensionManager extensionManager, BundleContext bundleContext)
     {
@@ -41,6 +40,6 @@ public class ExtensionsManagerConfigurationBuilder extends AbstractConfiguration
     {
         ((DefaultMuleContext) muleContext).setExtensionManager(extensionManager);
         initialiseIfNeeded(extensionManager, muleContext);
-        osgiExtensionManager = OsgiExtensionManager.create(bundleContext, extensionManager);
+        OsgiExtensionManager.create(bundleContext, extensionManager);
     }
 }
