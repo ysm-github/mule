@@ -6,7 +6,6 @@
  */
 package org.mule.context;
 
-import org.mule.DefaultMuleContext;
 import org.mule.api.MuleContext;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.config.ConfigurationException;
@@ -16,7 +15,6 @@ import org.mule.api.context.MuleContextFactory;
 import org.mule.api.context.notification.MuleContextListener;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.config.DefaultMuleConfiguration;
-import org.mule.config.bootstrap.BootstrapPropertiesServiceDiscoverer;
 import org.mule.config.builders.AutoConfigurationBuilder;
 import org.mule.config.builders.DefaultsConfigurationBuilder;
 import org.mule.config.builders.SimpleConfigurationBuilder;
@@ -43,7 +41,6 @@ public class DefaultMuleContextFactory implements MuleContextFactory
     private List<MuleContextListener> listeners = new LinkedList<MuleContextListener>();
 
     private BundleContext bundleContext;
-    private BootstrapPropertiesServiceDiscoverer bootstrapDiscoverer;
 
     /**
      * Use default ConfigurationBuilder, default MuleContextBuilder
@@ -267,11 +264,6 @@ public class DefaultMuleContextFactory implements MuleContextFactory
         }
 
         muleContext.setExecutionClassLoader(bundleClassLoader);
-        //TODO(pablo.kraan): OSGi - avoid the need of using a downcast
-        if (muleContext instanceof DefaultMuleContext)
-        {
-            ((DefaultMuleContext) muleContext).setBootstrapPropertiesServiceDiscoverer(bootstrapDiscoverer);
-        }
 
         return muleContext;
     }
@@ -310,11 +302,6 @@ public class DefaultMuleContextFactory implements MuleContextFactory
         {
             listener.onConfiguration(context);
         }
-    }
-
-    public void setBootstrapDiscoverer(BootstrapPropertiesServiceDiscoverer bootstrapDiscoverer)
-    {
-        this.bootstrapDiscoverer = bootstrapDiscoverer;
     }
 
     private abstract class ContextConfigurator

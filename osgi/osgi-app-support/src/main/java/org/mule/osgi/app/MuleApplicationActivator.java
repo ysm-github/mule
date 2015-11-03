@@ -56,11 +56,10 @@ public class MuleApplicationActivator implements BundleActivator
 
         DefaultMuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
         contextBuilder.setMuleConfiguration(configuration);
+        contextBuilder.setBootstrapPropertiesServiceDiscoverer(OsgiBootstrapPropertiesServiceDiscoverer.create(bundleContext));
 
         DefaultMuleContextFactory contextFactory = new DefaultMuleContextFactory();
         contextFactory.setBundleContext(bundleContext);
-        contextFactory.setBootstrapDiscoverer(OsgiBootstrapPropertiesServiceDiscoverer.create(bundleContext));
-
 
         muleContext = contextFactory.createMuleContext(configBuilders, contextBuilder);
 
