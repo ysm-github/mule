@@ -207,11 +207,7 @@ public class DefaultMuleContextFactory implements MuleContextFactory
     protected MuleContext doCreateMuleContext(MuleContextBuilder muleContextBuilder, ContextConfigurator configurator)
             throws InitialisationException, ConfigurationException
     {
-        // Create muleContext instance and set it in MuleServer
-        MuleContext muleContext1 = muleContextBuilder.buildMuleContext();
-
-
-        MuleContext muleContext = muleContext1;
+        MuleContext muleContext = muleContextBuilder.buildMuleContext();
 
         notifyMuleContextCreation(muleContext);
 
