@@ -34,6 +34,8 @@ import org.ops4j.pax.exam.spi.reactors.PerSuite;
 public abstract class AbstractOsgiTestCase
 {
 
+    public static final int DEBUG_SYSTEM_TIMEOUT = 60000;
+
     @Configuration
     public Option[] config() throws URISyntaxException
     {
@@ -44,7 +46,7 @@ public abstract class AbstractOsgiTestCase
                         .useDeployFolder(false),
                 when(isDebugEnabled() ).useOptions(
                         vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" ),
-                        systemTimeout(0)),
+                        systemTimeout(DEBUG_SYSTEM_TIMEOUT)),
                 keepRuntimeFolder(),
                 //systemProperty("pax.exam.osgi.unresolved.fail").value("true"),
                 logLevel(LogLevelOption.LogLevel.INFO),
