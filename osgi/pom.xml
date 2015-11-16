@@ -24,10 +24,13 @@
 
         <osgi.package.exports>!*</osgi.package.exports>
         <osgi.package.imports>*</osgi.package.imports>
+        <felix.version>4.4.1</felix.version>
     </properties>
 
     <modules>
+        <module>osgi-container</module>
         <module>integration-tests</module>
+        <module>felix-integration-tests</module>
         <module>features</module>
         <module>osgi-support</module>
         <module>osgi-app-support</module>
