@@ -123,34 +123,22 @@
     </build>
 
     <dependencies>
-        <!-- Mule Core -->
         <dependency>
-            <groupId>org.mule</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>5.0.0</version>
         </dependency>
-        <!-- Include all Mule Modules -->
+        <!--<dependency>-->
+            <!--<groupId>org.osgi</groupId>-->
+            <!--<artifactId>org.osgi.compendium</artifactId>-->
+            <!--<version>4.3.1</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-modules-all</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>xalan</groupId>
-                    <artifactId>xalan</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.framework</artifactId>
+            <version>${felix.version}</version>
         </dependency>
-
-
-        <!-- Including Database connector which is not inside Mule code -->
-        <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-db</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- Modules for standalone container -->
         <dependency>
             <groupId>org.mule.modules</groupId>
@@ -158,97 +146,21 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-launcher</artifactId>
+            <groupId>org.mule.osgi</groupId>
+            <artifactId>mule-osgi-container</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.osgi</groupId>
+            <artifactId>mule-osgi-support</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Include all Mule Transports -->
+        <!--Groovy-->
         <dependency>
-            <groupId>org.mule.transports</groupId>
-            <artifactId>mule-transports-all</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-
-        <!--
-            We need to register the endorsed XML jars as dependencies of the
-            distribution, so that they can be referenced in the assembly as in/excludes.
-        -->
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.3.04</version>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xml-serializer</artifactId>
-            <version>2.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-            <version>${xalanVersion}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xalan</groupId>
-                    <artifactId>serializer</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- make sure we package the test frameworks, too -->
-        <dependency>
-            <groupId>org.mule.tests</groupId>
-            <artifactId>mule-tests-functional</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mockito</groupId>
-                    <artifactId>mockito-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-        </dependency>
-
-        <!-- include the ant tasks, so users can point to them, in lib/opt -->
-        <dependency>
-            <groupId>org.mule.tools</groupId>
-            <artifactId>mule-tools-anttasks</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-        </dependency>
-
-        <!-- re-add our ant dependency as it gets transitively excluded by jetty's jsp support -->
-        <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>${antVersion}</version>
-
-        </dependency>
-        <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>serializer</artifactId>
-            <version>2.7.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- add aspectj weaver dependency that was removed from spring-security-3.1 -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <classifier>indy</classifier>
         </dependency>
 
     </dependencies>

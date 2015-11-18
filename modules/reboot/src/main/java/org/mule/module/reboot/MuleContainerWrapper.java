@@ -15,7 +15,7 @@ import org.tanukisoftware.wrapper.WrapperManager;
 
 public class MuleContainerWrapper implements WrapperListener
 {
-    protected static final String CLASSNAME_MULE_CONTAINER = "org.mule.module.launcher.MuleContainer";
+    protected static final String CLASSNAME_MULE_CONTAINER = "org.mule.osgi.container.MuleOsgiContainer";
 
     /**
      * We can't reference MuleContainer class literal here, as it will fail to resolve at runtime.

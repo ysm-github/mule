@@ -189,6 +189,7 @@
         <cxfVersion>2.7.15</cxfVersion>
         <derbyVersion>10.11.1.1</derbyVersion>
         <dom4jVersion>1.6.1</dom4jVersion>
+        <felix.version>4.4.1</felix.version>
         <flatpackVersion>3.1.1</flatpackVersion>
         <geronimoSpecsJ2eeVersion>2.0.0</geronimoSpecsJ2eeVersion>
         <geronimoSpecsJmsVersion>1.1.1</geronimoSpecsJmsVersion>
