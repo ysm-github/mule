@@ -33,6 +33,6 @@ public class BundleInfo
     @Override
     public String toString()
     {
-        return "BundleInfo{ location, startLevel= " + startLevel + " }";
+        return "BundleInfo{ " + location + ", startLevel= " + startLevel + " }";
     }
 }
