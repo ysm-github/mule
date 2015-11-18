@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -32,6 +31,8 @@ import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.FrameworkWiring;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MuleOsgiContainer
 {
@@ -39,7 +40,8 @@ public class MuleOsgiContainer
     public static final boolean SHOW_BUNDLE_STATUSES = isShowBundleStatuses();
     public static final boolean SHOW_BUNDLE_DEPENDENCIES = isShowBundleDependencies();
 
-    private java.util.logging.Logger LOGGER = Logger.getLogger(this.getClass().getName());
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(MuleOsgiContainer.class);
+    //private java.util.logging.Logger LOGGER = Logger.getLogger(this.getClass().getName());
 
     private static Framework framework = null;
     private final String[] args;
@@ -133,7 +135,7 @@ public class MuleOsgiContainer
         catch (Exception e)
         {
             //TODO(pablo.kraan): OSGi - destroy any acquired resource
-            container.LOGGER.log(Level.SEVERE, "Cannot start Mule container", e);
+            container.LOGGER.error("Cannot start Mule container", e);
         }
         //// Register a shutdown hook to make sure the framework is
         //// cleanly shutdown when the VM exits.

@@ -98,15 +98,15 @@
                 <include>tanukisoft:wrapper</include>
                 <include>org.apache.felix:org.apache.felix.framework</include>
                 <include>org.osgi:org.osgi.core</include>
-                <!--<include>org.slf4j:slf4j-api</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-api</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-core</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-slf4j-impl</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-1.2-api</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-jcl</include>-->
-                <!--<include>org.apache.logging.log4j:log4j-jul</include>-->
-                <!--<include>org.slf4j:jcl-over-slf4j</include>-->
-                <!--<include>com.lmax:disruptor</include>-->
+                <include>org.slf4j:slf4j-api</include>
+                <include>org.apache.logging.log4j:log4j-api</include>
+                <include>org.apache.logging.log4j:log4j-core</include>
+                <include>org.apache.logging.log4j:log4j-slf4j-impl</include>
+                <include>org.apache.logging.log4j:log4j-1.2-api</include>
+                <include>org.apache.logging.log4j:log4j-jcl</include>
+                <include>org.apache.logging.log4j:log4j-jul</include>
+                <include>org.slf4j:jcl-over-slf4j</include>
+                <include>com.lmax:disruptor</include>
             </includes>
         </dependencySet>
 
