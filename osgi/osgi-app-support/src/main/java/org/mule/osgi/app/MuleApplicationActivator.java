@@ -33,8 +33,7 @@ public class MuleApplicationActivator implements BundleActivator
     @Override
     public void start(BundleContext bundleContext) throws Exception
     {
-
-        System.out.println("Starting application:" + bundleContext.getBundle().getSymbolicName());
+        System.out.println("Starting application: " + bundleContext.getBundle().getSymbolicName());
 
         String configResource = "mule-config.xml";
 

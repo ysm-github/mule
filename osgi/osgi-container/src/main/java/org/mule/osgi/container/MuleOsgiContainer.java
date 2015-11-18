@@ -64,6 +64,8 @@ public class MuleOsgiContainer
             Map<String, String> configProperties = new HashMap<>();
             configProperties.put("org.osgi.framework.bsnversion", "multiple");
             configProperties.put("org.osgi.framework.system.packages.extra", "sun.misc");
+            //TODO(pablo.kraan): OSGi - this is needed only if we will use "workspace repository"
+            //configProperties.put("org.ops4j.pax.url.mvn.defaultRepositories", "file:///Users/pablokraan/devel/workspaces/muleFull-4.x2/repository,file:///Users/pablokraan/.m2/repository");
 
             framework = factory.newFramework(configProperties);
 
@@ -77,6 +79,8 @@ public class MuleOsgiContainer
             context.addFrameworkListener(new MuleFrameworkListener(context));
 
             final List<File> mavenRepos = new ArrayList<>();
+            ////TODO(pablo.kraan): OSGi - need to configure repositories
+            //mavenRepos.add(new File("/Users/pablokraan/devel/workspaces/muleFull-4.x2/repository"));
             mavenRepos.add(new File("/Users/pablokraan/.m2/repository"));
 
             final List<BundleInfo> bundles = new ArrayList<>();

@@ -62,7 +62,7 @@ public class FeatureDeployerActivator implements BundleActivator
             }
             catch (BundleException e)
             {
-                LOGGER.error(String.format("Feature '%s' install error on bundle: '$%", featureInfo.getName(), dependency.getLocation()), e);
+                LOGGER.error(String.format("Feature '%s' install error on bundle: '%s'", featureInfo.getName(), dependency.getLocation()), e);
             }
         }
 

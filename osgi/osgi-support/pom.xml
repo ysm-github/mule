@@ -12,7 +12,7 @@
 
     <artifactId>mule-osgi-support</artifactId>
     <packaging>bundle</packaging>
-    <name>OSGi Application Support</name>
+    <name>OSGi Support</name>
 
     <build>
         <plugins>
