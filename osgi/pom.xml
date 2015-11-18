@@ -27,6 +27,7 @@
     </properties>
 
     <modules>
+        <module>feature-deployer</module>
         <module>osgi-container</module>
         <module>integration-tests</module>
         <module>felix-integration-tests</module>

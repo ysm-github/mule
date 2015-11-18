@@ -5,12 +5,11 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.container;
+package org.mule.osgi.feature;
 
-public class BundleInfo
+public class BundleInfo implements Dependency
 {
 
-    //TODO(pablo.kraan): OSGi -remove this class duplication
     private final String location;
     private final int startLevel;
 
@@ -20,19 +19,15 @@ public class BundleInfo
         this.startLevel = startLevel;
     }
 
+    @Override
     public String getLocation()
     {
         return location;
     }
 
+    @Override
     public int getStartLevel()
     {
         return startLevel;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "BundleInfo{ location, startLevel= " + startLevel + " }";
     }
 }

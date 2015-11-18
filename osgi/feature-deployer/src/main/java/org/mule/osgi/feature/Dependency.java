@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.container;
+package org.mule.osgi.feature;
 
 public interface Dependency
 {
