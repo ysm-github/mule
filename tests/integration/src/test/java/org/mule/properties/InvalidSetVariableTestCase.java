@@ -37,6 +37,6 @@ public class InvalidSetVariableTestCase extends AbstractMuleTestCase
     {
         MuleContext context = new DefaultMuleContextFactory().createMuleContext();
         SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(muleConfigPath, null);
-        builder.configure(context);
+        builder.configure(context   );
     }
 }
