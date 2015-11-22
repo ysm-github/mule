@@ -49,6 +49,7 @@ public class MuleCoreFeature extends FeatureInfo
         dependencies.add(new BundleInfo("wrap:mvn:commons-lang/commons-lang/2.4/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:commons-pool/commons-pool/1.6/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:org.jgrapht/jgrapht-jdk1.5/0.7.3/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule/mule-api/1.0.0-SNAPSHOT/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-api/1.0.0-SNAPSHOT/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:org.reflections/reflections/0.9.9/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:org.mule.mvel/mule-mvel2/2.1.9-MULE-007/jar", 30));
@@ -81,6 +82,19 @@ public class MuleCoreFeature extends FeatureInfo
         dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-support/4.0-SNAPSHOT/jar", 30));
 
         // Extensions API
+        //<feature>mule-core</feature>
+        //<feature>mule-spring-config</feature>
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-support/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-spring-support/4.0-SNAPSHOT/jar", 30));
+
+        // Extension Validation
+        //<feature>mule-extension-api</feature>
+        dependencies.add(new BundleInfo("wrap:mvn:commons-digester/commons-digester/1.8/jar", 30));
+        dependencies.add(new BundleInfo("mvn:commons-validator/commons-validator/1.4.0/jar", 30));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-validation/4.0-SNAPSHOT/jar", 30));
+
+        // HTTP Connector
         //<feature>mule-core</feature>
         //<feature>mule-spring-config</feature>
         dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 30));
