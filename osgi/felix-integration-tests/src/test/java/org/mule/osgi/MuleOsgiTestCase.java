@@ -8,7 +8,11 @@
 package org.mule.osgi;
 
 import static org.junit.Assert.fail;
+import static org.ops4j.pax.exam.CoreOptions.frameworkStartLevel;
+import static org.ops4j.pax.exam.CoreOptions.junitBundles;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 
 import javax.inject.Inject;
 
@@ -47,15 +51,37 @@ public class MuleOsgiTestCase
     @Configuration
     public Option[] config()
     {
+        System.out.println("Configuring test...");
         return options(
-                //TODO(pablo.kraan): OSGi - add all the mule dependencies
+                systemPackage("sun.misc"),
+                //systemProperty("log4j.configurationFile")
+                //        .value("file:///Users/pablokraan/devel/workspaces/muleFull-4.x2/mule/osgi/integration-tests/src/test/resources/log4j2.xml"),
+                //.value("file:" + PathUtils.getBaseDir() + "/src/test/resources/log4j.xml"),
+
+                mavenBundle().groupId("com.lmax").artifactId("disruptor").version("3.3.0").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-api").version("2.2").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-core").version("2.2").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-1.2-api").version("2.2").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-slf4j-impl").version("2.2").startLevel(2),
+                mavenBundle().groupId("org.slf4j").artifactId("jcl-over-slf4j").version("1.7.7").startLevel(2),
+                mavenBundle().groupId("org.slf4j").artifactId("slf4j-api").version("1.7.7").startLevel(2),
+                mavenBundle().groupId("commons-logging").artifactId("commons-logging").version("1.2").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-jcl").version("2.2").startLevel(2),
+                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-jul").version("2.2").startLevel(2),
+
+                mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-aether").version("2.4.1").startLevel(3),
+                mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-wrap").version("2.4.1").classifier("uber").startLevel(3),
+
+                mavenBundle().groupId("org.mule.osgi").artifactId("mule-osgi-feature-deployer").version("4.0-SNAPSHOT").startLevel(4),
+                frameworkStartLevel(100),
+                junitBundles()
         );
     }
 
     @Test
     public void startsContainer() throws Exception
     {
-        StringBuilder builder = new StringBuilder("There is at least a non active bundle:\n");
+        StringBuilder builder = new StringBuilder("Bundle status:\n");
         boolean failure = false;
         for (Bundle bundle : bundleContext.getBundles())
         {
@@ -64,13 +90,16 @@ public class MuleOsgiTestCase
             {
                 failure = true;
             }
+            builder.append(bundle.getBundleId() + " ");
             builder.append(isFragment ? "Fragment" : "Bundle");
             builder.append(" - " + getBundleState(bundle.getState()) + " - " + bundle.getBundleId() + " - " + bundle.getSymbolicName() + " - " + bundle.getVersion() + "\n");
         }
 
+        System.out.println(builder.toString());
+
         if (failure)
         {
-            fail(builder.toString());
+            fail("There is at least a non active bundle");
         }
     }
 
