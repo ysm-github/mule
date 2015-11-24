@@ -5,20 +5,22 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi;
+package org.mule.osgi.tck;
 
 import static org.junit.Assert.fail;
 import static org.ops4j.pax.exam.CoreOptions.frameworkStartLevel;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemPackage;
+import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
+import org.ops4j.pax.exam.ConfigurationManager;
+import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.ProbeBuilder;
 import org.ops4j.pax.exam.TestProbeBuilder;
@@ -34,7 +36,7 @@ import org.osgi.framework.Constants;
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
-public class MuleOsgiTestCase
+public abstract class AbstractOsgiFunctionalTestCase
 {
 
     @Inject
@@ -52,8 +54,13 @@ public class MuleOsgiTestCase
     public Option[] config()
     {
         System.out.println("Configuring test...");
-        return options(
+
+        return CoreOptions.options(
                 systemPackage("sun.misc"),
+                //CoreOptions.systemPackage("org.mule.osgi.tck"),
+                systemPackage("org.ops4j.pax.exam.junit"),
+                systemPackage("org.ops4j.pax.exam.spi.reactors"),
+
                 //systemProperty("log4j.configurationFile")
                 //        .value("file:///Users/pablokraan/devel/workspaces/muleFull-4.x2/mule/osgi/integration-tests/src/test/resources/log4j2.xml"),
                 //.value("file:" + PathUtils.getBaseDir() + "/src/test/resources/log4j.xml"),
@@ -74,12 +81,20 @@ public class MuleOsgiTestCase
 
                 mavenBundle().groupId("org.mule.osgi").artifactId("mule-osgi-feature-deployer").version("4.0-SNAPSHOT").startLevel(4),
                 frameworkStartLevel(100),
-                junitBundles()
-        );
+
+                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT"),
+                junitBundles(),
+                systemProperty("pax.exam.logging").value("none")
+                );
     }
 
     @Test
     public void startsContainer() throws Exception
+    {
+        assertStartedBundles();
+    }
+
+    protected void assertStartedBundles()
     {
         StringBuilder builder = new StringBuilder("Bundle status:\n");
         boolean failure = false;

@@ -27,14 +27,15 @@
     </properties>
 
     <modules>
-        <module>feature-deployer</module>
-        <module>osgi-container</module>
-        <module>integration-tests</module>
-        <module>felix-integration-tests</module>
-        <module>features</module>
         <module>osgi-support</module>
         <module>osgi-app-support</module>
-        <module>distribution</module>
         <module>sample-app</module>
+        <module>feature-deployer</module>
+        <module>osgi-container</module>
+        <module>integration-test-tck</module>
+        <module>integration-tests</module>
+        <module>features</module>
+        <module>karaf-distribution</module>
+        <module>karaf-integration-tests</module>
     </modules>
 </project>
