@@ -8,23 +8,32 @@
 package org.mule.osgi.tck;
 
 import static org.junit.Assert.fail;
+import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.frameworkStartLevel;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
-import org.ops4j.pax.exam.ConfigurationManager;
 import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.ProbeBuilder;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.options.DefaultCompositeOption;
+import org.ops4j.pax.exam.options.MavenArtifactProvisionOption;
+import org.ops4j.pax.exam.options.UrlProvisionOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
 import org.osgi.framework.Bundle;
@@ -57,41 +66,52 @@ public abstract class AbstractOsgiFunctionalTestCase
 
         return CoreOptions.options(
                 systemPackage("sun.misc"),
-                //CoreOptions.systemPackage("org.mule.osgi.tck"),
                 systemPackage("org.ops4j.pax.exam.junit"),
                 systemPackage("org.ops4j.pax.exam.spi.reactors"),
 
-                //systemProperty("log4j.configurationFile")
-                //        .value("file:///Users/pablokraan/devel/workspaces/muleFull-4.x2/mule/osgi/integration-tests/src/test/resources/log4j2.xml"),
-                //.value("file:" + PathUtils.getBaseDir() + "/src/test/resources/log4j.xml"),
-
-                mavenBundle().groupId("com.lmax").artifactId("disruptor").version("3.3.0").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-api").version("2.2").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-core").version("2.2").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-1.2-api").version("2.2").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-slf4j-impl").version("2.2").startLevel(2),
-                mavenBundle().groupId("org.slf4j").artifactId("jcl-over-slf4j").version("1.7.7").startLevel(2),
-                mavenBundle().groupId("org.slf4j").artifactId("slf4j-api").version("1.7.7").startLevel(2),
-                mavenBundle().groupId("commons-logging").artifactId("commons-logging").version("1.2").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-jcl").version("2.2").startLevel(2),
-                mavenBundle().groupId("org.apache.logging.log4j").artifactId("log4j-jul").version("2.2").startLevel(2),
-
-                mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-aether").version("2.4.1").startLevel(3),
-                mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-wrap").version("2.4.1").classifier("uber").startLevel(3),
-
-                mavenBundle().groupId("org.mule.osgi").artifactId("mule-osgi-feature-deployer").version("4.0-SNAPSHOT").startLevel(4),
-                frameworkStartLevel(100),
+                getStartupBundles(),
 
                 mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT"),
+
+                frameworkStartLevel(100),
+
                 junitBundles(),
                 systemProperty("pax.exam.logging").value("none")
-                );
+        );
     }
 
-    @Test
-    public void startsContainer() throws Exception
+    public static final String STARTUP_BUNDLES_FILE = "startupBundles.properties";
+
+    private Option getStartupBundles()
     {
-        assertStartedBundles();
+        final Properties properties = new Properties();
+        //TODO(pablo.kraan): OSGi - this file must be read from the MULE folder
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(STARTUP_BUNDLES_FILE))
+        {
+            properties.load(inputStream);
+        }
+        catch (IOException e)
+        {
+            throw new IllegalStateException(String.format("Unable to open %s file", STARTUP_BUNDLES_FILE), e);
+        }
+
+        final List<Option> options = new ArrayList<>();
+        for (Object bundleUrl : properties.keySet())
+        {
+            try
+            {
+                final int startLevel = Integer.parseInt(properties.getProperty((String) bundleUrl));
+                final UrlProvisionOption option = bundle((String) bundleUrl).startLevel(startLevel);
+
+                options.add(option);
+            }
+            catch (Exception e)
+            {
+                throw new IllegalStateException("Invalid bundle information format", e);
+            }
+        }
+
+        return new DefaultCompositeOption(options.toArray(new Option[0]));
     }
 
     protected void assertStartedBundles()

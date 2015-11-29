@@ -9,6 +9,8 @@ package org.mule.osgi.container;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
@@ -18,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import org.osgi.framework.Bundle;
@@ -40,6 +43,7 @@ public class MuleOsgiContainer
     public static final boolean SHOW_BUNDLE_DEPENDENCIES = isShowBundleDependencies();
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(MuleOsgiContainer.class);
+    public static final String STARTUP_BUNDLES_FILE = "startupBundles.properties";
 
     private static Framework framework = null;
     private final String[] args;
@@ -83,25 +87,8 @@ public class MuleOsgiContainer
             //mavenRepos.add(new File("/Users/pablokraan/devel/workspaces/muleFull-4.x2/repository"));
             mavenRepos.add(new File("/Users/pablokraan/.m2/repository"));
 
-            final List<BundleInfo> bundles = new ArrayList<>();
+            final List<BundleInfo> bundles = getStartupBundles();
 
-            bundles.add(new BundleInfo("mvn:com.lmax/disruptor/3.3.0/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-api/2.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-core/2.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-1.2-api/2.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-slf4j-impl/2.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.slf4j/jcl-over-slf4j/1.7.7/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.slf4j/slf4j-api/1.7.7/jar", 2));
-            bundles.add(new BundleInfo("mvn:commons-logging/commons-logging/1.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-jcl/2.2/jar", 2));
-            bundles.add(new BundleInfo("mvn:org.apache.logging.log4j/log4j-jul/2.2/jar", 2));
-
-            bundles.add(new BundleInfo("mvn:org.ops4j.pax.url/pax-url-aether/2.4.1", 3));
-            bundles.add(new BundleInfo("mvn:org.ops4j.pax.url/pax-url-wrap/2.3.0/jar/uber", 3));
-
-            //TODO(pablo.kraan): OSGi - depend on the same version as the project
-            //TODO(pablo.kraan): OSGi - need to add this dependncy on the pom?
-            bundles.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-feature-deployer/4.0-SNAPSHOT/jar", 4));
             installAndStartBundles(new SimpleMavenResolver(mavenRepos), context, bundles);
 
             framework.start();
@@ -126,6 +113,37 @@ public class MuleOsgiContainer
             ex.printStackTrace();
             System.exit(0);
         }
+    }
+
+    private List<BundleInfo> getStartupBundles()
+    {
+        final Properties properties = new Properties();
+        //TODO(pablo.kraan): OSGi - this file must be read from the MULE folder
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(STARTUP_BUNDLES_FILE))
+        {
+            properties.load(inputStream);
+        }
+        catch (IOException e)
+        {
+            throw new IllegalStateException(String.format("Unable to open %s file", STARTUP_BUNDLES_FILE), e);
+        }
+
+        List<BundleInfo> bundles = new ArrayList<>();
+        for (Object key : properties.keySet())
+        {
+            try
+            {
+                BundleInfo bundleInfo = new BundleInfo((String) key, Integer.parseInt(properties.getProperty((String) key)));
+
+                bundles.add(bundleInfo);
+            }
+            catch (Exception e)
+            {
+                throw new IllegalStateException("Invalid bundle information format", e);
+            }
+        }
+
+        return bundles;
     }
 
     public static void main(String[] args) throws Exception
@@ -330,7 +348,7 @@ public class MuleOsgiContainer
                 int startLevel = context.getBundle(0).adapt(FrameworkStartLevel.class).getStartLevel();
                 if (startLevel >= defStartLevel)
                 {
-                    LOGGER.info("Originl startLevel: " + defStartLevel +  " new startLevel: " + startLevel);
+                    LOGGER.info("Originl startLevel: " + defStartLevel + " new startLevel: " + startLevel);
                     //System.out.println("Removing framework listener");
                     //context.removeBundleListener(this);
                     context.removeFrameworkListener(this);

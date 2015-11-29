@@ -41,6 +41,7 @@
         <bundle>wrap:mvn:commons-lang/commons-lang/2.4/jar</bundle>
         <bundle>wrap:mvn:commons-pool/commons-pool/1.6/jar</bundle>
         <bundle>wrap:mvn:org.jgrapht/jgrapht-jdk1.5/0.7.3/jar</bundle>
+        <bundle>wrap:mvn:org.mule/mule-api/1.0.0-SNAPSHOT/jar</bundle>
         <bundle>wrap:mvn:org.mule.extensions/mule-extensions-api/1.0.0-SNAPSHOT/jar</bundle>
         <bundle>wrap:mvn:org.reflections/reflections/0.9.9/jar</bundle>
         <bundle>wrap:mvn:org.mule.mvel/mule-mvel2/2.1.9-MULE-007/jar</bundle>

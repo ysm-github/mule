@@ -167,7 +167,7 @@ public abstract class AbstractRegistryBootstrap implements Initialisable, MuleCo
         }
     }
 
-    private void registerUnnamedObjects(Properties props) throws Exception
+    private TransformerBootstrapProperty createTransformerBootstrapProperty(BootstrapService bootstrapService, String propertyValue)
     {
         String transString;
         String name = null;

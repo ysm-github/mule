@@ -4,14 +4,11 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
+package org.mule.module.extension.spring.internal.xml.schema;
 
-package org.mule.config.bootstrap;
-
-import java.util.List;
-
-public interface BootstrapPropertiesServiceDiscoverer
+enum PoolingSupport
 {
-
-    List<BootstrapPropertiesService> discover();
-
+    SUPPORTED,
+    REQUIRED,
+    NOT_SUPPORTED
 }

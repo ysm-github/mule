@@ -10,9 +10,9 @@ package org.mule.osgi.support;
 import org.mule.api.lifecycle.Disposable;
 import org.mule.api.lifecycle.Initialisable;
 import org.mule.api.lifecycle.InitialisationException;
-import org.mule.config.bootstrap.BootstrapPropertiesService;
+import org.mule.config.bootstrap.BootstrapService;
 import org.mule.config.bootstrap.ClassPathRegistryBootstrapDiscoverer;
-import org.mule.config.bootstrap.MuleBootstrapPropertiesService;
+import org.mule.config.bootstrap.PropertiesBootstrapService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,8 +56,8 @@ public class BootstrapPropertiesServiceTracker implements Initialisable, Disposa
             {
                 Properties properties = new Properties();
                 properties.load(resource.openStream());
-                BootstrapPropertiesService service = new MuleBootstrapPropertiesService(bundleClassLoader, properties);
-                registeredService = bundleContext.registerService(BootstrapPropertiesService.class.getName(), service, null);
+                BootstrapService service = new PropertiesBootstrapService(bundleClassLoader, properties);
+                registeredService = bundleContext.registerService(BootstrapService.class.getName(), service, null);
             }
             catch (IOException e)
             {

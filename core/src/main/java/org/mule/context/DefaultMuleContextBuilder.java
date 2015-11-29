@@ -138,6 +138,12 @@ public class DefaultMuleContextBuilder implements MuleContextBuilder
         this.config = config;
     }
 
+    @Override
+    public void setBootstrapServiceDiscoverer(BootstrapServiceDiscoverer bootstrapDiscoverer)
+    {
+        this.bootstrapDiscoverer = bootstrapDiscoverer;
+    }
+
     public void setWorkManager(WorkManager workManager)
     {
         this.workManager = workManager;
@@ -259,11 +265,6 @@ public class DefaultMuleContextBuilder implements MuleContextBuilder
         this.shutdownScreen = shutdownScreen;
     }
 
-    public void setBootstrapPropertiesServiceDiscoverer(BootstrapServiceDiscoverer bootstrapDiscoverer)
-    {
-        this.bootstrapDiscoverer = bootstrapDiscoverer;
-    }
-
     public BootstrapServiceDiscoverer getBootstrapPropertiesServiceDiscoverer()
     {
         if (bootstrapDiscoverer != null)
@@ -367,27 +368,15 @@ public class DefaultMuleContextBuilder implements MuleContextBuilder
                ", notificationManager=" + notificationManager + "}";
     }
 
-
-    public void setBootstrapPropertiesServiceDiscoverer(BootstrapPropertiesServiceDiscoverer bootstrapDiscoverer)
+    protected ClassLoader getExecutionClassLoader()
     {
-        this.bootstrapDiscoverer = bootstrapDiscoverer;
-    }
-
-    public BootstrapPropertiesServiceDiscoverer getBootstrapPropertiesServiceDiscoverer()
-    {
-        if (bootstrapDiscoverer != null)
+        if (executionClassLoader != null)
         {
-            return bootstrapDiscoverer;
+            return executionClassLoader;
         }
         else
         {
-            return createBootstrapDiscoverer();
+            return getClass().getClassLoader();
         }
-    }
-
-    protected BootstrapPropertiesServiceDiscoverer createBootstrapDiscoverer()
-    {
-        //TODO(pablo.kraan): OSGi - check if can use muleContext's execution classlaoder instead
-        return new DefaultBootstrapPropertiesServiceDiscoverer(this.getClass().getClassLoader());
     }
 }

@@ -7,8 +7,8 @@
 
 package org.mule.osgi.app.internal;
 
-import org.mule.config.bootstrap.BootstrapPropertiesService;
-import org.mule.config.bootstrap.BootstrapPropertiesServiceDiscoverer;
+import org.mule.config.bootstrap.BootstrapService;
+import org.mule.config.bootstrap.BootstrapServiceDiscoverer;
 import org.mule.osgi.support.OsgiServiceWrapper;
 
 import java.util.Collections;
@@ -18,10 +18,10 @@ import java.util.List;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper implements BootstrapPropertiesServiceDiscoverer
+public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper implements BootstrapServiceDiscoverer
 {
 
-    private List<BootstrapPropertiesService> services = new LinkedList<>();
+    private List<BootstrapService> services = new LinkedList<>();
 
     public OsgiBootstrapPropertiesServiceDiscoverer(BundleContext bundleContext)
     {
@@ -31,19 +31,19 @@ public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper
     @Override
     protected void doRegisterService(ServiceReference serviceReference)
     {
-        BootstrapPropertiesService bootstrapPropertiesService = (BootstrapPropertiesService) bundleContext.getService(serviceReference);
+        BootstrapService bootstrapPropertiesService = (BootstrapService) bundleContext.getService(serviceReference);
         services.add(bootstrapPropertiesService);
     }
 
     @Override
     protected void doUnregisterService(ServiceReference serviceReference)
     {
-        BootstrapPropertiesService bootstrapPropertiesService = (BootstrapPropertiesService) bundleContext.getService(serviceReference);
+        BootstrapService bootstrapPropertiesService = (BootstrapService) bundleContext.getService(serviceReference);
         services.remove(bootstrapPropertiesService);
     }
 
     @Override
-    public List<BootstrapPropertiesService> discover()
+    public List<BootstrapService> discover()
     {
         return Collections.unmodifiableList(services);
     }
@@ -52,7 +52,7 @@ public class OsgiBootstrapPropertiesServiceDiscoverer extends OsgiServiceWrapper
     {
         final OsgiBootstrapPropertiesServiceDiscoverer listener = new OsgiBootstrapPropertiesServiceDiscoverer(bundleContext);
 
-        registerListener(bundleContext, listener, BootstrapPropertiesService.class);
+        registerListener(bundleContext, listener, BootstrapService.class);
 
         return listener;
     }

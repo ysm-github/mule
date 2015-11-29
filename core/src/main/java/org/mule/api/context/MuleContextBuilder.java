@@ -9,7 +9,7 @@ package org.mule.api.context;
 import org.mule.api.MuleContext;
 import org.mule.api.config.MuleConfiguration;
 import org.mule.api.lifecycle.LifecycleManager;
-import org.mule.config.bootstrap.BootstrapPropertiesServiceDiscoverer;
+import org.mule.config.bootstrap.BootstrapServiceDiscoverer;
 import org.mule.context.notification.ServerNotificationManager;
 
 import javax.resource.spi.work.WorkListener;
@@ -37,5 +37,5 @@ public interface MuleContextBuilder
     
     void setMuleConfiguration(MuleConfiguration muleConfiguration);
 
-    void setBootstrapPropertiesServiceDiscoverer(BootstrapPropertiesServiceDiscoverer bootstrapDiscoverer);
+    void setBootstrapServiceDiscoverer(BootstrapServiceDiscoverer bootstrapDiscoverer);
 }

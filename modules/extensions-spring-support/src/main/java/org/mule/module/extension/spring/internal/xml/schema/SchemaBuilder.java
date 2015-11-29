@@ -24,6 +24,7 @@ import static org.mule.module.extension.internal.util.MuleExtensionUtils.getConn
 import static org.mule.module.extension.internal.util.MuleExtensionUtils.getDynamicParameters;
 import static org.mule.module.extension.internal.util.NameUtils.getTopLevelTypeName;
 import static org.mule.module.extension.internal.util.NameUtils.hyphenize;
+import static org.mule.module.extension.spring.internal.xml.schema.PoolingSupport.REQUIRED;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.ATTRIBUTE_DESCRIPTION_CONFIG;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.ATTRIBUTE_NAME_CONFIG;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.ATTRIBUTE_NAME_VALUE;
@@ -39,6 +40,7 @@ import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaC
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.MULE_EXTENSION_SCHEMA_LOCATION;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.MULE_MESSAGE_PROCESSOR_OR_OUTBOUND_ENDPOINT_TYPE;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.MULE_NAMESPACE;
+import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.MULE_POOLING_PROFILE_TYPE;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.MULE_SCHEMA_LOCATION;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.OPERATION_SUBSTITUTION_GROUP_SUFFIX;
 import static org.mule.module.extension.spring.internal.xml.schema.model.SchemaConstants.SPRING_FRAMEWORK_NAMESPACE;

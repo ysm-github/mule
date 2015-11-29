@@ -128,6 +128,12 @@
             <artifactId>org.apache.felix.framework</artifactId>
             <version>${felix.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mule.osgi</groupId>
+            <artifactId>mule-osgi-container</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
