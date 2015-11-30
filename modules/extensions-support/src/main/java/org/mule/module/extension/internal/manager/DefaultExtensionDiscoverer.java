@@ -21,6 +21,9 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Default implementation of {@link ExtensionDiscoverer}
  *
@@ -28,6 +31,8 @@ import java.util.List;
  */
 public final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
 {
+
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(DefaultExtensionDiscoverer.class);
 
     private final ExtensionFactory extensionFactory;
     private final ServiceRegistry serviceRegistry;
@@ -46,17 +51,15 @@ public final class DefaultExtensionDiscoverer implements ExtensionDiscoverer
     {
         checkArgument(classLoader != null, "classloader cannot be null");
 
-        //TODO(pablo.kraan): OSGi - remove these logs
-        System.out.println("DISCOVERING EXTENSIONS...");
         Collection<Describer> describers = serviceRegistry.lookupProviders(Describer.class, classLoader);
         if (describers.isEmpty())
         {
-            System.out.println("NO EXTENSIONS DISCOVERED");
+            LOGGER.warn("No mule extensions found");
             return ImmutableList.of();
         }
 
         return describers.stream().map(describer -> {
-            System.out.println("DISCOVERRED EXTENSION: " + describer);
+            LOGGER.info("Discovered extension: " + describer.getClass().getName());
             Descriptor descriptor = describer.describe(new DefaultDescribingContext());
             return extensionFactory.createFrom(descriptor);
         }).collect(new ImmutableListCollector<>());
