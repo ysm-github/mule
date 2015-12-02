@@ -134,6 +134,11 @@
             <artifactId>mule-osgi-container</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mule.tests</groupId>
+            <artifactId>mule-tests-functional</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

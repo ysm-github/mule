@@ -14,6 +14,7 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
+import org.mule.tck.junit4.FunctionalTestCase;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +24,6 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.CoreOptions;
@@ -32,7 +32,6 @@ import org.ops4j.pax.exam.ProbeBuilder;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.options.DefaultCompositeOption;
-import org.ops4j.pax.exam.options.MavenArtifactProvisionOption;
 import org.ops4j.pax.exam.options.UrlProvisionOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
@@ -45,8 +44,10 @@ import org.osgi.framework.Constants;
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
-public abstract class AbstractOsgiFunctionalTestCase
+public abstract class AbstractOsgiFunctionalTestCase extends FunctionalTestCase
 {
+
+    public static final String STARTUP_BUNDLES_FILE = "startupBundles.properties";
 
     @Inject
     public BundleContext bundleContext;
@@ -71,7 +72,12 @@ public abstract class AbstractOsgiFunctionalTestCase
 
                 getStartupBundles(),
 
-                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT"),
+                //TODO(pablo.kraan): OSGi - need to use this dependency instead of the original from mockito (maybe we can update mockito) or use the new version (1.4)
+                mavenBundle().groupId("org.objenesis").artifactId("objenesis").version("1.4"),
+                mavenBundle().groupId("org.mockito").artifactId("mockito-core").version("1.9.0"),
+                mavenBundle("org.mule.tests", "mule-tests-unit", "4.0-SNAPSHOT").startLevel(80),
+                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT").startLevel(80),
+                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT").startLevel(80),
 
                 frameworkStartLevel(100),
 
@@ -80,15 +86,16 @@ public abstract class AbstractOsgiFunctionalTestCase
         );
     }
 
-    public static final String STARTUP_BUNDLES_FILE = "startupBundles.properties";
-
     private Option getStartupBundles()
     {
         final Properties properties = new Properties();
         //TODO(pablo.kraan): OSGi - this file must be read from the MULE folder
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(STARTUP_BUNDLES_FILE))
         {
-            properties.load(inputStream);
+            if (inputStream != null)
+            {
+                properties.load(inputStream);
+            }
         }
         catch (IOException e)
         {

@@ -34,6 +34,7 @@
         <module>osgi-container</module>
         <module>integration-test-tck</module>
         <module>integration-tests</module>
+        <module>http-integration-tests</module>
         <module>features</module>
         <module>karaf-distribution</module>
         <module>karaf-integration-tests</module>

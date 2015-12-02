@@ -54,6 +54,8 @@ public class MuleCoreFeature extends FeatureInfo
         dependencies.add(new BundleInfo("wrap:mvn:org.reflections/reflections/0.9.9/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:org.mule.mvel/mule-mvel2/2.1.9-MULE-007/jar", 30));
         dependencies.add(new BundleInfo("wrap:mvn:commons-beanutils/commons-beanutils/1.9.2/jar", 30));
+        //dependencies.add(new BundleInfo("mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1/jar", 30));
+        //dependencies.add(new BundleInfo("mvn:org.apache.geronimo.specs/geronimo-j2ee-connector_1.5_spec/2.0.0/jar", 30));
         dependencies.add(new BundleInfo("mvn:org.mule/mule-core/4.0-SNAPSHOT/jar", 30));
 
         // Spring Support
