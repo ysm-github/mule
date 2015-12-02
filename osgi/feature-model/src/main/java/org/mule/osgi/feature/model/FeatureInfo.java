@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.feature;
+package org.mule.osgi.feature.model;
 
 import java.util.List;
 

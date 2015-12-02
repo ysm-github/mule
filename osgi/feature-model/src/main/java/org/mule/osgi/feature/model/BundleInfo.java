@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.feature;
+package org.mule.osgi.feature.model;
 
 public class BundleInfo implements Dependency
 {

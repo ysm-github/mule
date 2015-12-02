@@ -12,12 +12,17 @@ import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.frameworkStartLevel;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.streamBundle;
 import static org.ops4j.pax.exam.CoreOptions.systemPackage;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.util.FileUtils;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -35,6 +40,8 @@ import org.ops4j.pax.exam.options.DefaultCompositeOption;
 import org.ops4j.pax.exam.options.UrlProvisionOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
+import org.ops4j.pax.tinybundles.core.TinyBundle;
+import org.ops4j.pax.tinybundles.core.TinyBundles;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -75,15 +82,41 @@ public abstract class AbstractOsgiFunctionalTestCase extends FunctionalTestCase
                 //TODO(pablo.kraan): OSGi - need to use this dependency instead of the original from mockito (maybe we can update mockito) or use the new version (1.4)
                 mavenBundle().groupId("org.objenesis").artifactId("objenesis").version("1.4"),
                 mavenBundle().groupId("org.mockito").artifactId("mockito-core").version("1.9.0"),
-                mavenBundle("org.mule.tests", "mule-tests-unit", "4.0-SNAPSHOT").startLevel(80),
-                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT").startLevel(80),
-                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT").startLevel(80),
+                mavenBundle("org.mule.tests", "mule-tests-unit", "4.0-SNAPSHOT").startLevel(90),
+                mavenBundle("org.mule.osgi", "mule-osgi-felix-itest", "4.0-SNAPSHOT").startLevel(90),
 
-                frameworkStartLevel(100),
+                streamBundle(createTestFeature()).startLevel(70),
 
                 junitBundles(),
-                systemProperty("pax.exam.logging").value("none")
+
+                frameworkStartLevel(100)
         );
+    }
+
+    private InputStream createTestFeature()
+    {
+        List<Class> features = getTestFeatures();
+
+        final TinyBundle bundleBuilder = TinyBundles.bundle()
+                .set(Constants.BUNDLE_SYMBOLICNAME, "testFeatures");
+        bundleBuilder.set( Constants.DYNAMICIMPORT_PACKAGE, "*" );
+
+        StringBuilder featureClassNames = new StringBuilder();
+        for (Class feature : features)
+        {
+            bundleBuilder.add(feature);
+
+            featureClassNames.append(feature.getName()).append("\n");
+        }
+
+        bundleBuilder.add("META-INF/features.properties", new ByteArrayInputStream(featureClassNames.toString().getBytes()));
+
+        return bundleBuilder.build();
+    }
+
+    protected List<Class> getTestFeatures()
+    {
+        return new ArrayList<>();
     }
 
     private Option getStartupBundles()

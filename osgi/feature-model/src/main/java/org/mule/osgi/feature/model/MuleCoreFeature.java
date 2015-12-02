@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.osgi.feature;
+package org.mule.osgi.feature.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +140,7 @@ public class MuleCoreFeature extends FeatureInfo
         dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-app-support/4.0-SNAPSHOT/jar", 30));
 
         // Sample Mule Application
-        dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-sample-app/4.0-SNAPSHOT/jar", 30));
+        //dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-sample-app/4.0-SNAPSHOT/jar", 30));
 
         return dependencies;
     }

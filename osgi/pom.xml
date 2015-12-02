@@ -30,6 +30,7 @@
         <module>osgi-support</module>
         <module>osgi-app-support</module>
         <module>sample-app</module>
+        <module>feature-model</module>
         <module>feature-deployer</module>
         <module>osgi-container</module>
         <module>integration-test-tck</module>

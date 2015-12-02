@@ -9,7 +9,17 @@ package org.mule.module.http.itest;
 
 import org.mule.osgi.tck.AbstractOsgiFunctionalTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AbstractHttpOsgiFunctionalTestCase extends AbstractOsgiFunctionalTestCase
 {
 
+    @Override
+    protected List<Class> getTestFeatures()
+    {
+        final ArrayList<Class> classes = new ArrayList<>();
+        classes.add(HttpTestFeature.class);
+        return classes;
+    }
 }
