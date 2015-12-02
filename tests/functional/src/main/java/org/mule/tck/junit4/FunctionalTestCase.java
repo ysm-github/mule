@@ -15,6 +15,7 @@ import org.mule.api.MuleException;
 import org.mule.api.component.Component;
 import org.mule.api.component.JavaComponent;
 import org.mule.api.config.ConfigurationBuilder;
+import org.mule.api.config.ConfigurationException;
 import org.mule.api.construct.FlowConstruct;
 import org.mule.api.processor.MessageProcessor;
 import org.mule.api.registry.RegistrationException;
@@ -72,7 +73,7 @@ public abstract class FunctionalTestCase extends AbstractMuleContextTestCase
         String configResources = getConfigResources();
         if (configResources != null)
         {
-            return new SpringXmlConfigurationBuilder(configResources, null);
+            return createConfigurationBuilder(configResources);
         }
         configResources = getConfigFile();
         if (configResources != null)
@@ -81,10 +82,19 @@ public abstract class FunctionalTestCase extends AbstractMuleContextTestCase
             {
                 throw new RuntimeException("Do not use this method when the config is composed of several files. Use getConfigFiles method instead.");
             }
-            return new SpringXmlConfigurationBuilder(configResources, null);
+            return createConfigurationBuilder(configResources);
         }
-        String[] multipleConfigResources = getConfigFiles();
-        return new SpringXmlConfigurationBuilder(multipleConfigResources);
+        return createConfigurationBuilder(getConfigFiles());
+    }
+
+    protected SpringXmlConfigurationBuilder createConfigurationBuilder(String configResources) throws ConfigurationException
+    {
+        return new SpringXmlConfigurationBuilder(configResources, null);
+    }
+
+    protected ConfigurationBuilder createConfigurationBuilder(String[] multipleConfigResources) throws ConfigurationException
+    {
+        return new SpringXmlConfigurationBuilder(multipleConfigResources, null);
     }
 
     /**

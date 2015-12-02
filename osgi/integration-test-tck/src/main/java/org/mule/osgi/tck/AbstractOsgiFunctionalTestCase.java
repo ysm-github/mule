@@ -14,15 +14,14 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.streamBundle;
 import static org.ops4j.pax.exam.CoreOptions.systemPackage;
+import org.mule.api.config.ConfigurationBuilder;
+import org.mule.api.config.ConfigurationException;
+import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.tck.junit4.FunctionalTestCase;
-import org.mule.util.FileUtils;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -76,6 +75,7 @@ public abstract class AbstractOsgiFunctionalTestCase extends FunctionalTestCase
                 systemPackage("sun.misc"),
                 systemPackage("org.ops4j.pax.exam.junit"),
                 systemPackage("org.ops4j.pax.exam.spi.reactors"),
+                junitBundles(),
 
                 getStartupBundles(),
 
@@ -87,10 +87,21 @@ public abstract class AbstractOsgiFunctionalTestCase extends FunctionalTestCase
 
                 streamBundle(createTestFeature()).startLevel(70),
 
-                junitBundles(),
 
                 frameworkStartLevel(100)
         );
+    }
+
+    @Override
+    protected SpringXmlConfigurationBuilder createConfigurationBuilder(String configResources) throws ConfigurationException
+    {
+        return new SpringXmlConfigurationBuilder(configResources, bundleContext);
+    }
+
+    @Override
+    protected ConfigurationBuilder createConfigurationBuilder(String[] multipleConfigResources) throws ConfigurationException
+    {
+        return new SpringXmlConfigurationBuilder(multipleConfigResources, bundleContext);
     }
 
     private InputStream createTestFeature()

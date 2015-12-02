@@ -254,7 +254,7 @@ public abstract class AbstractJmsFunctionalTestCase extends FunctionalTestCase
                                       getJmsConfig().getName(), resources);
 
             String[] configFiles = new String[] { resources, configFile };
-            SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(configFiles);
+            SpringXmlConfigurationBuilder builder = new SpringXmlConfigurationBuilder(configFiles, null);
             return builder;
         }
         else

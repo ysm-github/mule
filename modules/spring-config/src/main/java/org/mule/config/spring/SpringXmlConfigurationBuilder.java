@@ -51,11 +51,10 @@ public class SpringXmlConfigurationBuilder extends AbstractResourceConfiguration
     protected ApplicationContext parentContext;
     protected ApplicationContext applicationContext;
 
-    public SpringXmlConfigurationBuilder(String[] configResources) throws ConfigurationException
+    public SpringXmlConfigurationBuilder(String[] configResources, BundleContext bundleContext) throws ConfigurationException
     {
-        //TODO(pablo.kraan): OSGi - remove this constructor
         super(configResources);
-        bundleContext = null;
+        this.bundleContext = null;
     }
 
     public SpringXmlConfigurationBuilder(String configResources, BundleContext bundleContext) throws ConfigurationException

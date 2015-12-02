@@ -65,7 +65,7 @@ public class WebappMuleXmlConfigurationBuilder extends SpringXmlConfigurationBui
     public WebappMuleXmlConfigurationBuilder(ServletContext servletContext, String[] configResources)
         throws ConfigurationException
     {
-        super(configResources);
+        super(configResources, null);
         context = servletContext;
     }
 

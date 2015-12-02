@@ -42,7 +42,7 @@ public class ConcurrentRefreshTest extends AbstractMuleContextTestCase
     @Override
     protected ConfigurationBuilder getBuilder() throws Exception
     {
-        return new SpringXmlConfigurationBuilder(new String[]{});
+        return new SpringXmlConfigurationBuilder(new String[]{}, null);
     }
 
     
