@@ -28,11 +28,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.StringEntity;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Ignore("Hamcrest problem")
 public class HttpListenerContentTypeTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

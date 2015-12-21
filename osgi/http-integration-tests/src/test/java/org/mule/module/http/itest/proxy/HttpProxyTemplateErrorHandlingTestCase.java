@@ -34,7 +34,7 @@ import org.junit.runners.Parameterized;
 import org.ops4j.pax.exam.junit.PaxExamParameterized;
 
 @RunWith(PaxExamParameterized.class)
-@Ignore("Hamcrest problem")
+@Ignore("PaxExamParameterized needs static configuration")
 public class HttpProxyTemplateErrorHandlingTestCase extends AbstractHttpRequestTestCase
 {
 

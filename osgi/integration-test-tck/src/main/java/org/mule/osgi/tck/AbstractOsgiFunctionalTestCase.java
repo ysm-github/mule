@@ -67,45 +67,16 @@ public abstract class AbstractOsgiFunctionalTestCase extends FunctionalTestCase
 
         return CoreOptions.options(
                 systemPackage("sun.misc"),
-                //systemPackage("org.ops4j.pax.exam.junit"),
-                //systemPackage("org.ops4j.pax.exam.spi.reactors"),
-                //systemProperty("pax.exam.invoker").value("junit"),
-                //
-                ////mavenBundle("org.apache.servicemix.bundles",  "org.apache.servicemix.bundles.hamcrest",  "1.3_1"),
-                //mavenBundle("org.apache.servicemix.bundles",  "org.apache.servicemix.bundles.junit",  "4.12_1"),
-                //mavenBundle("org.ops4j.pax.exam", "pax-exam-invoker-junit","4.1.0"),
+
                 ////TODO(pablo.kraan): OSGi - use this dependency instead of the original hamcrest library
+                // Dependency added in order to provide non core Hamcrest matchers
+                mavenBundle("org.apache.servicemix.bundles",  "org.apache.servicemix.bundles.hamcrest",  "1.3_1"),
 
                 //TODO(pablo.kraan): OSGi - need to use this dependency instead of the original from mockito (maybe we can update mockito) or use the new version (1.4)
                 mavenBundle("org.objenesis",  "objenesis",  "1.4"),
                 mavenBundle("org.mockito",  "mockito-core",  "1.9.0"),
-        //dependencies.add(new BundleInfo("wrap:mvn:org.hamcrest/hamcrest-core/1.3/jar", 70));
-        //dependencies.add(new BundleInfo("wrap:mvn:org.hamcrest/hamcrest-library/1.3/jar", 70));
 
                 getStartupBundles(),
-
-                ////TODO(pablo.kraan): OSGi - need to use this dependency instead of the original from mockito (maybe we can update mockito) or use the new version (1.4)
-                //mavenBundle().groupId("org.objenesis").artifactId("objenesis").version("1.4"),
-                //mavenBundle().groupId("org.mockito").artifactId("mockito-core").version("1.9.0"),
-                //
-                //mavenBundle().groupId("commons-dbutils").artifactId("commons-dbutils").version("1.2"),
-                //mavenBundle().groupId("commons-net").artifactId("commons-net").version("2.2"),
-                //mavenBundle().groupId("org.apache.mina").artifactId("mina-core").version("2.0.4"),
-                //mavenBundle().groupId("org.apache.ftpserver").artifactId("ftpserver-core").version("1.0.6"),
-                //mavenBundle().groupId("org.apache.ftpserver").artifactId("ftplet-api").version("1.0.6"),
-                //mavenBundle().groupId("org.apache.sshd").artifactId("sshd-core").version("0.6.0"),
-                //mavenBundle().groupId("org.bouncycastle").artifactId("bcprov-jdk15on").version("1.50"),
-                //
-                //mavenBundle("org.mule.tests", "mule-tests-unit", "4.0-SNAPSHOT").startLevel(90),
-                //mavenBundle("org.mule.tests", "mule-tests-functional", "4.0-SNAPSHOT").startLevel(90),
-                //
-                //mavenBundle("org.ops4j.base", "ops4j-base-monitors", "1.5.0").startLevel(90),
-                //mavenBundle("org.ops4j.base", "ops4j-base-lang", "1.5.0").startLevel(90),
-                //mavenBundle("org.ops4j.base", "ops4j-base-io", "1.5.0").startLevel(90),
-                //mavenBundle("org.ops4j.base", "ops4j-base-store", "1.5.0").startLevel(90),
-                //mavenBundle("biz.aQute.bnd", "bndlib", "2.4.0").startLevel(90),
-                //mavenBundle("org.ops4j.pax.tinybundles", "tinybundles", "2.1.1").startLevel(90),
-                //mavenBundle("org.mule.osgi", "mule-osgi-itest-tck", "4.0-SNAPSHOT").startLevel(90),
 
                 streamBundle(createTestFeature()).startLevel(70),
 

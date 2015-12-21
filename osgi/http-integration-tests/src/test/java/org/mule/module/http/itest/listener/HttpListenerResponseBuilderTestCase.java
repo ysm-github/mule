@@ -6,8 +6,8 @@
  */
 package org.mule.module.http.itest.listener;
 
-import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertThat;
 import static org.mule.module.http.api.HttpConstants.RequestProperties.HTTP_RELATIVE_PATH;
@@ -30,7 +30,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -108,7 +107,6 @@ public class HttpListenerResponseBuilderTestCase extends AbstractHttpOsgiFunctio
     }
 
     @Test
-    @Ignore("Hamcrest problem")
     public void headerWithDuplicatesResponseBuilder() throws Exception
     {
         final String url = getUrl(headerDuplicatesResponseBuilderPath);
@@ -144,7 +142,6 @@ public class HttpListenerResponseBuilderTestCase extends AbstractHttpOsgiFunctio
     }
 
     @Test
-    @Ignore("Hamcrest problem")
     public void errorHeaderWithDuplicatesResponseBuilder() throws Exception
     {
         final String url = getUrl(errorHeaderDuplicatesResponseBuilderPath);
@@ -162,7 +159,6 @@ public class HttpListenerResponseBuilderTestCase extends AbstractHttpOsgiFunctio
     }
 
     @Test
-    @Ignore("Hamcrest problem")
     public void httpHeadersResponseBuilder() throws Exception
     {
         final String url = getUrl(httpHeadersResponseBuilderPath);
