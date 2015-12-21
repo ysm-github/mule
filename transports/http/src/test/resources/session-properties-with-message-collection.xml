@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
         http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
 
-    <spring:bean id="property-test" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-test" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="initialPayload" value="TEST"/>

@@ -43,9 +43,11 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("local/tls-default.conf")
 public class HttpsRequesterSniTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
     private static final String FQDN = "localhost.localdomain";

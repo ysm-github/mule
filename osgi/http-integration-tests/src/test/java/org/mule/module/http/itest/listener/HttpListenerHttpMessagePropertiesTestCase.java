@@ -36,9 +36,11 @@ import org.apache.http.client.fluent.Request;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("Requires VM transport")
 public class HttpListenerHttpMessagePropertiesTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

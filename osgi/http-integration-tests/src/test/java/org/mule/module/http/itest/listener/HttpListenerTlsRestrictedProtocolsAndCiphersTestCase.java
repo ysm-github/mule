@@ -28,9 +28,11 @@ import javax.net.ssl.SSLSocketFactory;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("local/tls-default.conf")
 public class HttpListenerTlsRestrictedProtocolsAndCiphersTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

@@ -8,7 +8,7 @@ package org.mule.test.spring.config;
 
 import org.mule.common.MuleArtifactFactoryException;
 import org.mule.common.config.XmlConfigurationCallback;
-import org.mule.tck.util.MuleDerbyTestDatabase;
+import org.mule.functional.util.MuleDerbyTestDatabase;
 import org.mule.util.ClassUtils;
 
 import java.io.IOException;

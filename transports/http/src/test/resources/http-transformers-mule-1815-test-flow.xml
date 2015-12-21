@@ -17,9 +17,9 @@
     <http:endpoint name="ignored" address="http://localhost:${port3}" exchange-pattern="request-response"/>
     <endpoint name="inbound" address="http://localhost:${port4}" exchange-pattern="request-response"/>
 
-    <custom-transformer name="appendString" class="org.mule.tck.functional.StringAppendTestTransformer"/>
+    <custom-transformer name="appendString" class="org.mule.functional.functional.StringAppendTestTransformer"/>
 
-    <custom-transformer name="appendString2" class="org.mule.tck.functional.StringAppendTestTransformer">
+    <custom-transformer name="appendString2" class="org.mule.functional.functional.StringAppendTestTransformer">
         <spring:property name="message" value=" transformed 2"/>
     </custom-transformer>
 

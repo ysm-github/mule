@@ -12,8 +12,27 @@ import org.mule.osgi.tck.AbstractOsgiFunctionalTestCase;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerSuite;
+import org.osgi.framework.BundleContext;
+
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerSuite.class)
 public class AbstractHttpOsgiFunctionalTestCase extends AbstractOsgiFunctionalTestCase
 {
+
+    @Inject
+    public BundleContext bundleContext;
+
+    @Override
+    protected BundleContext getBundleContext()
+    {
+        return bundleContext;
+    }
 
     @Override
     protected List<Class> getTestFeatures()

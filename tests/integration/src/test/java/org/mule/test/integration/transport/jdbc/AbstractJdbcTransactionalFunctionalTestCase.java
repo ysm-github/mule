@@ -26,7 +26,7 @@ import org.mule.context.notification.TransactionNotification;
 import org.mule.endpoint.EndpointURIEndpointBuilder;
 import org.mule.exception.DefaultMessagingExceptionStrategy;
 import org.mule.object.PrototypeObjectFactory;
-import org.mule.tck.functional.EventCallback;
+import org.mule.functional.functional.EventCallback;
 import org.mule.transaction.MuleTransactionConfig;
 
 import java.util.ArrayList;

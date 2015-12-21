@@ -8,9 +8,9 @@ package org.mule.test.integration.transport.jdbc;
 
 import org.mule.api.MuleEventContext;
 import org.mule.api.transport.Connector;
-import org.mule.tck.functional.FunctionalTestComponent;
+import org.mule.functional.functional.FunctionalTestComponent;
 import org.mule.tck.junit4.AbstractMuleContextTestCase;
-import org.mule.tck.util.MuleDerbyTestUtils;
+import org.mule.functional.util.MuleDerbyTestUtils;
 import org.mule.transport.jdbc.JdbcConnector;
 import org.mule.transport.jdbc.JdbcUtils;
 

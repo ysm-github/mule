@@ -11,8 +11,8 @@ import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleEventContext;
 import org.mule.api.lifecycle.Callable;
 import org.mule.config.i18n.MessageFactory;
-import org.mule.tck.functional.EventCallback;
-import org.mule.tck.functional.FunctionalTestNotification;
+import org.mule.functional.functional.EventCallback;
+import org.mule.functional.functional.FunctionalTestNotification;
 import org.mule.util.StringMessageUtils;
 
 import org.apache.commons.logging.Log;
@@ -23,13 +23,13 @@ import org.apache.commons.logging.LogFactory;
  * functional tests. This service accepts an EventCallback that can be used to
  * assert the state of the current event.
  * <p/>
- * Also, this service fires {@link org.mule.tck.functional.FunctionalTestNotification} via Mule for every message received.
+ * Also, this service fires {@link org.mule.functional.functional.FunctionalTestNotification} via Mule for every message received.
  * Tests can register with Mule to receive these events by implementing
- * {@link org.mule.tck.functional.FunctionalTestNotificationListener}.
+ * {@link org.mule.functional.functional.FunctionalTestNotificationListener}.
  *
- * @see org.mule.tck.functional.EventCallback
- * @see org.mule.tck.functional.FunctionalTestNotification
- * @see org.mule.tck.functional.FunctionalTestNotificationListener
+ * @see org.mule.functional.functional.EventCallback
+ * @see org.mule.functional.functional.FunctionalTestNotification
+ * @see org.mule.functional.functional.FunctionalTestNotificationListener
  */
 
 public class NoTransformFunctionalTestComponent implements Callable
@@ -151,12 +151,12 @@ public class NoTransformFunctionalTestComponent implements Callable
      * Note that the FunctionalTestComponent should be made a singleton
      * when using MuleEvent callbacks
      * <p/>
-     * Another option is to register a {@link org.mule.tck.functional.FunctionalTestNotificationListener} with Mule and this
-     * will deleiver a {@link org.mule.tck.functional.FunctionalTestNotification} for every message received by this service
+     * Another option is to register a {@link org.mule.functional.functional.FunctionalTestNotificationListener} with Mule and this
+     * will deleiver a {@link org.mule.functional.functional.FunctionalTestNotification} for every message received by this service
      *
      * @return the callback to call when a message is received
-     * @see org.mule.tck.functional.FunctionalTestNotification
-     * @see org.mule.tck.functional.FunctionalTestNotificationListener
+     * @see org.mule.functional.functional.FunctionalTestNotification
+     * @see org.mule.functional.functional.FunctionalTestNotificationListener
      */
     public EventCallback getEventCallback()
     {
@@ -170,12 +170,12 @@ public class NoTransformFunctionalTestComponent implements Callable
      * Note that the FunctionalTestComponent should be made a singleton
      * when using MuleEvent callbacks
      * <p/>
-     * Another option is to register a {@link org.mule.tck.functional.FunctionalTestNotificationListener} with Mule and this
-     * will deleiver a {@link org.mule.tck.functional.FunctionalTestNotification} for every message received by this service
+     * Another option is to register a {@link org.mule.functional.functional.FunctionalTestNotificationListener} with Mule and this
+     * will deleiver a {@link org.mule.functional.functional.FunctionalTestNotification} for every message received by this service
      *
      * @param eventCallback the callback to call when a message is received
-     * @see org.mule.tck.functional.FunctionalTestNotification
-     * @see org.mule.tck.functional.FunctionalTestNotificationListener
+     * @see org.mule.functional.functional.FunctionalTestNotification
+     * @see org.mule.functional.functional.FunctionalTestNotificationListener
      */
     public void setEventCallback(EventCallback eventCallback)
     {

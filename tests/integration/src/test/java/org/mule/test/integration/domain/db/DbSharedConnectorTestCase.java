@@ -13,8 +13,8 @@ import org.mule.api.MuleContext;
 import org.mule.api.MuleMessage;
 import org.mule.construct.Flow;
 import org.mule.tck.junit4.AbstractMuleContextTestCase;
-import org.mule.tck.junit4.DomainFunctionalTestCase;
-import org.mule.tck.util.MuleDerbyTestDatabase;
+import org.mule.functional.junit4.DomainFunctionalTestCase;
+import org.mule.functional.util.MuleDerbyTestDatabase;
 
 import java.sql.SQLException;
 import java.util.Arrays;

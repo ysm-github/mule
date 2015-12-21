@@ -29,7 +29,7 @@
             <http:payloadParameterName value="echo"/>
         </http:rest-service-component>
         <!-- do not log any exceptions, the test makes sure error cases are handled appropriately -->
-        <custom-exception-strategy class="org.mule.tck.functional.QuietExceptionStrategy"/>
+        <custom-exception-strategy class="org.mule.functional.functional.QuietExceptionStrategy"/>
     </flow>
 
     <flow name="HTTPPostSample2">
@@ -41,7 +41,7 @@
             <http:payloadParameterName value="echo"/>
         </http:rest-service-component>
         <!-- do not log any exceptions, the test makes sure error cases are handled appropriately -->
-        <custom-exception-strategy class="org.mule.tck.functional.QuietExceptionStrategy"/>
+        <custom-exception-strategy class="org.mule.functional.functional.QuietExceptionStrategy"/>
     </flow>
 
     <flow name="HTTPPostSample3">
@@ -53,14 +53,14 @@
             <http:optionalParameter key="far" value="#[header:INBOUND:bar-optional-header]"/>
         </http:rest-service-component>
         <!-- do not log any exceptions, the test makes sure error cases are handled appropriately -->
-        <custom-exception-strategy class="org.mule.tck.functional.QuietExceptionStrategy"/>
+        <custom-exception-strategy class="org.mule.functional.functional.QuietExceptionStrategy"/>
     </flow>
 
     <flow name="EchoService">
         <inbound-endpoint ref="serverEndpoint"/>
         <echo-component/>
         <!-- do not log any exceptions, the test makes sure error cases are handled appropriately -->
-        <custom-exception-strategy class="org.mule.tck.functional.QuietExceptionStrategy"/>
+        <custom-exception-strategy class="org.mule.functional.functional.QuietExceptionStrategy"/>
     </flow>
 
     <flow name="flow">

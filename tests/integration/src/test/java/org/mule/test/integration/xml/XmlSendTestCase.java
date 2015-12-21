@@ -7,25 +7,17 @@
 package org.mule.test.integration.xml;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mule.module.http.api.HttpConstants.Methods.POST;
-import static org.mule.module.http.api.client.HttpRequestOptionsBuilder.newOptions;
-
 import org.mule.api.MuleMessage;
 import org.mule.api.client.MuleClient;
-import org.mule.module.http.api.HttpConstants;
-import org.mule.module.http.api.client.HttpRequestOptions;
-import org.mule.module.http.api.client.HttpRequestOptionsBuilder;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.transport.http.HttpConnector;
 
 import java.io.InputStream;
 
-import org.hamcrest.core.Is;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -33,8 +25,6 @@ public class XmlSendTestCase extends FunctionalTestCase
 {
     @Rule
     public DynamicPort dynamicPort = new DynamicPort("port1");
-
-    private static final HttpRequestOptions httpOptions = newOptions().disableStatusCodeValidation().method(POST.name()).build();
 
     @Override
     protected String getConfigFile()
@@ -52,13 +42,13 @@ public class XmlSendTestCase extends FunctionalTestCase
         MuleClient client = muleContext.getClient();
 
         // this will submit the xml via a POST request
-        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-parse", getTestMuleMessage(xml), httpOptions);
-        assertThat(200, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-parse", getTestMuleMessage(xml));
+        assertEquals("200", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
 
         // This won't pass the filter
         xml = getClass().getResourceAsStream("validation1.xml");
-        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-parse", getTestMuleMessage(xml), httpOptions);
-        assertThat(406, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-parse", getTestMuleMessage(xml));
+        assertEquals("406", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
     }
 
 	@Test
@@ -71,8 +61,8 @@ public class XmlSendTestCase extends FunctionalTestCase
         MuleClient client = muleContext.getClient();
 
         // this will submit the xml via a POST request
-        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-xslt-parse", getTestMuleMessage(xml), httpOptions);
-        assertThat(200, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/xml-xslt-parse", getTestMuleMessage(xml));
+        assertEquals("200", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
     }
 
 	@Test
@@ -85,16 +75,16 @@ public class XmlSendTestCase extends FunctionalTestCase
         MuleClient client = muleContext.getClient();
 
         // this will submit the xml via a POST request
-        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml), httpOptions);
-        assertThat(200, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml));
+        assertEquals("200", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
 
         xml = getClass().getResourceAsStream("validation2.xml");
-        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml), httpOptions);
-        assertThat(406, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml));
+        assertEquals("406", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
 
         xml = getClass().getResourceAsStream("validation3.xml");
-        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml), httpOptions);
-        assertThat(200, is(message.<Integer>getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY)));
+        message = client.send("http://localhost:" + dynamicPort.getNumber() + "/validate", getTestMuleMessage(xml));
+        assertEquals("200", message.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
     }
 
     @Test
@@ -104,7 +94,7 @@ public class XmlSendTestCase extends FunctionalTestCase
         MuleClient client = muleContext.getClient();
 
         // this will submit the xml via a POST request
-        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/extract", getTestMuleMessage(xml), httpOptions);
+        MuleMessage message = client.send("http://localhost:" + dynamicPort.getNumber() + "/extract", getTestMuleMessage(xml));
         assertThat(getPayloadAsString(message), equalTo("some"));
     }
 }

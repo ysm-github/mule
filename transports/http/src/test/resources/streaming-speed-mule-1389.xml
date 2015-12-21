@@ -20,7 +20,7 @@
     <flow name="testComponent">
         <inbound-endpoint address="tcp://localhost:${port2}" exchange-pattern="one-way" name="testInbound"/>
         <component>
-            <singleton-object class="org.mule.tck.functional.FunctionalStreamingTestComponent"/>
+            <singleton-object class="org.mule.functional.functional.FunctionalStreamingTestComponent"/>
         </component>
     </flow>
 

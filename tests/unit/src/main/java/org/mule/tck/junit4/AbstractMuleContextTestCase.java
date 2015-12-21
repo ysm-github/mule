@@ -135,7 +135,8 @@ public abstract class AbstractMuleContextTestCase extends AbstractMuleTestCase
     @Before
     public final void setUpMuleContext() throws Exception
     {
-        TestsLogConfigurationHelper.configureLoggingForTest(getClass());
+        //TODO(pablo.kraan): OSGi - re-add loggin code
+        //TestsLogConfigurationHelper.configureLoggingForTest(getClass());
         workingDirectory.create();
         String workingDirectoryOldValue = System.setProperty(WORKING_DIRECTORY_SYSTEM_PROPERTY_KEY, workingDirectory.getRoot().getAbsolutePath());
         try
@@ -234,7 +235,7 @@ public abstract class AbstractMuleContextTestCase extends AbstractMuleTestCase
 
             builders.add(getBuilder());
             addBuilders(builders);
-            MuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
+            MuleContextBuilder contextBuilder = createMuleContextBuilder();
             DefaultMuleConfiguration muleConfiguration = new DefaultMuleConfiguration();
             String workingDirectory = this.workingDirectory.getRoot().getAbsolutePath();
             logger.info("Using working directory for test: " + workingDirectory);
@@ -248,6 +249,11 @@ public abstract class AbstractMuleContextTestCase extends AbstractMuleTestCase
             }
         }
         return context;
+    }
+
+    protected DefaultMuleContextBuilder createMuleContextBuilder()
+    {
+        return new DefaultMuleContextBuilder();
     }
 
     //This sohuldn't be needed by Test cases but can be used by base testcases that wish to add further builders when

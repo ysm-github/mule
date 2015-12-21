@@ -18,9 +18,9 @@ import org.mule.api.MuleMessage;
 import org.mule.api.config.MuleProperties;
 import org.mule.api.context.notification.ServerNotification;
 import org.mule.module.http.api.client.HttpRequestOptions;
-import org.mule.tck.functional.FunctionalTestNotification;
-import org.mule.tck.functional.FunctionalTestNotificationListener;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.functional.FunctionalTestNotification;
+import org.mule.functional.functional.FunctionalTestNotificationListener;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.util.concurrent.Latch;
 

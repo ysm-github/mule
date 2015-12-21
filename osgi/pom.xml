@@ -18,7 +18,6 @@
         <!--<karaf.version>4.0.1</karaf.version>-->
         <karaf.version>3.0.5</karaf.version>
         <log4j.version>1.2.13</log4j.version>
-        <pax.exam.version>4.6.0</pax.exam.version>
         <slf4j.version>1.4.3</slf4j.version>
         <osgi.compendium.version>4.3.1</osgi.compendium.version>
 
@@ -34,7 +33,6 @@
         <module>feature-deployer</module>
         <module>osgi-container</module>
         <module>integration-test-tck</module>
-        <module>integration-tests</module>
         <module>http-integration-tests</module>
         <module>features</module>
         <module>karaf-distribution</module>

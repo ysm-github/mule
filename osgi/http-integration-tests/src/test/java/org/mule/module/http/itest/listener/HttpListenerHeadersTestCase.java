@@ -7,7 +7,7 @@
 package org.mule.module.http.itest.listener;
 
 import static org.apache.commons.lang.StringUtils.EMPTY;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mule.module.http.api.HttpConstants.HttpStatus.OK;
 import org.mule.module.http.itest.AbstractHttpOsgiFunctionalTestCase;

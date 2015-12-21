@@ -59,13 +59,6 @@ public abstract class AbstractMuleTestCase
      */
     private static final boolean verbose;
 
-    /**
-     * Indicates if the current test class was excluded using the mule test
-     * exclusion files. Test are executed sequentially, so is not required to
-     * maintain a list of classes.
-     */
-    private static Boolean excluded = null;
-
     static
     {
         String muleOpts = SystemUtils.getenv("MULE_TEST_OPTS");
@@ -103,10 +96,11 @@ public abstract class AbstractMuleTestCase
 
     public AbstractMuleTestCase()
     {
-        if (excluded == null)
-        {
-            excluded = isTestIncludedInExclusionFile(this);
-        }
+        //TODO(pablo.kraan): OSGi - removed this to move forward with other things. Fix or completely remove it
+        //if (excluded == null)
+        //{
+        //    excluded = isTestIncludedInExclusionFile(this);
+        //}
     }
 
     /**
@@ -145,7 +139,7 @@ public abstract class AbstractMuleTestCase
             // regardless of classloaders. See MULE-2414
             URL classUrl = ClassUtils.getClassPathRoot(test.getClass());
             URLClassLoader tempClassLoader = new URLClassLoader(new URL[] {classUrl});
-            URL fileUrl = tempClassLoader.getResource("mule-test-exclusions.txt");
+            URL fileUrl = tempClassLoader.findResource("mule-test-exclusions.txt");
             if (fileUrl != null)
             {
                 InputStream in = null;
@@ -231,7 +225,7 @@ public abstract class AbstractMuleTestCase
      */
     protected boolean isExcluded()
     {
-        return excluded;
+        return false;
     }
 
     /**
@@ -342,12 +336,6 @@ public abstract class AbstractMuleTestCase
     public final void clearRequestContext()
     {
         RequestContext.clear();
-    }
-
-    @AfterClass
-    public static final void clearExcludedFlag()
-    {
-        excluded = null;
     }
 
     private static List<String> collectThreadNames()

@@ -17,7 +17,7 @@ import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.module.cxf.wssec.ClientPasswordCallback;
 import org.mule.module.http.api.client.HttpRequestOptions;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.util.IOUtils;
 

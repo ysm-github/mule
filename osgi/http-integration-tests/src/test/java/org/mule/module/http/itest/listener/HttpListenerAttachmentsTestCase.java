@@ -53,9 +53,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("Requires VM transport")
 public class HttpListenerAttachmentsTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

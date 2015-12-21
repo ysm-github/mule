@@ -20,12 +20,15 @@ import org.mule.tck.junit4.rule.SystemProperty;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.ops4j.pax.exam.junit.PaxExamParameterized;
 
-@RunWith(Parameterized.class)
+@RunWith(PaxExamParameterized.class)
+@Ignore("Requires VM transport")
 public class HttpListenerMethodRoutingTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

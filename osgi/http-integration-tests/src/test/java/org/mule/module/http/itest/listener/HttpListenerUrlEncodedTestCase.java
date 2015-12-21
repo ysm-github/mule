@@ -35,9 +35,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("Requires VM transport")
 public class HttpListenerUrlEncodedTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

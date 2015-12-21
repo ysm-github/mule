@@ -10,7 +10,7 @@ import static org.junit.Assert.fail;
 
 import org.mule.api.MuleContext;
 import org.mule.config.spring.parsers.processors.CheckExclusiveAttributes;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 
 import java.util.HashSet;
 import java.util.Set;

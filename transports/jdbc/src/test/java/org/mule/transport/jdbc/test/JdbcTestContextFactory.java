@@ -6,7 +6,7 @@
  */
 package org.mule.transport.jdbc.test;
 
-import org.mule.tck.jndi.TestContextFactory;
+import org.mule.functional.jndi.TestContextFactory;
 
 import javax.naming.Context;
 import javax.naming.NamingException;

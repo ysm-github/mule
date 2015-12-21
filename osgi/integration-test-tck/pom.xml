@@ -15,10 +15,9 @@
     <name>Mule OSGi Integration Test Toolkit</name>
 
     <properties>
-        <paxexam.version>4.5.0</paxexam.version>
         <paxurl.version>2.4.1</paxurl.version>
         <osgi.core.version>5.0.0</osgi.core.version>
-        <exam.version>4.1.0</exam.version>
+        <exam.version>4.7.0</exam.version>
         <runner.version>1.8.6</runner.version>
         <url.version>1.4.0</url.version>
     </properties>
@@ -33,6 +32,11 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
             <version>${osgi.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.osgi</groupId>
+            <artifactId>mule-osgi-app-support</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!--Logging-->
@@ -86,7 +90,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.11</version>
         </dependency>
 
         <dependency>
@@ -156,7 +160,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Package-Export>*</Package-Export>
+                        <Package-Export>org.mule.osgi.tck.*</Package-Export>
                     </instructions>
                 </configuration>
             </plugin>

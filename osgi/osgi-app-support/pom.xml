@@ -26,7 +26,7 @@
                         <!--<Bundle-Activator>org.mule.osgi.sampleapp.MuleApplicationActivator</Bundle-Activator>-->
                         <!--<Connector-Name>Hello</Connector-Name>-->
                         <!--<Connector-Version>${project.version}</Connector-Version>-->
-                        <Package-Export>org.mule.osgi.app</Package-Export>
+                        <Package-Export>org.mule.osgi.app.*</Package-Export>
                     </instructions>
                 </configuration>
             </plugin>

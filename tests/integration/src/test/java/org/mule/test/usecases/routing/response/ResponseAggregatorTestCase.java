@@ -6,7 +6,6 @@
  */
 package org.mule.test.usecases.routing.response;
 
-import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -19,21 +18,16 @@ import org.mule.api.client.MuleClient;
 import org.mule.module.http.api.client.HttpRequestOptions;
 import org.mule.routing.requestreply.AbstractAsyncRequestReplyRequester;
 import org.mule.tck.SensingNullMessageProcessor;
-import org.mule.tck.junit4.FunctionalTestCase;
-import org.mule.tck.junit4.rule.DynamicPort;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
 import java.io.Serializable;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 public class ResponseAggregatorTestCase extends FunctionalTestCase
 {
-
-    @Rule
-    public DynamicPort port = new DynamicPort("port1");
 
     @Override
     protected String getConfigFile()
@@ -46,7 +40,7 @@ public class ResponseAggregatorTestCase extends FunctionalTestCase
     {
         MuleClient client = muleContext.getClient();
         final HttpRequestOptions httpRequestOptions = newOptions().method(POST.name()).build();
-        MuleMessage message = client.send(format("http://localhost:%s", port.getNumber()), getTestMuleMessage("request"), httpRequestOptions);
+        MuleMessage message = client.send("http://localhost:28081", getTestMuleMessage("request"), httpRequestOptions);
         assertNotNull(message);
         assertEquals("Received: request", new String(getPayloadAsBytes(message)));
     }

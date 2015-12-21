@@ -6,7 +6,7 @@
  */
 package org.mule.module.http.itest.listener;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import org.mule.module.http.itest.AbstractHttpOsgiFunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
@@ -33,11 +33,19 @@ public class HttpAllInterfacesTestCase extends AbstractHttpOsgiFunctionalTestCas
     }
 
     @Test
-    public void testAllInterfaces() throws IOException
+    public void testAllInterfaces() throws IOException, InterruptedException
     {
+        //final Response response = Request.Get("http://localhost:"+ listenPort.getNumber()+"/").connectTimeout(1000).execute();
         final String url = String.format("http://localhost:%s/%s", listenPort.getNumber(), PATH);
         final Response response = Request.Get(url).connectTimeout(1000).execute();
         assertThat(response.returnContent().asString(), is(PATH));
+
+        //assertStartedBundles();
     }
 
+    @Override
+    public int getTestTimeoutSecs()
+    {
+        return 1200000;
+    }
 }

@@ -37,6 +37,7 @@ public class MuleCoreFeature extends FeatureInfo
         dependencies.add(new BundleInfo("wrap:mvn:org.mule.common/mule-common/4.0-SNAPSHOT/jar", 30));
 
 
+        //dependencies.add(new BundleInfo("mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0/jar", 30));
         dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_2/jar", 30));
         dependencies.add(new BundleInfo("mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/jar", 30));
         dependencies.add(new BundleInfo("mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/jar", 30));
@@ -62,85 +63,86 @@ public class MuleCoreFeature extends FeatureInfo
         //TODO(pablo.kraan): OSGi - maybe this dependency should go inside the container
         dependencies.add(new BundleInfo("mvn:org.apache.felix/org.apache.felix.fileinstall/3.4.2", 11));
 
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/4.1.2.RELEASE_1", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/4.1.2.RELEASE_1", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/4.1.2.RELEASE_1", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/4.1.2.RELEASE_1", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/4.1.2.RELEASE_1", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/4.1.2.RELEASE_1", 30));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/4.1.2.RELEASE_1", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/4.1.2.RELEASE_1", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/4.1.2.RELEASE_1", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/4.1.2.RELEASE_1", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/4.1.2.RELEASE_1", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/4.1.2.RELEASE_1", 35));
 
         // Spring Config
         //<feature>mule-core</feature>
         //<feature>spring</feature>
-        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-io/2.0.0.BUILD-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-core/2.0.0.BUILD-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-extender/2.0.0.BUILD-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:dom4j/dom4j/1.6.1/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/2.2_2/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-spring-config/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-io/2.0.0.BUILD-SNAPSHOT/jar", 35));
+        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-core/2.0.0.BUILD-SNAPSHOT/jar", 35));
+        dependencies.add(new BundleInfo("mvn:org.eclipse.gemini.blueprint/gemini-blueprint-extender/2.0.0.BUILD-SNAPSHOT/jar", 35));
+        dependencies.add(new BundleInfo("wrap:mvn:dom4j/dom4j/1.6.1/jar", 35));
+        dependencies.add(new BundleInfo("mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/2.2_2/jar", 35));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-spring-config/4.0-SNAPSHOT/jar", 35));
 
         //TODO(pablo.kraan): OSGi - need to find a better place for this dependency
-        dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-support/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-support/4.0-SNAPSHOT/jar", 36));
 
         // Extensions API
         //<feature>mule-core</feature>
         //<feature>mule-spring-config</feature>
-        dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-support/4.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-spring-support/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-support/4.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-spring-support/4.0-SNAPSHOT/jar", 40));
 
         // Extension Validation
         //<feature>mule-extension-api</feature>
-        dependencies.add(new BundleInfo("wrap:mvn:commons-digester/commons-digester/1.8/jar", 30));
-        dependencies.add(new BundleInfo("mvn:commons-validator/commons-validator/1.4.0/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-validation/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:commons-digester/commons-digester/1.8/jar", 40));
+        dependencies.add(new BundleInfo("mvn:commons-validator/commons-validator/1.4.0/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-validation/4.0-SNAPSHOT/jar", 40));
 
         // HTTP Connector
         //<feature>mule-core</feature>
         //<feature>mule-spring-config</feature>
-        dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-support/4.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-spring-support/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule.extensions/mule-extensions-annotations/1.0.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-support/4.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-extensions-spring-support/4.0-SNAPSHOT/jar", 40));
+
+        //TODO(pablo.kraan): OSGi - this has to be part of the deployer feature
+        dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-app-support/4.0-SNAPSHOT/jar", 36));
 
         // Extension Validation
         //<feature>mule-extension-api</feature>
-        dependencies.add(new BundleInfo("wrap:mvn:commons-digester/commons-digester/1.8/jar", 30));
-        dependencies.add(new BundleInfo("mvn:commons-validator/commons-validator/1.4.0/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-validation/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:commons-digester/commons-digester/1.8/jar", 40));
+        dependencies.add(new BundleInfo("mvn:commons-validator/commons-validator/1.4.0/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-validation/4.0-SNAPSHOT/jar", 40));
 
         // HTTP Connector
         //<feature>mule-core</feature>
         //<feature>mule-spring-config</feature>
 
         // Grizzly
-        dependencies.add(new BundleInfo("wrap:mvn:javax.servlet/javax.servlet-api/3.1.0/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-framework/2.3.21/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http/2.3.21/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/connection-pool/2.3.21/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http-server/2.3.21/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http-servlet/2.3.21/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-websockets/2.3.21/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:javax.servlet/javax.servlet-api/3.1.0/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-framework/2.3.21/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http/2.3.21/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/connection-pool/2.3.21/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http-server/2.3.21/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-http-servlet/2.3.21/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.glassfish.grizzly/grizzly-websockets/2.3.21/jar", 40));
 
         // Transport dependencies
-        dependencies.add(new BundleInfo("wrap:mvn:org.samba.jcifs/jcifs/1.3.3/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:commons-codec/commons-codec/1.9/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:commons-httpclient/commons-httpclient/3.1/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:org.apache.tomcat/coyote/6.0.44/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:joda-time/joda-time/2.5/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:org.mule.transports/mule-transport-ssl/4.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:org.mule.transports/mule-transport-tcp/4.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:com.ning/async-http-client/1.9.31/jar", 30));
-        dependencies.add(new BundleInfo("wrap:mvn:javax.mail/mail/1.4.3/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-http/4.0-SNAPSHOT/jar", 30));
-        dependencies.add(new BundleInfo("mvn:org.mule.transports/mule-transport-http/4.0-SNAPSHOT/jar", 30));
+        dependencies.add(new BundleInfo("wrap:mvn:org.samba.jcifs/jcifs/1.3.3/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:commons-codec/commons-codec/1.9/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:commons-httpclient/commons-httpclient/3.1/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:org.apache.tomcat/coyote/6.0.44/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:joda-time/joda-time/2.5/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule.transports/mule-transport-tcp/4.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:org.mule.transports/mule-transport-ssl/4.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:com.ning/async-http-client/1.9.31/jar", 40));
+        dependencies.add(new BundleInfo("wrap:mvn:javax.mail/mail/1.4.3/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.modules/mule-module-http/4.0-SNAPSHOT/jar", 40));
+        dependencies.add(new BundleInfo("mvn:org.mule.transports/mule-transport-http/4.0-SNAPSHOT/jar", 40));
 
         // App support
-        //TODO(pablo.kraan): OSGi - this has to be part of the deployer feature
-        dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-app-support/4.0-SNAPSHOT/jar", 30));
 
         // Sample Mule Application
-        //dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-sample-app/4.0-SNAPSHOT/jar", 30));
+        //dependencies.add(new BundleInfo("mvn:org.mule.osgi/mule-osgi-sample-app/4.0-SNAPSHOT/jar", 40));
 
         return dependencies;
     }

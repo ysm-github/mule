@@ -7,29 +7,28 @@
 
 package org.mule.module.http.internal;
 
-import org.mule.osgi.support.BootstrapPropertiesServiceTracker;
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+//TODO(pablo.kraan): OSGi - remove this activator if not needed anymore
 public class HttpConnectorActivator implements BundleActivator
 {
 
-    BootstrapPropertiesServiceTracker bootstrapPropertiesServiceTracker;
+    //BootstrapPropertiesServiceTracker bootstrapPropertiesServiceTracker;
 
     @Override
     public void start(BundleContext bundleContext) throws Exception
     {
-        bootstrapPropertiesServiceTracker = new BootstrapPropertiesServiceTracker(bundleContext);
-        bootstrapPropertiesServiceTracker.initialise();
+        //bootstrapPropertiesServiceTracker = new BootstrapPropertiesServiceTracker(bundleContext);
+        //bootstrapPropertiesServiceTracker.initialise();
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
-        if (bootstrapPropertiesServiceTracker != null)
-        {
-            bootstrapPropertiesServiceTracker.dispose();
-        }
+        //if (bootstrapPropertiesServiceTracker != null)
+        //{
+        //    bootstrapPropertiesServiceTracker.dispose();
+        //}
     }
 }

@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mule.module.http.api.HttpConstants.Methods.POST;
 import static org.mule.module.http.api.client.HttpRequestOptionsBuilder.newOptions;
-import static org.mule.tck.functional.FlowAssert.verify;
+import static org.mule.functional.functional.FlowAssert.verify;
 import org.mule.api.MessagingException;
 import org.mule.api.MuleMessage;
 import org.mule.module.http.itest.AbstractHttpOsgiFunctionalTestCase;

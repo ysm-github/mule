@@ -16,7 +16,7 @@ import static org.mule.module.cxf.payload.PayloadTestConstants.strArrayPayloadRe
 import static org.mule.module.cxf.payload.PayloadTestConstants.strPayload;
 import static org.mule.module.cxf.payload.PayloadTestConstants.strPayloadResult;
 
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 
 import org.junit.Rule;

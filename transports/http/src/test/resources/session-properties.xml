@@ -12,7 +12,7 @@
 
     <http:connector name="httpConnector" enableCookies="true"/>
 
-    <spring:bean id="property-f1p1" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-f1p1" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="flow1-p1" value="flow1-p1-value"/>
@@ -20,7 +20,7 @@
         </spring:property>
     </spring:bean>
 
-    <spring:bean id="property-f1p1-f2p1" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-f1p1-f2p1" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="flow1-p1" value="flow1-p1-value"/>
@@ -29,7 +29,7 @@
         </spring:property>
     </spring:bean>
 
-    <spring:bean id="property-f1p1-f2p1-f1p2" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-f1p1-f2p1-f1p2" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="flow1-p1" value="flow1-p1-value"/>
@@ -39,7 +39,7 @@
         </spring:property>
     </spring:bean>
 
-    <spring:bean id="property-f1p1-f2p1-f3p1" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-f1p1-f2p1-f3p1" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="flow1-p1" value="flow1-p1-value"/>
@@ -49,7 +49,7 @@
         </spring:property>
     </spring:bean>
 
-    <spring:bean id="property-f1p1-f2p1-f1p2-f3p1" class="org.mule.tck.property.SessionPropertiesValidatorComponent">
+    <spring:bean id="property-f1p1-f2p1-f1p2-f3p1" class="org.mule.functional.property.SessionPropertiesValidatorComponent">
         <spring:property name="expectedProperties">
             <spring:map>
                 <spring:entry key="flow1-p1" value="flow1-p1-value"/>

@@ -11,7 +11,7 @@ import org.mule.api.config.ConfigurationException;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.module.extension.HeisenbergExtension;
-import org.mule.tck.junit4.ExtensionsFunctionalTestCase;
+import org.mule.functional.junit4.ExtensionsFunctionalTestCase;
 
 import org.junit.Test;
 

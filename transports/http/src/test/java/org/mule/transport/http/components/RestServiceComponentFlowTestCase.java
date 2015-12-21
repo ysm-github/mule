@@ -15,7 +15,7 @@ import org.mule.api.expression.ExpressionManager;
 import org.mule.construct.Flow;
 import org.mule.routing.filters.WildcardFilter;
 import org.mule.routing.filters.logic.NotFilter;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 
 import java.text.MessageFormat;
 

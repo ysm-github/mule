@@ -18,7 +18,7 @@ import org.mule.exception.AbstractMessagingExceptionStrategy;
 import org.mule.exception.DefaultSystemExceptionStrategy;
 import org.mule.message.DefaultExceptionPayload;
 import org.mule.routing.filters.WildcardFilter;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.transport.NullPayload;
 import org.mule.transport.http.HttpConstants;

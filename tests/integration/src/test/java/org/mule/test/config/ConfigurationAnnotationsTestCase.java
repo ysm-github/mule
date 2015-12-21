@@ -20,7 +20,7 @@ import org.mule.api.endpoint.OutboundEndpoint;
 import org.mule.api.transformer.Transformer;
 import org.mule.component.DefaultJavaComponent;
 import org.mule.construct.Flow;
-import org.mule.tck.junit4.FunctionalTestCase;
+import org.mule.functional.junit4.FunctionalTestCase;
 import org.mule.util.SystemUtils;
 
 import javax.xml.namespace.QName;

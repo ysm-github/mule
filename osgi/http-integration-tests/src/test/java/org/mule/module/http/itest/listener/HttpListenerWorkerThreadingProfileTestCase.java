@@ -15,7 +15,7 @@ import static org.mule.module.http.api.HttpConstants.HttpStatus.OK;
 import static org.mule.module.http.internal.listener.DefaultHttpListenerConfig.DEFAULT_MAX_THREADS;
 import org.mule.api.MuleEventContext;
 import org.mule.module.http.itest.AbstractHttpOsgiFunctionalTestCase;
-import org.mule.tck.functional.EventCallback;
+import org.mule.functional.functional.EventCallback;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.util.concurrent.Latch;

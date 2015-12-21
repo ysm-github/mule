@@ -23,9 +23,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <!--<Bundle-Activator>org.mule.osgi.sampleapp.MuleApplicationActivator</Bundle-Activator>-->
-                        <!--<Connector-Name>Hello</Connector-Name>-->
-                        <!--<Connector-Version>${project.version}</Connector-Version>-->
+                        <Bundle-Activator>org.mule.osgi.support.MuleSupportActivator</Bundle-Activator>
                         <Package-Export>org.mule.osgi.support</Package-Export>
                     </instructions>
                 </configuration>

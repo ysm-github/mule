@@ -15,7 +15,7 @@
     <name>Mule OSGi Karaf Integration Tests</name>
 
     <properties>
-        <paxexam.version>4.5.0</paxexam.version>
+        <paxexam.version>4.7.0</paxexam.version>
         <paxurl.version>2.4.1</paxurl.version>
     </properties>
 
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
 

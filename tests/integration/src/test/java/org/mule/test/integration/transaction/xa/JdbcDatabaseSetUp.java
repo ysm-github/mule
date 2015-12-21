@@ -6,9 +6,7 @@
  */
 package org.mule.test.integration.transaction.xa;
 
-import org.mule.tck.util.MuleDerbyTestDatabase;
-
-import org.junit.Ignore;
+import org.mule.functional.util.MuleDerbyTestDatabase;
 
 public class JdbcDatabaseSetUp implements TransactionalTestSetUp
 {

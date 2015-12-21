@@ -22,7 +22,7 @@ import org.mule.api.transport.Connector;
 import org.mule.common.TestResult;
 import org.mule.common.Testable;
 import org.mule.tck.MuleTestUtils.TestCallback;
-import org.mule.tck.util.MuleDerbyTestUtils;
+import org.mule.functional.util.MuleDerbyTestUtils;
 import org.mule.transport.AbstractConnectorTestCase;
 import org.mule.transport.jdbc.xa.DataSourceWrapper;
 

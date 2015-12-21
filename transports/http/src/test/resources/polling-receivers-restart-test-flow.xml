@@ -22,7 +22,7 @@
 
         <component>
             <singleton-object
-                class="org.mule.tck.functional.FunctionalTestComponent" />
+                class="org.mule.functional.functional.FunctionalTestComponent" />
         </component>
     </flow>
 

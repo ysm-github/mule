@@ -7,7 +7,7 @@
 package org.mule.transport.http.functional;
 
 import org.mule.api.MuleContext;
-import org.mule.tck.junit4.ApplicationContextBuilder;
+import org.mule.functional.junit4.ApplicationContextBuilder;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.util.ExceptionUtils;
 

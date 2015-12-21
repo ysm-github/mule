@@ -16,7 +16,6 @@ import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.module.extension.internal.manager.DefaultExtensionManager;
 import org.mule.osgi.app.internal.ExtensionsManagerConfigurationBuilder;
-import org.mule.osgi.app.internal.OsgiBootstrapPropertiesServiceDiscoverer;
 
 import java.util.ArrayList;
 import java.util.List;

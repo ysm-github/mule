@@ -18,9 +18,11 @@ import java.util.Map;
 
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore("Requires VM transport")
 public class HttpListenerParseRequestTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

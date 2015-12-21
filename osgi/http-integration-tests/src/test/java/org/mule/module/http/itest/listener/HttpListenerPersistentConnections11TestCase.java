@@ -14,8 +14,10 @@ import static org.mule.module.http.api.HttpHeaders.Values.CLOSE;
 import java.io.IOException;
 
 import org.apache.http.HttpVersion;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore("Hamcrest problem")
 public class HttpListenerPersistentConnections11TestCase extends HttpListenerPersistentConnectionsTestCase
 {
 

@@ -313,8 +313,9 @@ public final class MuleTestUtils
         {
             // need to build endpoint this way to avoid depenency to any endpoint
             // jars
-            connector = (Connector) ClassUtils.loadClass("org.mule.tck.testmodels.mule.TestConnector",
-                                                         AbstractMuleTestCase.class).getConstructor(MuleContext.class).newInstance(context);
+            final Class aClass = ClassUtils.loadClass("org.mule.tck.testmodels.mule.TestConnector",
+                                                      AbstractMuleTestCase.class);
+            connector = (Connector) aClass.getConstructor(MuleContext.class).newInstance(context);
         }
 
         connector.setName("testConnector");

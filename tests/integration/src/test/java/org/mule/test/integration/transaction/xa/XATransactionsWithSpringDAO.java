@@ -13,8 +13,8 @@ import static org.junit.Assert.fail;
 
 import org.mule.api.MuleMessage;
 import org.mule.module.client.MuleClient;
-import org.mule.tck.junit4.FunctionalTestCase;
-import org.mule.tck.util.MuleDerbyTestUtils;
+import org.mule.functional.junit4.FunctionalTestCase;
+import org.mule.functional.util.MuleDerbyTestUtils;
 import org.mule.test.integration.transaction.extras.Book;
 import org.mule.transport.jdbc.JdbcUtils;
 

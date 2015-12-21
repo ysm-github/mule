@@ -18,12 +18,15 @@ import java.util.Collection;
 
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.ops4j.pax.exam.junit.PaxExamParameterized;
 
-@RunWith(Parameterized.class)
+@RunWith(PaxExamParameterized.class)
+@Ignore("@Parameterized.Parameter")
 public class HttpListenerEncodingTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
     @Rule

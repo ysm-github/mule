@@ -14,8 +14,8 @@ import static org.mule.module.http.api.HttpConstants.ResponseProperties.HTTP_STA
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleEventContext;
 import org.mule.construct.Flow;
+import org.mule.functional.functional.EventCallback;
 import org.mule.module.http.itest.AbstractHttpOsgiFunctionalTestCase;
-import org.mule.tck.functional.EventCallback;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.util.IOUtils;
@@ -29,13 +29,16 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.ops4j.pax.exam.junit.PaxExamParameterized;
 
 
-@RunWith(Parameterized.class)
+@RunWith(PaxExamParameterized.class)
+@Ignore("Requires Parameterized test")
 public class HttpRequestProxyTlsTestCase extends AbstractHttpOsgiFunctionalTestCase
 {
 

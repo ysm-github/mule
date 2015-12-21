@@ -27,8 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore("Requires VM transport")
 public class HttpRequestStreamingTestCase extends AbstractHttpRequestTestCase
 {
 
